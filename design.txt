@@ -1,0 +1,96 @@
+Main Activity - Display forecast for todays weather and list of info 
+	        for next 5 days (ListView?)
+		Change colour of background between gradients depending or images?
+
+Top is fragment? Bind new one when a new list item is clicked with full detail forecast.
+Or separate activity for each detail : DetailedActivity
+
+ListView with first element different, on click fragment with detailed information.
+
+LocationActivity: List of locations, choose location auto redirects to MainActivity
+rebinds information.
+
+SQLite db stores weather information from most recent (or default?) location 5 day forecast.
+Redisplay on load.
+
+Recommendations: if its cold wrap up warm!
+graph of temperature over day.
+
+Openweather API
+
+Service that pulls api data? Puts into shared preferences for Activity.
+Popular places for weather loaded. 
+ResultReceiver IntentService
+
+By default current location is loaded surely.
+Either search json based on lat and long or use lat and long in API call.
+
+instead of API serve database data on failure.
+
+Extra: Agriculture
+       Extreme weather
+
+----------------------------MA Design----------------------------
+
+			    Location                         Menu
+
+			    Big Temp
+			    Main descriptor
+
+
+JSON for information here.
+Image background or gradient colour, changes to reflect weather
+data.
+Correlate icon packs with possible json weather values
+
+(Required json:
+	city.name
+	
+	list = list[index]
+	list.dt
+	list.main.temp
+	list.main.pressure
+	list.main.humidity
+	
+	list.weather.main (weather type)
+	list.weather.description
+)
+__________________________________________________________________
+
+			     Day 2
+
+Image for type   Day of the week                temp whatever else
+
+Click me and I replace the top fragment with that information.
+
+Required json: list.dt, list.main.temp, list.weather.main
+
+__________________________________________________________________
+
+			     Day 3
+
+Image for type   Day of the week                temp whatever else
+
+Click me and I replace the top fragment with that information.
+
+__________________________________________________________________
+
+			     Day 4
+
+Image for type   Day of the week                temp whatever else
+
+Click me and I replace the top fragment with that information.
+
+__________________________________________________________________
+
+			     Day 5
+
+Image for type   Day of the week                temp whatever else
+
+Click me and I replace the top fragment with that information.
+
+__________________________________________________________________
+
+
+
+<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>

@@ -1,0 +1,54 @@
+public void getLocation() {
+             if (ContextCompat.checkSelfPermission(activity,
+                     Manifest.permission.ACCESS_FINE_LOCATION)
+                     != PackageManager.PERMISSION_GRANTED) {
+
+                 ActivityCompat.requestPermissions(activity,
+                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+
+             } else {
+                 locClient.getLastLocation().addOnSuccessListener(
+                         new OnSuccessListener<Location>() {
+                             @Override
+                             public void onSuccess(Location location) {
+                                 if (location != null) {
+                                     APILocation.location = location;
+                                 }
+                             }
+                         }
+                 );
+             }
+         }
+
+
+    private LocationRequest createLocationRequest() {
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setNumUpdates(1);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return locationRequest;
+    }
+
+
+private void getLocationUpdate(LocationRequest request) {
+        callback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                for(Location location: locationResult.getLocations()) {
+                    System.out.println(location.getLatitude());
+                    APILocation.location = location;
+                }
+            }
+        };
+
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+
+        } else {
+            locClient.requestLocationUpdates(request, callback,null);
+        }
+
+    }
