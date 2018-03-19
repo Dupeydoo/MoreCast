@@ -5,12 +5,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class ResultParser {
 
     private String preParsed;
+    private static int parseIndex;
 
     public ResultParser(String preParsed) {
         this.preParsed = preParsed;
+        parseIndex = 0;
     }
 
     public JSONObject parseResult() {
@@ -26,11 +31,34 @@ public class ResultParser {
         return jsonResult;
     }
 
-    public static double getTemp(JSONObject weatherJson) {
+    public static double getTemp(JSONObject weatherJson, int position) {
+        try {
+            JSONArray day = getDay(weatherJson);
+            JSONObject forecast = day.getJSONObject(0);
+            return forecast.getJSONObject("main").getDouble("temp");
+        }
+
+        catch(JSONException e) {
+            return 0;
+        }
+    }
+
+    private static JSONArray getDay(JSONObject weatherJson) {
+        JSONArray dayForecast = new JSONArray();
+
         try {
             JSONArray data = weatherJson.getJSONArray("list");
-            JSONObject forecast = data.getJSONObject(0);
-            return forecast.getJSONObject("main").getDouble("temp");
+            dayForecast.put(data.getJSONObject(parseIndex));
+            parseIndex++;
+
+            for(int i = parseIndex; i < data.length(); i++) {
+                JSONObject currentForecastObj = data.getJSONObject(i);
+                if(currentForecastObj.getString("dt_txt").contains("00:00:00")) {
+                    break;
+                }
+                dayForecast.put(currentForecastObj);
+                parseIndex++;
+            }
         }
 
         catch(JSONException e) {
@@ -38,7 +66,23 @@ public class ResultParser {
             for(int i = 0; i < e.getStackTrace().length; i++) {
                 System.out.println(e.getStackTrace()[i]);
             }
-            return 0;
+            return null;
         }
+        return dayForecast;
+    }
+
+    private static JSONArray removeJSONArrayElements(JSONArray array, ArrayList<Integer> indexes){
+        JSONArray output = new JSONArray();
+        for(int i = 0; i < array.length(); i++) {
+            if(!indexes.contains(i)) {
+                try {
+                    output.put(array.getJSONObject(i));
+                }
+                catch(JSONException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
+            }
+        }
+        return output;
     }
 }

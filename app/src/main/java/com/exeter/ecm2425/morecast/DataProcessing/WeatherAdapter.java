@@ -47,7 +47,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        double temp = ResultParser.getTemp(weatherJson);
+        double temp;
+        if(holder.getItemViewType() == 0) {
+            temp = ResultParser.getTemp(weatherJson, position);
+        }
+
+        else {
+            temp = ResultParser.getTemp(weatherJson, 7);
+        }
         holder.textView.setText(String.format(Locale.ENGLISH, "%f", temp));
     }
 
