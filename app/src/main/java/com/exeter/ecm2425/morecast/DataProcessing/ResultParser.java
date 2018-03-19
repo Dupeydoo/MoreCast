@@ -1,6 +1,7 @@
 package com.exeter.ecm2425.morecast.DataProcessing;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,11 +28,16 @@ public class ResultParser {
 
     public static double getTemp(JSONObject weatherJson) {
         try {
-            return weatherJson.getJSONObject("main").getDouble("temp");
+            JSONArray data = weatherJson.getJSONArray("list");
+            JSONObject forecast = data.getJSONObject(0);
+            return forecast.getJSONObject("main").getDouble("temp");
         }
 
         catch(JSONException e) {
-            // log
+            System.out.println(e.getMessage() + "\n\n");
+            for(int i = 0; i < e.getStackTrace().length; i++) {
+                System.out.println(e.getStackTrace()[i]);
+            }
             return 0;
         }
     }

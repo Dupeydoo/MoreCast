@@ -30,7 +30,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @NonNull
     @Override
-    public WeatherAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public WeatherAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                    int viewType) {
         TextView textView;
         if(viewType == 0) {
@@ -46,7 +46,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         double temp = ResultParser.getTemp(weatherJson);
         holder.textView.setText(String.format(Locale.ENGLISH, "%f", temp));
     }
