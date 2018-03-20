@@ -2,10 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/overcast"
     tools:context="com.exeter.ecm2425.morecast.Activities.MainActivity">
+
+    <ImageView
+        android:id="@+id/overCast"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/overcast"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/test"
