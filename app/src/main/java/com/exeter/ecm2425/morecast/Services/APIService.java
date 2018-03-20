@@ -37,12 +37,14 @@ public class APIService extends IntentService {
         Bundle apiBundle = new Bundle();
 
         if(command.equals("forecast")) {
+            String namedLocation = intent.getStringExtra("named-location");
+            String apiSuffix = String.format(Locale.ENGLISH, "q=%s", namedLocation);
             receiver.send(API_RUNNING, Bundle.EMPTY);
 
             try {
-                // api get some data
-                // put something in the bundle parcel
-                receiver.send(API_FINISHED, Bundle.EMPTY);
+                String apiResult = makeApiCall(apiSuffix);
+                apiBundle.putString("result", apiResult);
+                receiver.send(API_FINISHED, apiBundle);
             }
 
             catch(Exception e) {

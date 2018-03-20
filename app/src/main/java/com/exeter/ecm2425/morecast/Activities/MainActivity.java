@@ -56,7 +56,13 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         apiReceiver = new APIResultReceiver(new Handler());
         apiReceiver.setReceiver(this);
         apiIntent = new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
-        apiLocater = new APILocation(this, apiIntent);
+        String namedLocation = getIntent().getStringExtra("named-location");
+
+        if(namedLocation != null) {
+            startApiService(apiIntent, namedLocation);
+        } else {
+            apiLocater = new APILocation(this, apiIntent);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -69,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         apiReceiver.setReceiver(null);
     }
 
-    public void startApiService(Intent intent) {
+    public void startApiService(Intent intent, String namedLocation) {
+        intent.putExtra("named-location", namedLocation);
         intent.putExtra("api-receiver", apiReceiver);
         intent.putExtra("command", "forecast");
         startService(intent);

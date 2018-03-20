@@ -1,6 +1,7 @@
 package com.exeter.ecm2425.morecast.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -56,7 +57,10 @@ public class LocationActivity extends AppCompatActivity {
 
     public void itemClick(View view) {
         TextView textView = (TextView) view;
-        System.out.println(textView.getText());
+        Class destination = MainActivity.class;
+        Intent intent = new Intent(this, destination);
+        intent.putExtra("named-location", textView.getText());
+        startActivity(intent);
     }
 
     public ArrayList<String> readLocationsText(Context context) {
