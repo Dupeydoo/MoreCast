@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.Views.TodayView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
@@ -17,6 +19,7 @@ import java.util.Locale;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
     private JSONObject weatherJson;
+    private final static int FORECAST_DAYS = 5;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
@@ -55,13 +58,20 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        JSONArray day;
         double temp;
         if(holder.getItemViewType() == 0) {
-            // temp = ResultParser.getTemp(weatherJson, position);
+            day = ResultParser.getForecastDay(weatherJson, 0);
         }
 
         else {
-            temp = ResultParser.getTemp(weatherJson, 7);
+            day = ResultParser.getForecastDay(weatherJson, 7);
+            try {
+                temp = day.getJSONObject(0).getJSONObject("main").getDouble("temp");
+            } catch(JSONException e) {
+                temp = 0;
+                System.out.println("oops");
+            }
             holder.textView.setText(String.format(Locale.ENGLISH, "%f", temp));
         }
     }
@@ -72,9 +82,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         return 1;
     }
 
-    // its using this to determine how many to display, im getting lucky basically lol.
+
     @Override
     public int getItemCount() {
-        return weatherJson.length();
+        return FORECAST_DAYS;
     }
 }

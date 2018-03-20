@@ -31,16 +31,9 @@ public class ResultParser {
         return jsonResult;
     }
 
-    public static double getTemp(JSONObject weatherJson, int position) {
-        try {
-            JSONArray day = getDay(weatherJson);
-            JSONObject forecast = day.getJSONObject(0);
-            return forecast.getJSONObject("main").getDouble("temp");
-        }
-
-        catch(JSONException e) {
-            return 0;
-        }
+    public static JSONArray getForecastDay(JSONObject weatherJson, int position) {
+        JSONArray day = getDay(weatherJson);
+        return day;
     }
 
     private static JSONArray getDay(JSONObject weatherJson) {

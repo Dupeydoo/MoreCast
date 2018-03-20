@@ -45,23 +45,23 @@ public class TodayView extends RelativeLayout {
     }
 
     private void setViews() {
-        bigTemperature = (TextView) findViewById(R.id.bigTemperature);
-        descriptor = (TextView) findViewById(R.id.descriptor);
+        this.bigTemperature = (TextView) findViewById(R.id.bigTemperature);
+        this.descriptor = (TextView) findViewById(R.id.descriptor);
 
-        stampOne = (ImageView) findViewById(R.id.stampOne);
-        stampTwo = (ImageView) findViewById(R.id.stampTwo);
-        stampThree = (ImageView) findViewById(R.id.stampThree);
-        stampFour = (ImageView) findViewById(R.id.stampFour);
+        this.stampOne = (ImageView) findViewById(R.id.stampOne);
+        this.stampTwo = (ImageView) findViewById(R.id.stampTwo);
+        this.stampThree = (ImageView) findViewById(R.id.stampThree);
+        this.stampFour = (ImageView) findViewById(R.id.stampFour);
 
-        labelOne = (TextView) findViewById(R.id.labelOne);
-        labelTwo = (TextView) findViewById(R.id.labelTwo);
-        labelThree = (TextView) findViewById(R.id.labelThree);
-        labelFour = (TextView) findViewById(R.id.labelFour);
+        this.labelOne = (TextView) findViewById(R.id.labelOne);
+        this.labelTwo = (TextView) findViewById(R.id.labelTwo);
+        this.labelThree = (TextView) findViewById(R.id.labelThree);
+        this.labelFour = (TextView) findViewById(R.id.labelFour);
 
-        pressureContent = (TextView) findViewById(R.id.pressureContent);
-        humidityContent = (TextView) findViewById(R.id.humidityContent);
-        windSpeed = (TextView) findViewById(R.id.windSpeed);
-        windDegrees = (TextView) findViewById(R.id.windDegrees);
+        this.pressureContent = (TextView) findViewById(R.id.pressureContent);
+        this.humidityContent = (TextView) findViewById(R.id.humidityContent);
+        this.windSpeed = (TextView) findViewById(R.id.windSpeed);
+        this.windDegrees = (TextView) findViewById(R.id.windDegrees);
     }
 
     public void setMainInfo(double bigTemperature, String descriptor) {
