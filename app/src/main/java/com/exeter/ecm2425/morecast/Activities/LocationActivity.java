@@ -3,6 +3,7 @@ package com.exeter.ecm2425.morecast.Activities;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -22,7 +23,7 @@ public class LocationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter viewAdapter;
-    private RecyclerView.LayoutManager viewManager;
+    private LinearLayoutManager viewManager;
     private ArrayList<String> capitalCities;
 
     @Override
@@ -30,6 +31,7 @@ public class LocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
         setUpRecyclerView();
+        this.setTitle("Choose Location");
     }
 
     private void setUpRecyclerView() {
@@ -40,6 +42,13 @@ public class LocationActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(viewManager);
         viewAdapter = new LocationAdapter(capitalCities);
         recyclerView.setAdapter(viewAdapter);
+        styleRecyclerView();
+    }
+
+    private void styleRecyclerView() {
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                recyclerView.getContext(), viewManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     public ArrayList<String> readLocationsText(Context context) {

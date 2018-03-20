@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.exeter.ecm2425.morecast.Activities.LocationActivity">
 
+    <ImageView
+        android:id="@+id/nightSky"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/night"
+        android:scaleType="centerCrop"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
