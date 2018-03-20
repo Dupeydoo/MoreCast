@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/bigTemperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alfa_slab_one"
@@ -13,5 +14,216 @@
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bigTemperature"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/stampOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/descriptor"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="22dp"
+        app:srcCompat="@drawable/sun" />
+
+    <ImageView
+        android:id="@+id/stampTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descriptor"
+        android:layout_toRightOf="@id/stampOne"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="22dp"
+        app:srcCompat="@drawable/sun"/>
+
+    <ImageView
+        android:id="@+id/stampThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descriptor"
+        android:layout_toRightOf="@id/stampTwo"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="22dp"
+        app:srcCompat="@drawable/sun"/>
+
+    <ImageView
+        android:id="@+id/stampFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descriptor"
+        android:layout_toRightOf="@id/stampThree"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="22dp"
+        app:srcCompat="@drawable/sun"/>
+
+    <TextView
+        android:id="@+id/labelOne"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stampOne"
+        android:layout_alignStart="@id/stampOne"
+        android:layout_alignEnd="@id/stampOne"
+        android:layout_alignLeft="@id/stampOne"
+        android:layout_alignRight="@id/stampOne"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/labelTwo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stampTwo"
+        android:layout_alignStart="@id/stampTwo"
+        android:layout_alignEnd="@id/stampTwo"
+        android:layout_alignLeft="@id/stampTwo"
+        android:layout_alignRight="@id/stampTwo"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/labelThree"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stampThree"
+        android:layout_alignStart="@id/stampThree"
+        android:layout_alignEnd="@id/stampThree"
+        android:layout_alignLeft="@id/stampThree"
+        android:layout_alignRight="@id/stampThree"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/labelFour"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stampFour"
+        android:layout_alignStart="@id/stampFour"
+        android:layout_alignEnd="@id/stampFour"
+        android:layout_alignLeft="@id/stampFour"
+        android:layout_alignRight="@id/stampFour"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/pressureTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/labelTwo"
+        android:layout_alignLeft="@id/labelOne"
+        android:layout_alignRight="@id/labelTwo"
+        android:layout_alignStart="@id/labelOne"
+        android:layout_below="@id/labelOne"
+        android:layout_marginTop="10dp"
+        android:text="@string/pressure"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/humidityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/labelFour"
+        android:layout_alignLeft="@id/labelThree"
+        android:layout_alignRight="@id/labelFour"
+        android:layout_alignStart="@id/labelThree"
+        android:layout_below="@id/labelOne"
+        android:layout_marginTop="10dp"
+        android:text="@string/humidity"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/pressureContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/pressureTitle"
+        android:layout_alignLeft="@id/pressureTitle"
+        android:layout_alignRight="@id/pressureTitle"
+        android:layout_alignStart="@id/pressureTitle"
+        android:layout_below="@id/pressureTitle"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/humidityContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/humidityTitle"
+        android:layout_alignLeft="@id/humidityTitle"
+        android:layout_alignRight="@id/humidityTitle"
+        android:layout_alignStart="@id/humidityTitle"
+        android:layout_below="@id/humidityTitle"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/windInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/humidityContent"
+        android:layout_alignLeft="@id/pressureContent"
+        android:layout_alignRight="@id/humidityContent"
+        android:layout_alignStart="@id/pressureContent"
+        android:layout_below="@id/pressureContent"
+        android:layout_marginTop="20dp"
+        android:text="@string/wind"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/windSock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/windInformation"
+        android:layout_alignLeft="@id/windInformation"
+        android:layout_alignStart="@id/windInformation"
+        app:srcCompat="@drawable/windsock"/>
+
+    <ImageView
+        android:id="@+id/windDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/windSock"
+        android:layout_alignLeft="@id/windSock"
+        android:layout_alignStart="@id/windSock"
+        app:srcCompat="@drawable/wind"/>
+
+    <TextView
+        android:id="@+id/windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/windInformation"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/windSock"
+        android:layout_toRightOf="@id/windSock"
+        android:text="@string/speed"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/windDegrees"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/windSpeed"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="45dp"
+        android:layout_toEndOf="@id/windDirection"
+        android:layout_toRightOf="@id/windDirection"
+        android:text="@string/direction"
+        android:textSize="18sp" />
 
 </RelativeLayout>
