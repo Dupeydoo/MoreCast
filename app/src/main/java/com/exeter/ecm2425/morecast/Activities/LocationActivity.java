@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.exeter.ecm2425.morecast.DataProcessing.LocationAdapter;
 import com.exeter.ecm2425.morecast.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,6 +52,11 @@ public class LocationActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
                 recyclerView.getContext(), viewManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    public void itemClick(View view) {
+        TextView textView = (TextView) view;
+        System.out.println(textView.getText());
     }
 
     public ArrayList<String> readLocationsText(Context context) {
