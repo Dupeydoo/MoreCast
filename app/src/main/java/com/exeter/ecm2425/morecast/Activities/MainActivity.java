@@ -2,6 +2,7 @@ package com.exeter.ecm2425.morecast.Activities;
 
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setUpStatusBar();
     }
 
     @Override
@@ -119,14 +119,6 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 } else {
                     // permission denied
                 }
-        }
-    }
-
-    private void setUpStatusBar() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.colorStatusBar));
         }
     }
 
