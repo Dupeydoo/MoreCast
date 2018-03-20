@@ -30,6 +30,8 @@ instead of API serve database data on failure.
 Extra: Agriculture
        Extreme weather
 
+UTC time stored as utc, only convert for display.
+
 
 default lst, search for more database
 

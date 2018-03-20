@@ -52,3 +52,11 @@ private void getLocationUpdate(LocationRequest request) {
         }
 
     }
+
+    public static class TodayViewHolder extends RecyclerView.ViewHolder {
+            public TodayView view;
+            public TodayViewHolder(View view) {
+                super(view);
+                view = (TodayView) view;
+            }
+        }

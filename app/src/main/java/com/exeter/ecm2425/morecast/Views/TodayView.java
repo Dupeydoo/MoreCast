@@ -30,6 +30,13 @@ public class TodayView extends RelativeLayout {
     private TextView windSpeed;
     private TextView windDegrees;
 
+    public TodayView(Context context) {
+        super(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        inflater.inflate(R.layout.today_view, this);
+        setViews();
+    }
+
     public TodayView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -63,11 +70,11 @@ public class TodayView extends RelativeLayout {
     }
 
     public void setImages(
-            int firstCode, int secondCode, int thirdCode, int fourthCode) {
-        setWeatherImage(firstCode, stampOne);
-        setWeatherImage(secondCode, stampTwo);
-        setWeatherImage(thirdCode, stampThree);
-        setWeatherImage(fourthCode, stampFour);
+            int firstCode, int secondCode, int thirdCode, int fourthCode, String time) {
+        setWeatherImage(firstCode, stampOne, time);
+        setWeatherImage(secondCode, stampTwo, time);
+        setWeatherImage(thirdCode, stampThree, time);
+        setWeatherImage(fourthCode, stampFour, time);
     }
 
     public void setLabels(
@@ -86,57 +93,62 @@ public class TodayView extends RelativeLayout {
         this.windDegrees.setText(String.format(Locale.ENGLISH, "%.2f degrees", windDirection));
     }
 
-    private void setWeatherImage(int weather, ImageView image) {
+    private void setWeatherImage(int weather, ImageView image, String time) {
         if(weather >= 200 && weather < 300) {
-            // thunderstorm;
+            image.setImageDrawable(getResources().getDrawable(R.drawable.storm));
         }
 
         else if(weather >= 300 && weather < 400) {
-            // drizzle
+            image.setImageDrawable(getResources().getDrawable(R.drawable.drizzle));
         }
 
         else if(weather >= 500 && weather < 502) {
-            // light rain
+            image.setImageDrawable(getResources().getDrawable(R.drawable.lightrain));
         }
 
         else if(weather >= 502 && weather < 600) {
-            // heavy rain
+            image.setImageDrawable(getResources().getDrawable(R.drawable.heavyrain));
         }
 
         else if(weather >= 600 && weather < 700) {
-            // snow
+            image.setImageDrawable(getResources().getDrawable(R.drawable.snow));
         }
 
         else if(weather >= 700 && weather < 800) {
-            // atmosphere - mist
+            image.setImageDrawable(getResources().getDrawable(R.drawable.mist));
         }
 
         else if(weather == 800) {
-            // sun
+            int timeNum = Integer.parseInt(time.substring(0, 1));
+            if(timeNum > 19 && timeNum < 6) {
+                image.setImageDrawable(getResources().getDrawable(R.drawable.moon));
+            } else {
+                image.setImageDrawable(getResources().getDrawable(R.drawable.sun));
+            }
         }
 
         else if(weather == 801 || weather == 802) {
-            // light cloud
+            image.setImageDrawable(getResources().getDrawable(R.drawable.lightcloud));
         }
 
         else if(weather == 803 || weather == 804) {
-            // heavy cloud
+            image.setImageDrawable(getResources().getDrawable(R.drawable.heavycloud));
         }
 
         else if(weather >= 900 && weather < 903) {
-            // hurrican, tornado, trop storm
+            image.setImageDrawable(getResources().getDrawable(R.drawable.hurricane));
         }
 
         else if(weather == 903) {
-            // cold
+            image.setImageDrawable(getResources().getDrawable(R.drawable.cold));
         }
 
         else if(weather == 904) {
-            // hot
+            image.setImageDrawable(getResources().getDrawable(R.drawable.hot));
         }
 
         else {
-            // some winds and shit
+            image.setImageDrawable(getResources().getDrawable(R.drawable.wind));
         }
     }
 }

@@ -20,19 +20,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
+        public TodayView todayView;
         public ViewHolder(TextView textView) {
             super(textView);
             this.textView = textView;
         }
-    }
 
-    public static class TodayViewHolder extends RecyclerView.ViewHolder {
-        public TodayView view;
-        public TodayViewHolder(View view) {
-            super(view);
-            view = (TodayView) view;
+        public ViewHolder(TodayView todayView) {
+            super(todayView);
+            this.todayView = todayView;
         }
     }
+
 
     public WeatherAdapter(JSONObject json) {
         weatherJson = json;
@@ -42,17 +41,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public WeatherAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                    int viewType) {
-        TextView textView;
         if(viewType == 0) {
-            // Do something custom;
+            TodayView today = new TodayView(parent.getContext());
+            return new ViewHolder(today);
         }
 
         else {
-            textView = (TextView) LayoutInflater.from(
+            TextView textView = (TextView) LayoutInflater.from(
                     parent.getContext()).inflate(R.layout.forecast_view, parent, false);
             return new ViewHolder(textView);
         }
-        return new ViewHolder(null);
     }
 
     @Override
