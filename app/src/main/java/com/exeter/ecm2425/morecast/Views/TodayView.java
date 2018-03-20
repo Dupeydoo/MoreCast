@@ -95,60 +95,60 @@ public class TodayView extends RelativeLayout {
 
     private void setWeatherImage(int weather, ImageView image, String time) {
         if(weather >= 200 && weather < 300) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.storm));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_storm));
         }
 
         else if(weather >= 300 && weather < 400) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.drizzle));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_drizzle));
         }
 
         else if(weather >= 500 && weather < 502) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.lightrain));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_lightrain));
         }
 
         else if(weather >= 502 && weather < 600) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.heavyrain));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_heavyrain));
         }
 
         else if(weather >= 600 && weather < 700) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.snow));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_snow));
         }
 
         else if(weather >= 700 && weather < 800) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.mist));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_mist));
         }
 
         else if(weather == 800) {
             int timeNum = Integer.parseInt(time.substring(0, 1));
             if(timeNum > 19 && timeNum < 6) {
-                image.setImageDrawable(getResources().getDrawable(R.drawable.moon));
+                image.setImageDrawable(getResources().getDrawable(R.drawable.ic_moon));
             } else {
-                image.setImageDrawable(getResources().getDrawable(R.drawable.sun));
+                image.setImageDrawable(getResources().getDrawable(R.drawable.ic_sun));
             }
         }
 
         else if(weather == 801 || weather == 802) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.lightcloud));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_lightcloud));
         }
 
         else if(weather == 803 || weather == 804) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.heavycloud));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_heavycloud));
         }
 
         else if(weather >= 900 && weather < 903) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.hurricane));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_hurricane));
         }
 
         else if(weather == 903) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.cold));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_cold));
         }
 
         else if(weather == 904) {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.hot));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_hot));
         }
 
         else {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.wind));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_wind));
         }
     }
 }
