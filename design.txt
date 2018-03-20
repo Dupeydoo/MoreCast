@@ -14,7 +14,7 @@ SQLite db stores weather information from most recent (or default?) location 5 d
 Redisplay on load.
 
 Recommendations: if its cold wrap up warm!
-graph of temperature over day.
+graph of temperature over day. 306770
 
 Openweather API
 
@@ -29,6 +29,10 @@ instead of API serve database data on failure.
 
 Extra: Agriculture
        Extreme weather
+
+
+default lst, search for more database
+
 
 ----------------------------MA Design----------------------------
 

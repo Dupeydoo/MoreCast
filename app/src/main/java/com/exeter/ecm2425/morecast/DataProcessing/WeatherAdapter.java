@@ -64,6 +64,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         return 1;
     }
 
+    // its using this to determine how many to display, im getting lucky basically lol.
     @Override
     public int getItemCount() {
         return weatherJson.length();

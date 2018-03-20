@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.exeter.ecm2425.morecast.Activities.LocationActivity">
 
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/locationList" />
 </RelativeLayout>

@@ -70,19 +70,4 @@ public class ResultParser {
         }
         return dayForecast;
     }
-
-    private static JSONArray removeJSONArrayElements(JSONArray array, ArrayList<Integer> indexes){
-        JSONArray output = new JSONArray();
-        for(int i = 0; i < array.length(); i++) {
-            if(!indexes.contains(i)) {
-                try {
-                    output.put(array.getJSONObject(i));
-                }
-                catch(JSONException e) {
-                    throw new RuntimeException(e.getMessage());
-                }
-            }
-        }
-        return output;
-    }
 }
