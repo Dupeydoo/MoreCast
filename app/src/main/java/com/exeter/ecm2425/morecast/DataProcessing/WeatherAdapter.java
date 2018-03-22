@@ -1,6 +1,7 @@
 package com.exeter.ecm2425.morecast.DataProcessing;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.exeter.ecm2425.morecast.R;
+import com.exeter.ecm2425.morecast.Views.ForecastView;
 import com.exeter.ecm2425.morecast.Views.TodayView;
 
 import org.json.JSONArray;
@@ -24,6 +26,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public TodayView todayView;
+        public ForecastView forecastView;
+
         public ViewHolder(TextView textView) {
             super(textView);
             this.textView = textView;
@@ -33,6 +37,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             super(todayView);
             this.todayView = todayView;
         }
+
+        public ViewHolder(ForecastView forecastView) {
+            super(forecastView);
+            this.forecastView = forecastView;
+        }
     }
 
 
@@ -40,6 +49,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         weatherJson = json;
     }
 
+    // get next day, if it cant bind the next four times, get n-1 position from next day.
     @NonNull
     @Override
     public WeatherAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
@@ -50,9 +60,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         }
 
         else {
-            TextView textView = (TextView) LayoutInflater.from(
-                    parent.getContext()).inflate(R.layout.forecast_view, parent, false);
-            return new ViewHolder(textView);
+            ForecastView forecastView = new ForecastView(parent.getContext());
+            return new ViewHolder(forecastView);
         }
     }
 
@@ -62,6 +71,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         double temp;
         if(holder.getItemViewType() == 0) {
             day = ResultParser.getForecastDay(weatherJson, 0);
+            bindMainInformation(day, holder);
+            bindAdditionalInformation(day, holder);
         }
 
         else {
@@ -72,7 +83,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
                 temp = 0;
                 System.out.println("oops");
             }
-            holder.textView.setText(String.format(Locale.ENGLISH, "%f", temp));
+            holder.forecastView.setForecast("Lol", temp);
         }
     }
 
@@ -86,5 +97,35 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public int getItemCount() {
         return FORECAST_DAYS;
+    }
+
+
+    private void bindMainInformation(JSONArray day, @NonNull ViewHolder holder) {
+        try {
+            JSONObject closestTime = day.getJSONObject(0);
+            double temp = closestTime.getJSONObject("main").getDouble("temp");
+            String description = closestTime.getJSONArray("weather")
+                    .getJSONObject(0).getString("description");
+            holder.todayView.setMainInfo(temp, description);
+        }
+
+        catch(JSONException e) {
+            System.out.println("Well this went wrong somehow.");
+        }
+    }
+
+    private void bindAdditionalInformation(JSONArray day, @NonNull ViewHolder holder) {
+        try {
+            JSONObject closestTime = day.getJSONObject(0);
+            double pressure = closestTime.getJSONObject("main").getDouble("pressure");
+            int humididty = closestTime.getJSONObject("main").getInt("humidity");
+            double windSpeed = closestTime.getJSONObject("wind").getDouble("speed");
+            double windDirection = closestTime.getJSONObject("wind").getDouble("deg");
+            holder.todayView.setAdditionalWeatherInfo(pressure, humididty, windSpeed, windDirection);
+        }
+
+        catch(JSONException e) {
+            System.out.println("Wrong!!");
+        }
     }
 }
