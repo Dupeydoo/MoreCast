@@ -1,14 +1,12 @@
 package com.exeter.ecm2425.morecast.DataProcessing;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.exeter.ecm2425.morecast.R;
+import com.exeter.ecm2425.morecast.Utils.DateHandler;
 import com.exeter.ecm2425.morecast.Views.ForecastView;
 import com.exeter.ecm2425.morecast.Views.TodayView;
 
@@ -16,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
+import java.util.Date;
 
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
@@ -76,14 +74,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         }
 
         else {
-            day = ResultParser.getForecastDay(weatherJson, 7);
-            try {
-                temp = day.getJSONObject(0).getJSONObject("main").getDouble("temp");
-            } catch(JSONException e) {
-                temp = 0;
-                System.out.println("oops");
-            }
-            holder.forecastView.setForecast("Lol", temp);
+            day = ResultParser.getForecastDay(weatherJson, 0); // pos doesnt mean anything atm.
+            bindForecastInformation(day, holder);
         }
     }
 
@@ -126,6 +118,22 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
         catch(JSONException e) {
             System.out.println("Wrong!!");
+        }
+    }
+
+    private void bindForecastInformation(JSONArray day, @NonNull ViewHolder holder) {
+        try {
+            JSONObject midDay = day.getJSONObject(4);
+            long timestamp = midDay.getLong("dt");
+            Date currentDate = new Date(timestamp * 1000);
+
+            String currentDay = DateHandler.returnDayOfTheWeek(currentDate);
+            double temp = midDay.getJSONObject("main").getDouble("temp");
+            holder.forecastView.setForecast(currentDay, temp);
+        }
+
+        catch(JSONException e) {
+            System.out.println("I really hate how many try catches you need for JSON parsing");
         }
     }
 }
