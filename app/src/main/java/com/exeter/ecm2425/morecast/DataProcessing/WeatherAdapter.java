@@ -1,6 +1,7 @@
 package com.exeter.ecm2425.morecast.DataProcessing;
 
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -53,6 +54,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
         else {
             ForecastView forecastView = new ForecastView(parent.getContext());
+            forecastView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return new ViewHolder(forecastView);
         }
     }
@@ -60,15 +63,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         JSONArray day;
-        double temp;
         if(holder.getItemViewType() == 0) {
-            day = ResultParser.getForecastDay(weatherJson, 0);
+            day = ResultParser.getForecastDay(weatherJson);
             bindMainInformation(day, holder);
             bindAdditionalInformation(day, holder);
         }
 
         else {
-            day = ResultParser.getForecastDay(weatherJson, 0); // pos doesnt mean anything atm.
+            day = ResultParser.getForecastDay(weatherJson); // pos doesnt mean anything atm.
             bindForecastInformation(day, holder);
         }
     }
@@ -87,21 +89,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
 
     private void bindMainInformation(JSONArray day, @NonNull ViewHolder holder) {
-        try {
-            JSONObject closestTime = day.getJSONObject(0);
-            double temp = ResultParser.getDoubleFromJson(closestTime, "main", "temp");
-            String description = closestTime.getJSONArray("weather")
-                    .getJSONObject(0).getString("description");
-            holder.todayView.setMainInfo(temp, description);
-        } catch(JSONException e) {
-            System.out.println("Well this went wrong somehow.");
-        }
+        JSONObject closestTime = ResultParser.getTimestamp(day, 0);
+        double temp = ResultParser.getDoubleFromJson(closestTime, "main", "temp");
+
+        String description = ResultParser.getWeatherDescription(closestTime);
+        holder.todayView.setMainInfo(temp, description);
     }
 
     private void bindAdditionalInformation(JSONArray day, @NonNull ViewHolder holder) {
         JSONObject closestTime = ResultParser.getTimestamp(day, 0);
         double pressure = ResultParser.getDoubleFromJson(closestTime, "main", "pressure");
         int humididty = ResultParser.getIntFromJson(closestTime, "main", "humidity");
+
         double windSpeed = ResultParser.getDoubleFromJson(closestTime, "wind", "speed");
         double windDirection = ResultParser.getDoubleFromJson(closestTime, "wind", "deg");
         String precipType = ResultParser.checkPrecipitationType(closestTime);
@@ -113,16 +112,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     }
 
     private void bindForecastInformation(JSONArray day, @NonNull ViewHolder holder) {
-        try {
-            JSONObject midDay = ResultParser.getTimestamp(day, 4);
-            long timestamp = midDay.getLong("dt");
-            Date currentDate = new Date(timestamp * 1000);
+        JSONObject midDay = ResultParser.getTimestamp(day, 4);
+        long timestamp = ResultParser.getWeatherEpoch(midDay);
+        Date currentDate = new Date(timestamp * 1000);
 
-            String currentDay = DateHandler.returnDayOfTheWeek(currentDate);
-            double temp = ResultParser.getDoubleFromJson(midDay, "main", "temp");
-            holder.forecastView.setForecast(currentDay, temp);
-        } catch(JSONException e) {
-            System.out.println("I really hate how many try catches you need for JSON parsing");
-        }
+        String currentDay = DateHandler.returnDayOfTheWeek(currentDate);
+        double temp = ResultParser.getDoubleFromJson(midDay, "main", "temp");
+        holder.forecastView.setForecast(currentDay, temp);
     }
 }

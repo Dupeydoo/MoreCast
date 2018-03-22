@@ -30,7 +30,7 @@ public class ResultParser {
         return jsonResult;
     }
 
-    public static JSONArray getForecastDay(JSONObject weatherJson, int position) {
+    public static JSONArray getForecastDay(JSONObject weatherJson) {
         JSONArray day = getDay(weatherJson);
         return day;
     }
@@ -75,6 +75,22 @@ public class ResultParser {
             return jsonObject.getJSONObject(preType).getDouble("3h");
         } catch(JSONException e) {
             return 0.0;
+        }
+    }
+
+    public static String getWeatherDescription(JSONObject jsonObject) {
+        try {
+            return jsonObject.getJSONArray("weather").getJSONObject(0).getString("description");
+        } catch(JSONException e) {
+            return "Description Unavailable";
+        }
+    }
+
+    public static Long getWeatherEpoch(JSONObject jsonObject) {
+        try {
+            return jsonObject.getLong("dt");
+        } catch(JSONException e) {
+            return 0L;
         }
     }
 
