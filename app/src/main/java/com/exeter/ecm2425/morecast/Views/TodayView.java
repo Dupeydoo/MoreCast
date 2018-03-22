@@ -102,7 +102,7 @@ public class TodayView extends RelativeLayout {
         this.precipitationAmount.setText(String.format(Locale.ENGLISH, "%.2f mm, (3h)", precipAmount));
     }
 
-    private void setWeatherImage(int weather, ImageView image, String time) {
+    protected void setWeatherImage(int weather, ImageView image, String time) {
         if(weather >= 200 && weather < 300) {
             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_storm));
         }

@@ -1,7 +1,6 @@
 package com.exeter.ecm2425.morecast.Views;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.widget.ImageView;

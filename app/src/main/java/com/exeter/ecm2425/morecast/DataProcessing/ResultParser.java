@@ -25,7 +25,6 @@ public class ResultParser {
         }
 
         catch(JSONException e) {
-            // log
             jsonResult = new JSONObject();
         }
         return jsonResult;
@@ -34,6 +33,49 @@ public class ResultParser {
     public static JSONArray getForecastDay(JSONObject weatherJson, int position) {
         JSONArray day = getDay(weatherJson);
         return day;
+    }
+
+    public static JSONObject getTimestamp(JSONArray day, int index) {
+        try {
+            return day.getJSONObject(index);
+        } catch(JSONException e) {
+            return null;
+        }
+    }
+
+    public static double getDoubleFromJson
+            (JSONObject jsonObject, String innerObject, String jsonDouble) {
+        try {
+            return jsonObject.getJSONObject(innerObject).getDouble(jsonDouble);
+        } catch(JSONException e) {
+            return 0.0;
+        }
+    }
+
+    public static int getIntFromJson(JSONObject jsonObject, String innerObject, String jsonInt) {
+        try {
+            return jsonObject.getJSONObject(innerObject).getInt(jsonInt);
+        } catch(JSONException e) {
+            return 0;
+        }
+    }
+
+    public static String checkPrecipitationType(JSONObject jsonObject) {
+        try {
+            JSONObject snow = jsonObject.getJSONObject("snow");
+            return "Snow";
+        } catch(JSONException e) {
+            return "Rain";
+        }
+    }
+
+    public static double getPrecipitationAmount(JSONObject jsonObject, String precipType) {
+        String preType = precipType.toLowerCase();
+        try {
+            return jsonObject.getJSONObject(preType).getDouble("3h");
+        } catch(JSONException e) {
+            return 0.0;
+        }
     }
 
     private static JSONArray getDay(JSONObject weatherJson) {
@@ -55,10 +97,6 @@ public class ResultParser {
         }
 
         catch(JSONException e) {
-            System.out.println(e.getMessage() + "\n\n");
-            for(int i = 0; i < e.getStackTrace().length; i++) {
-                System.out.println(e.getStackTrace()[i]);
-            }
             return null;
         }
         return dayForecast;

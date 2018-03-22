@@ -22,14 +22,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     private final static int FORECAST_DAYS = 5;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
         public TodayView todayView;
         public ForecastView forecastView;
-
-        public ViewHolder(TextView textView) {
-            super(textView);
-            this.textView = textView;
-        }
 
         public ViewHolder(TodayView todayView) {
             super(todayView);
@@ -95,51 +89,39 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     private void bindMainInformation(JSONArray day, @NonNull ViewHolder holder) {
         try {
             JSONObject closestTime = day.getJSONObject(0);
-            double temp = closestTime.getJSONObject("main").getDouble("temp");
+            double temp = ResultParser.getDoubleFromJson(closestTime, "main", "temp");
             String description = closestTime.getJSONArray("weather")
                     .getJSONObject(0).getString("description");
             holder.todayView.setMainInfo(temp, description);
-        }
-
-        catch(JSONException e) {
+        } catch(JSONException e) {
             System.out.println("Well this went wrong somehow.");
         }
     }
 
     private void bindAdditionalInformation(JSONArray day, @NonNull ViewHolder holder) {
-        try {
-            // Put in resultparser
-            JSONObject closestTime = day.getJSONObject(0);
-            double pressure = closestTime.getJSONObject("main").getDouble("pressure");
-            int humididty = closestTime.getJSONObject("main").getInt("humidity");
+        JSONObject closestTime = ResultParser.getTimestamp(day, 0);
+        double pressure = ResultParser.getDoubleFromJson(closestTime, "main", "pressure");
+        int humididty = ResultParser.getIntFromJson(closestTime, "main", "humidity");
+        double windSpeed = ResultParser.getDoubleFromJson(closestTime, "wind", "speed");
+        double windDirection = ResultParser.getDoubleFromJson(closestTime, "wind", "deg");
+        String precipType = ResultParser.checkPrecipitationType(closestTime);
+        double precipAmount = ResultParser.getPrecipitationAmount(closestTime, precipType);
 
-            double windSpeed = closestTime.getJSONObject("wind").getDouble("speed");
-            double windDirection = closestTime.getJSONObject("wind").getDouble("deg");
-
-            String precipType = "Rain";
-            double precipAmount = 2.0;
-
-            holder.todayView.setAdditionalWeatherInfo(
-                    pressure, humididty, windSpeed, windDirection, precipType, precipAmount);
-        }
-
-        catch(JSONException e) {
-            System.out.println("Wrong!!");
-        }
+        holder.todayView.setAdditionalWeatherInfo(
+                pressure, humididty, windSpeed, windDirection, precipType, precipAmount
+        );
     }
 
     private void bindForecastInformation(JSONArray day, @NonNull ViewHolder holder) {
         try {
-            JSONObject midDay = day.getJSONObject(4);
+            JSONObject midDay = ResultParser.getTimestamp(day, 4);
             long timestamp = midDay.getLong("dt");
             Date currentDate = new Date(timestamp * 1000);
 
             String currentDay = DateHandler.returnDayOfTheWeek(currentDate);
-            double temp = midDay.getJSONObject("main").getDouble("temp");
+            double temp = ResultParser.getDoubleFromJson(midDay, "main", "temp");
             holder.forecastView.setForecast(currentDay, temp);
-        }
-
-        catch(JSONException e) {
+        } catch(JSONException e) {
             System.out.println("I really hate how many try catches you need for JSON parsing");
         }
     }
