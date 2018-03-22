@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.exeter.ecm2425.morecast.R;
 
+import org.w3c.dom.Text;
+
 import java.util.Locale;
 
 public class TodayView extends RelativeLayout {
@@ -29,6 +31,8 @@ public class TodayView extends RelativeLayout {
     private TextView humidityContent;
     private TextView windSpeed;
     private TextView windDegrees;
+    private TextView precipitationType;
+    private TextView precipitationAmount;
 
     public TodayView(Context context) {
         super(context);
@@ -62,6 +66,8 @@ public class TodayView extends RelativeLayout {
         this.humidityContent = (TextView) findViewById(R.id.humidityContent);
         this.windSpeed = (TextView) findViewById(R.id.windSpeed);
         this.windDegrees = (TextView) findViewById(R.id.windDegrees);
+        this.precipitationType = (TextView) findViewById(R.id.precipitationType);
+        this.precipitationAmount = (TextView) findViewById(R.id.precipitationAmount);
     }
 
     public void setMainInfo(double bigTemperature, String descriptor) {
@@ -86,11 +92,14 @@ public class TodayView extends RelativeLayout {
     }
 
     public void setAdditionalWeatherInfo(
-            double pressure, int humidity, double speed, double windDirection) {
+            double pressure, int humidity, double speed, double windDirection,
+            String precipType, double precipAmount) {
         this.pressureContent.setText(String.format(Locale.ENGLISH, "%.2f hPa", pressure));
         this.humidityContent.setText(String.format(Locale.ENGLISH, "%d%%", humidity));
         this.windSpeed.setText(String.format(Locale.ENGLISH, "%.2f m/s", speed));
         this.windDegrees.setText(String.format(Locale.ENGLISH, "%.2f degrees", windDirection));
+        this.precipitationType.setText(precipType);
+        this.precipitationAmount.setText(String.format(Locale.ENGLISH, "%.2f mm, (3h)", precipAmount));
     }
 
     private void setWeatherImage(int weather, ImageView image, String time) {

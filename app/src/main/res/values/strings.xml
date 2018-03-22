@@ -5,4 +5,5 @@
     <string name="wind">Wind</string>
     <string name="speed">Speed: </string>
     <string name="direction">Direction: </string>
+    <string name="precipitation">Precipitation</string>
 </resources>

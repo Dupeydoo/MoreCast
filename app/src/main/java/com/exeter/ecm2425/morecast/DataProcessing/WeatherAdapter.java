@@ -108,12 +108,19 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     private void bindAdditionalInformation(JSONArray day, @NonNull ViewHolder holder) {
         try {
+            // Put in resultparser
             JSONObject closestTime = day.getJSONObject(0);
             double pressure = closestTime.getJSONObject("main").getDouble("pressure");
             int humididty = closestTime.getJSONObject("main").getInt("humidity");
+
             double windSpeed = closestTime.getJSONObject("wind").getDouble("speed");
             double windDirection = closestTime.getJSONObject("wind").getDouble("deg");
-            holder.todayView.setAdditionalWeatherInfo(pressure, humididty, windSpeed, windDirection);
+
+            String precipType = "Rain";
+            double precipAmount = 2.0;
+
+            holder.todayView.setAdditionalWeatherInfo(
+                    pressure, humididty, windSpeed, windDirection, precipType, precipAmount);
         }
 
         catch(JSONException e) {

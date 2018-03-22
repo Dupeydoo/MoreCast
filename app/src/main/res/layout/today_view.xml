@@ -176,35 +176,17 @@
         android:id="@+id/windInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/humidityContent"
+        android:layout_alignEnd="@id/pressureContent"
         android:layout_alignLeft="@id/pressureContent"
-        android:layout_alignRight="@id/humidityContent"
+        android:layout_alignRight="@id/pressureContent"
         android:layout_alignStart="@id/pressureContent"
         android:layout_below="@id/pressureContent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:text="@string/wind"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
         android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/windSock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/windInformation"
-        android:layout_alignLeft="@id/windInformation"
-        android:layout_alignStart="@id/windInformation"
-        app:srcCompat="@drawable/ic_windsock"/>
-
-    <ImageView
-        android:id="@+id/windDirection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/windSock"
-        android:layout_alignLeft="@id/windSock"
-        android:layout_alignStart="@id/windSock"
-        app:srcCompat="@drawable/ic_wind"/>
 
     <TextView
         android:id="@+id/windSpeed"
@@ -215,13 +197,10 @@
         android:layout_alignRight="@+id/windInformation"
         android:layout_alignStart="@+id/windInformation"
         android:layout_below="@id/windInformation"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@id/windSock"
-        android:layout_toRightOf="@id/windSock"
-        android:text="@string/speed"
+        android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/windDegrees"
@@ -232,12 +211,53 @@
         android:layout_alignRight="@+id/windInformation"
         android:layout_alignStart="@+id/windInformation"
         android:layout_below="@id/windSpeed"
-        android:layout_marginTop="45dp"
-        android:layout_toEndOf="@id/windDirection"
-        android:layout_toRightOf="@id/windDirection"
-        android:text="@string/direction"
+        android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/precipitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/humidityContent"
+        android:layout_alignLeft="@id/humidityContent"
+        android:layout_alignRight="@id/humidityContent"
+        android:layout_alignStart="@id/humidityContent"
+        android:layout_below="@id/humidityContent"
+        android:layout_marginTop="30dp"
+        android:text="@string/precipitation"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/precipitationType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/precipitation"
+        android:layout_alignLeft="@+id/precipitation"
+        android:layout_alignRight="@+id/precipitation"
+        android:layout_alignStart="@+id/precipitation"
+        android:layout_below="@id/precipitation"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/precipitationAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/precipitation"
+        android:layout_alignLeft="@+id/precipitation"
+        android:layout_alignRight="@+id/precipitation"
+        android:layout_alignStart="@+id/precipitation"
+        android:layout_below="@id/precipitationType"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp" />
 
 </RelativeLayout>
