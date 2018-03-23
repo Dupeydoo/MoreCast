@@ -2,7 +2,9 @@ package com.exeter.ecm2425.morecast.DataProcessing;
 
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -67,12 +69,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             day = ResultParser.getForecastDay(weatherJson);
             bindMainInformation(day, holder);
             bindAdditionalInformation(day, holder);
-            bindImageForecasts(day, holder);
+            bindImageToday(day, holder);
+            bindLabels(day, holder);
         }
 
         else {
             day = ResultParser.getForecastDay(weatherJson);
             bindForecastInformation(day, holder);
+            bindImageForecasts(day, holder);
         }
     }
 
@@ -122,7 +126,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         holder.forecastView.setForecast(currentDay, temp);
     }
 
-    private void bindImageForecasts(JSONArray day, @NonNull ViewHolder holder) {
+    private void bindImageToday(JSONArray day, @NonNull ViewHolder holder) {
         JSONObject closestTime = ResultParser.getTimestamp(day, 0);
         JSONObject secondTime = ResultParser.getTimestamp(day, 1);
         JSONObject thirdTime = ResultParser.getTimestamp(day, 2);
@@ -134,5 +138,25 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         int fourthCode = ResultParser.getWeatherId(fourthTime);
         int currentHour = DateHandler.getLocaleHour();
         holder.todayView.setImages(firstCode, secondCode, thirdCode, fourthCode, currentHour);
+    }
+
+    private void bindImageForecasts(JSONArray day, @NonNull ViewHolder holder) {
+        JSONObject midDay = ResultParser.getTimestamp(day, 4);
+        int code = ResultParser.getWeatherId(midDay);
+        int currentHour = DateHandler.getLocaleHour();
+        holder.forecastView.setForecastImage(code, currentHour);
+    }
+
+    private void bindLabels(JSONArray day, @NonNull ViewHolder holder) {
+        JSONObject firstForecast = ResultParser.getTimestamp(day, 0);
+        JSONObject secondForecast = ResultParser.getTimestamp(day, 1);
+        JSONObject thirdForecast = ResultParser.getTimestamp(day, 2);
+        JSONObject fourthForecast = ResultParser.getTimestamp(day, 3);
+
+        String firstTime = ResultParser.getWeatherDateTime(firstForecast);
+        String secondTime = ResultParser.getWeatherDateTime(secondForecast);
+        String thirdTime = ResultParser.getWeatherDateTime(thirdForecast);
+        String fourthTime = ResultParser.getWeatherDateTime(fourthForecast);
+        holder.todayView.setLabels(firstTime, secondTime, thirdTime, fourthTime);
     }
 }

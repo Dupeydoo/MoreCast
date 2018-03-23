@@ -72,45 +72,57 @@
         android:id="@+id/labelOne"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/stampOne"
-        android:layout_alignStart="@id/stampOne"
         android:layout_alignEnd="@id/stampOne"
         android:layout_alignLeft="@id/stampOne"
         android:layout_alignRight="@id/stampOne"
-        android:layout_marginTop="10dp"/>
+        android:layout_alignStart="@id/stampOne"
+        android:layout_below="@id/stampOne"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/labelTwo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/stampTwo"
-        android:layout_alignStart="@id/stampTwo"
         android:layout_alignEnd="@id/stampTwo"
         android:layout_alignLeft="@id/stampTwo"
         android:layout_alignRight="@id/stampTwo"
-        android:layout_marginTop="10dp"/>
+        android:layout_alignStart="@id/stampTwo"
+        android:layout_below="@id/stampTwo"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/labelThree"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/stampThree"
-        android:layout_alignStart="@id/stampThree"
         android:layout_alignEnd="@id/stampThree"
         android:layout_alignLeft="@id/stampThree"
         android:layout_alignRight="@id/stampThree"
-        android:layout_marginTop="10dp"/>
+        android:layout_alignStart="@id/stampThree"
+        android:layout_below="@id/stampThree"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/labelFour"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/stampFour"
-        android:layout_alignStart="@id/stampFour"
         android:layout_alignEnd="@id/stampFour"
         android:layout_alignLeft="@id/stampFour"
         android:layout_alignRight="@id/stampFour"
-        android:layout_marginTop="10dp"/>
+        android:layout_alignStart="@id/stampFour"
+        android:layout_below="@id/stampFour"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/pressureTitle"
@@ -121,7 +133,7 @@
         android:layout_alignRight="@id/labelTwo"
         android:layout_alignStart="@id/labelOne"
         android:layout_below="@id/labelOne"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/pressure"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
@@ -137,7 +149,7 @@
         android:layout_alignRight="@id/labelFour"
         android:layout_alignStart="@id/labelThree"
         android:layout_below="@id/labelOne"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/humidity"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"

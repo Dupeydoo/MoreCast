@@ -33,4 +33,9 @@ public class ForecastView extends ConstraintLayout {
         this.forecastDay.setText(day);
         this.forecastTemp.setText(String.format(Locale.ENGLISH, "%.1f °C", temp));
     }
+
+    public void setForecastImage(int code, int time) {
+        ViewHelper weatherHelper = new ViewHelper();
+        weatherHelper.setWeatherImage(this.getContext(), code, forecastImage, time);
+    }
 }

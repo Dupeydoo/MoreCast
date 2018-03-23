@@ -5,9 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 public class ResultParser {
 
     private String preParsed;
@@ -91,6 +88,16 @@ public class ResultParser {
             return jsonObject.getLong("dt");
         } catch(JSONException e) {
             return 0L;
+        }
+    }
+
+    public static String getWeatherDateTime(JSONObject jsonObject) {
+        try {
+            String dateTime = jsonObject.getString("dt_txt");
+            String simpleTime = dateTime.split("\\s+")[1];
+            return simpleTime.substring(0, 5);
+        } catch(JSONException e) {
+            return "Unavailable";
         }
     }
 
