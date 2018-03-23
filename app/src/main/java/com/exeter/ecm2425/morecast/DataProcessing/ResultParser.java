@@ -94,6 +94,14 @@ public class ResultParser {
         }
     }
 
+    public static int getWeatherId(JSONObject time) {
+        try {
+            return time.getJSONArray("weather").getJSONObject(0).getInt("id");
+        } catch(JSONException e) {
+            return 800;
+        }
+    }
+
     private static JSONArray getDay(JSONObject weatherJson) {
         JSONArray dayForecast = new JSONArray();
 

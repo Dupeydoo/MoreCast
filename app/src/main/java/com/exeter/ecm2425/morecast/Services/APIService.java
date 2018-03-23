@@ -19,8 +19,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class APIService extends IntentService {
 
-    private final String API_KEY = "b706495b99e6ccf49c87124d8c2aa271";
-    private String apiAddress = "https://api.openweathermap.org/data/2.5/forecast?units=metric&";
+    private final String API_KEY = "79ccd6c60ce7d9f6fa8bb7b4f561a924";
+    private String apiAddress = "http://api.openweathermap.org/data/2.5/forecast?units=metric&";
     public static final int API_RUNNING = 1;  // Enums not recommended in Android - reason.
     public static final int API_FINISHED = 0;
     public static final int API_ERROR = -1;
@@ -77,7 +77,7 @@ public class APIService extends IntentService {
         StringBuilder apiResult = new StringBuilder();
         try {
             URL url = new URL(apiAddress + apiSuffix + "&APPID=" + API_KEY);
-            HttpsURLConnection apiConnection = (HttpsURLConnection) url.openConnection();
+            HttpURLConnection apiConnection = (HttpURLConnection) url.openConnection();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
             String line;

@@ -48,4 +48,8 @@ public class DateHandler {
         }
         return dayOfWeek;
     }
+
+    public static int getLocaleHour() {
+        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+    }
 }

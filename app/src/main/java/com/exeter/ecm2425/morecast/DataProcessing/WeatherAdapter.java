@@ -67,10 +67,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             day = ResultParser.getForecastDay(weatherJson);
             bindMainInformation(day, holder);
             bindAdditionalInformation(day, holder);
+            bindImageForecasts(day, holder);
         }
 
         else {
-            day = ResultParser.getForecastDay(weatherJson); // pos doesnt mean anything atm.
+            day = ResultParser.getForecastDay(weatherJson);
             bindForecastInformation(day, holder);
         }
     }
@@ -119,5 +120,19 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         String currentDay = DateHandler.returnDayOfTheWeek(currentDate);
         double temp = ResultParser.getDoubleFromJson(midDay, "main", "temp");
         holder.forecastView.setForecast(currentDay, temp);
+    }
+
+    private void bindImageForecasts(JSONArray day, @NonNull ViewHolder holder) {
+        JSONObject closestTime = ResultParser.getTimestamp(day, 0);
+        JSONObject secondTime = ResultParser.getTimestamp(day, 1);
+        JSONObject thirdTime = ResultParser.getTimestamp(day, 2);
+        JSONObject fourthTime = ResultParser.getTimestamp(day, 3);
+
+        int firstCode = ResultParser.getWeatherId(closestTime);
+        int secondCode = ResultParser.getWeatherId(secondTime);
+        int thirdCode = ResultParser.getWeatherId(thirdTime);
+        int fourthCode = ResultParser.getWeatherId(fourthTime);
+        int currentHour = DateHandler.getLocaleHour();
+        holder.todayView.setImages(firstCode, secondCode, thirdCode, fourthCode, currentHour);
     }
 }
