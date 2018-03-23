@@ -69,6 +69,7 @@ public class APIService extends IntentService {
                 String apiResult = makeApiCall(apiSuffix);
                 apiBundle.putString("result", apiResult);
                 ArrayList<FiveDayForecast> forecast = insertApiResponseDatabase(apiResult);
+                apiBundle.putParcelableArrayList("forecast", forecast);
                 receiver.send(API_FINISHED, apiBundle);
             }
 

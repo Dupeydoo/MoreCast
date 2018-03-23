@@ -9,6 +9,9 @@ import android.os.Parcelable;
 
 @Entity
 public class FiveDayForecast implements Parcelable {
+
+    public FiveDayForecast() { }
+
     public FiveDayForecast(Parcel parcel) {
         epochTime = parcel.readLong();
         temperature = parcel.readDouble();

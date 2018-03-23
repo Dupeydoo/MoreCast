@@ -1,9 +1,13 @@
 package com.exeter.ecm2425.morecast.DataProcessing;
 
 
+import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ResultParser {
 
@@ -27,8 +31,8 @@ public class ResultParser {
         return jsonResult;
     }
 
-    public static JSONArray getForecastDay(JSONObject weatherJson) {
-        JSONArray day = getDay(weatherJson);
+    public static ArrayList<FiveDayForecast> getForecastDay(ArrayList<FiveDayForecast> forecast) {
+        ArrayList<FiveDayForecast> day = getDay(forecast);
         return day;
     }
 
@@ -109,29 +113,21 @@ public class ResultParser {
         }
     }
 
-    private static JSONArray getDay(JSONObject weatherJson) {
-        JSONArray dayForecast = new JSONArray();
+    private static ArrayList<FiveDayForecast> getDay(ArrayList<FiveDayForecast> forecast) {
+        ArrayList<FiveDayForecast> dayForecast = new ArrayList<>();
+        dayForecast.add(forecast.get(parseIndex));
+        parseIndex++;
 
-        try {
-            JSONArray data = weatherJson.getJSONArray("list");
-            dayForecast.put(data.getJSONObject(parseIndex));
-            parseIndex++;
-
-            for(int i = parseIndex; i < data.length(); i++) {
-                JSONObject currentForecastObj = data.getJSONObject(i);
-                if(currentForecastObj.getString("dt_txt").contains("00:00:00")) {
-                    dayForecast.put(data.getJSONObject(i));
-                    dayForecast.put(data.getJSONObject(i + 1));
-                    dayForecast.put(data.getJSONObject(i + 2));
-                    break;
-                }
-                dayForecast.put(currentForecastObj);
-                parseIndex++;
+        for(int i = parseIndex; i < forecast.size(); i++) {
+            FiveDayForecast currentForecastObj = forecast.get(i);
+            if(currentForecastObj.getDateTime().contains("00:00:00")) {
+                dayForecast.add(forecast.get(i));
+                dayForecast.add(forecast.get(i + 1));
+                dayForecast.add(forecast.get(i + 2));
+                break;
             }
-        }
-
-        catch(JSONException e) {
-            return null;
+            dayForecast.add(currentForecastObj);
+            parseIndex++;
         }
         return dayForecast;
     }

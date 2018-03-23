@@ -34,6 +34,7 @@ import com.exeter.ecm2425.morecast.Services.APIService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.exeter.ecm2425.morecast.API.APILocation.PERMISSIONS_SUCCESS;
@@ -131,13 +132,14 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     private void postProcessResults(Bundle resultData) {
         ResultParser parser = new ResultParser(resultData.getString("result"));
-        JSONObject forecastResult = parser.parseResult();
-        this.setTitle(forecastResult.optJSONObject("city").optString("name"));
-        setUpRecyclerView(forecastResult);
+        JSONObject result = parser.parseResult();
+        this.setTitle(result.optJSONObject("city").optString("name"));
+        ArrayList<FiveDayForecast> forecast = resultData.getParcelableArrayList("forecast");
+        setUpRecyclerView(forecast);
 
     }
 
-    private void setUpRecyclerView(JSONObject forecastData) {
+    private void setUpRecyclerView(ArrayList<FiveDayForecast> forecastData) {
         recyclerView = (RecyclerView) findViewById(R.id.weatherList);
         recyclerView.setHasFixedSize(true);
         viewManager = new LinearLayoutManager(this);
