@@ -40,4 +40,92 @@ public class FiveDayForecast {
 
     @ColumnInfo(name = "weather-code")
     private int weatherCode;
+
+    public Long getEpochTime() {
+        return epochTime;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public double getWindDegree() {
+        return windDegree;
+    }
+
+    public String getPrecipitationType() {
+        return precipitationType;
+    }
+
+    public double getPrecipitationAmount() {
+        return precipitationAmount;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public int getWeatherCode() {
+        return weatherCode;
+    }
+
+    public void setEpochTime(Long epochTime) {
+        this.epochTime = epochTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+
+    public void setWindSpeed(double windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    public void setWindDegree(double windDegree) {
+        this.windDegree = windDegree;
+    }
+
+    public void setPrecipitationType(String precipitationType) {
+        this.precipitationType = precipitationType;
+    }
+
+    public void setPrecipitationAmount(double precipitationAmount) {
+        this.precipitationAmount = precipitationAmount;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setWeatherCode(int weatherCode) {
+        this.weatherCode = weatherCode;
+    }
 }

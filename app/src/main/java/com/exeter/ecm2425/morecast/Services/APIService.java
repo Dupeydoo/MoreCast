@@ -6,6 +6,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import com.exeter.ecm2425.morecast.Database.AccessDatabase;
+import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,6 +66,8 @@ public class APIService extends IntentService {
             try {
                 String apiResult = makeApiCall(apiSuffix);
                 apiBundle.putString("result", apiResult);
+                AccessDatabase database = new AccessDatabase();
+                database.save(apiResult);
                 receiver.send(API_FINISHED, apiBundle);
             }
 

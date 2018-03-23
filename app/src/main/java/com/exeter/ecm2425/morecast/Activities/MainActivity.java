@@ -1,6 +1,7 @@
 package com.exeter.ecm2425.morecast.Activities;
 
 
+import android.arch.persistence.room.Room;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.exeter.ecm2425.morecast.API.APILocation;
 import com.exeter.ecm2425.morecast.DataProcessing.ResultParser;
 import com.exeter.ecm2425.morecast.DataProcessing.WeatherAdapter;
+import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.Services.APIService;
@@ -28,20 +30,6 @@ import com.exeter.ecm2425.morecast.Services.APIService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * avoid hard-coding the position and size of your UI components for screen sizes. relative to
- * parent or siblings.
- * <p>
- * Alternative layouts, layouts at different screen sizes, runtime switches auto.
- * <p>
- * images nine patch bitmaps
- * <p>
- * use dp instead of px
- * <p>
- * alternative bitmaps or vector graphics (they scale easily)
- * http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
- * use city ID's list at
- */
 public class MainActivity extends AppCompatActivity implements APIResultReceiver.Receiver {
 
     public APIResultReceiver apiReceiver;
