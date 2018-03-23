@@ -43,11 +43,7 @@ import java.util.List;
 
 import static com.exeter.ecm2425.morecast.API.APILocation.PERMISSIONS_SUCCESS;
 
-// The system also keeps track of the current state for each View object in the layout,
-// so if the user entered text into an EditText widget, that content is retained so you don't need to save and restore it.
-// store a location with each foreast object saves JSON getting for setting Activity title.
 // didnt use fragments, reusable Views instead not much point in such a small app.
-// sharedpreferences for title.
 
 public class MainActivity extends AppCompatActivity implements APIResultReceiver.Receiver {
 
