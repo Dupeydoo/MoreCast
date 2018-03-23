@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewManager;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -39,46 +41,44 @@ import java.util.List;
 
 import static com.exeter.ecm2425.morecast.API.APILocation.PERMISSIONS_SUCCESS;
 
+// The system also keeps track of the current state for each View object in the layout,
+// so if the user entered text into an EditText widget, that content is retained so you don't need to save and restore it.
+
 public class MainActivity extends AppCompatActivity implements APIResultReceiver.Receiver {
 
     public APIResultReceiver apiReceiver;
-
-    private APILocation apiLocater;
-    private Intent apiIntent;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter viewAdapter;
-    private RecyclerView.LayoutManager viewManager;
+    private Bundle resultData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(APILocation.checkLocationPermission(this)) {
-            apiReceiver = new APIResultReceiver(new Handler());
-            apiReceiver.setReceiver(this);
-            apiIntent = new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
-            String namedLocation = getIntent().getStringExtra("named-location");
-
-            if(namedLocation != null) {
-                startApiService(apiIntent, namedLocation);
-            } else {
-                apiLocater = new APILocation(this, apiIntent);
-            }
-        }
-
-        else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
-        }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(savedInstanceState == null) {
+            if (APILocation.checkLocationPermission(this)) {
+                startIntentReceiver();
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
+            }
+        } else {
+            Bundle apiData = savedInstanceState.getBundle("api-data");
+            postProcessResults(apiData);
+        }
     }
 
+    // dont use to expensive save, it is too brief a method do in onStop instead.
     @Override
     protected void onPause() {
         super.onPause();
         if(apiReceiver != null) {
             apiReceiver.setReceiver(null);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBundle("api-data", resultData);
+        super.onSaveInstanceState(outState);
     }
 
     public void startApiService(Intent intent, String namedLocation) {
@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 break;
 
             case APIService.API_ERROR:
-                System.out.println("what5");
                 // Error - go to db instead
                 break;
         }
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     @Override
     public void onRequestPermissionsResult(
-            int requestCode, String permissions[], int[] grantResults) {
+            int requestCode, @NonNull  String permissions[], @NonNull int[] grantResults) {
         switch(requestCode) {
             case PERMISSIONS_SUCCESS:
                 // If request is cancelled, the result arrays are empty.
@@ -131,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     }
 
     private void postProcessResults(Bundle resultData) {
+        this.resultData = resultData;
         ResultParser parser = new ResultParser(resultData.getString("result"));
         JSONObject result = parser.parseResult();
         this.setTitle(result.optJSONObject("city").optString("name"));
@@ -140,11 +140,24 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     }
 
     private void setUpRecyclerView(ArrayList<FiveDayForecast> forecastData) {
-        recyclerView = (RecyclerView) findViewById(R.id.weatherList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.weatherList);
         recyclerView.setHasFixedSize(true);
-        viewManager = new LinearLayoutManager(this);
+        LinearLayoutManager viewManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(viewManager);
-        viewAdapter = new WeatherAdapter(forecastData);
+        WeatherAdapter viewAdapter = new WeatherAdapter(forecastData);
         recyclerView.setAdapter(viewAdapter);
+    }
+
+    private void startIntentReceiver() {
+        apiReceiver = new APIResultReceiver(new Handler());
+        apiReceiver.setReceiver(this);
+        Intent apiIntent = new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
+        String namedLocation = getIntent().getStringExtra("named-location");
+
+        if(namedLocation != null) {
+            startApiService(apiIntent, namedLocation);
+        } else {
+            APILocation apiLocater = new APILocation(this, apiIntent);
+        }
     }
 }
