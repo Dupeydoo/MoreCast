@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     public void startApiService(Intent intent, Location location) {
         intent.putExtra("location", location);
+        intent.putExtra("lat-lng", getIntent().getParcelableExtra("lat-lng"));
         intent.putExtra("api-receiver", apiReceiver);
         intent.putExtra("command", "forecast-location");
         startService(intent);
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         editor = preferences.edit();
 
         editor.putString("location", location);
+        // offload UI thread.
         editor.apply();
     }
 }

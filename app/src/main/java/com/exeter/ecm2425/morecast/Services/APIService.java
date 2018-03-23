@@ -9,6 +9,7 @@ import android.os.ResultReceiver;
 import com.exeter.ecm2425.morecast.DataProcessing.ForecastParser;
 import com.exeter.ecm2425.morecast.Database.AccessDatabase;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
@@ -67,9 +68,19 @@ public class APIService extends IntentService {
         }
 
         else if(command.equals("forecast-location")) {
+            double longitude;
+            double latitude;
             Location location = intent.getParcelableExtra("location");
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
+            LatLng latLng = intent.getParcelableExtra("lat-lng");
+
+            if(latLng != null) {
+                longitude = latLng.longitude;
+                latitude = latLng.latitude;
+            } else {
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+            }
+
             String apiSuffix = String.format(Locale.ENGLISH, "lat=%f&lon=%f", latitude, longitude);
             receiver.send(API_RUNNING, Bundle.EMPTY);
 

@@ -2,6 +2,7 @@ package com.exeter.ecm2425.morecast.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,6 +13,13 @@ import android.widget.TextView;
 
 import com.exeter.ecm2425.morecast.DataProcessing.LocationAdapter;
 import com.exeter.ecm2425.morecast.R;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,25 +34,26 @@ import java.util.ArrayList;
 public class LocationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter viewAdapter;
     private LinearLayoutManager viewManager;
-    private ArrayList<String> capitalCities;
+    protected GeoDataClient geoDataClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setTitle("Choose Location");
+        geoDataClient = Places.getGeoDataClient(this);
         setContentView(R.layout.activity_location);
         setUpRecyclerView();
-        this.setTitle("Choose Location");
+        setUpAutoCompleteFragment();
     }
 
     private void setUpRecyclerView() {
-        capitalCities = readLocationsText(this);
+        ArrayList<String> capitalCities = readLocationsText(this);
         recyclerView = (RecyclerView) findViewById(R.id.locationList);
         recyclerView.setHasFixedSize(true);
         viewManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(viewManager);
-        viewAdapter = new LocationAdapter(capitalCities);
+        RecyclerView.Adapter viewAdapter = new LocationAdapter(capitalCities);
         recyclerView.setAdapter(viewAdapter);
         styleRecyclerView();
     }
@@ -57,12 +66,36 @@ public class LocationActivity extends AppCompatActivity {
 
     public void itemClick(View view) {
         TextView textView = (TextView) view;
-        Class destination = MainActivity.class;
-        Intent intent = new Intent(this, destination);
+        Intent intent = createForecastIntent();
         intent.putExtra("named-location", textView.getText());
         startActivity(intent);
     }
 
+    private void setUpAutoCompleteFragment() {
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.autoCompleteFragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Intent intent = createForecastIntent();
+                intent.putExtra("lat-lng", place.getLatLng());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onError(Status status) {
+                System.out.println(status.getStatusMessage());
+            }
+        });
+    }
+
+    private Intent createForecastIntent() {
+        Class destination = MainActivity.class;
+        return new Intent(this, destination);
+    }
+
+    // offload to other task? isnt long might be able to justify.
     public ArrayList<String> readLocationsText(Context context) {
         ArrayList<String> locationsText = new ArrayList<String>();
         BufferedReader reader;
