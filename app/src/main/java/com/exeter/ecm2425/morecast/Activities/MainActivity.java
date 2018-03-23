@@ -32,6 +32,7 @@ import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.Services.APIService;
+import com.exeter.ecm2425.morecast.Views.ForecastView;
 
 import org.json.JSONException;
 import org.json.JSONObject;

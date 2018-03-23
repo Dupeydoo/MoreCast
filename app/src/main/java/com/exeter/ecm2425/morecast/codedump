@@ -65,3 +65,11 @@ private void getLocationUpdate(LocationRequest request) {
                         List<FiveDayForecast> forecast = dao.getFiveDayForecast();
                         System.out.println(forecast.toString());
                         System.out.println("It worked!");
+
+        public void recyclerClick(View view) {
+                ArrayList<FiveDayForecast> forecast = resultData.getParcelableArrayList("forecast");
+                Class destination = DetailedActivity.class;
+                Intent intent = new Intent(this, destination);
+                intent.putParcelableArrayListExtra("forecasts", forecast);
+                startActivity(intent);
+            }

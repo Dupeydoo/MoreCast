@@ -5,7 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.exeter.ecm2425.morecast.Activities.DetailedActivity"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:fitsSystemWindows="true">
+
+    <ImageView
+        android:id="@+id/overCast"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/overcast"
+        android:scaleType="centerCrop"/>
 
     <com.exeter.ecm2425.morecast.Views.TodayView
         android:layout_width="match_parent"

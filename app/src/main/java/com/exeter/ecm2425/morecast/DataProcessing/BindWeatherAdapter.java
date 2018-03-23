@@ -25,9 +25,10 @@ public class BindWeatherAdapter {
         bindLabels();
     }
 
-    void bindForecast() {
+    void bindForecast(ArrayList<FiveDayForecast> day) {
         bindForecastInformation();
         bindImageForecasts();
+        bindDayForecast(day);
     }
 
     private void bindMainInformation() {
@@ -93,5 +94,9 @@ public class BindWeatherAdapter {
         String thirdTime = thirdForecast.getDateTime();
         String fourthTime = fourthForecast.getDateTime();
         viewHolder.todayView.setLabels(firstTime, secondTime, thirdTime, fourthTime);
+    }
+
+    private void bindDayForecast(ArrayList<FiveDayForecast> dayForecasts) {
+        viewHolder.forecastView.setDayForecasts(dayForecasts);
     }
 }
