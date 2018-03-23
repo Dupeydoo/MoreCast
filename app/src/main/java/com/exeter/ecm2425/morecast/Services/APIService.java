@@ -6,17 +6,19 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import com.exeter.ecm2425.morecast.DataProcessing.ForecastParser;
 import com.exeter.ecm2425.morecast.Database.AccessDatabase;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
-import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -49,6 +51,12 @@ public class APIService extends IntentService {
             try {
                 String apiResult = makeApiCall(apiSuffix);
                 apiBundle.putString("result", apiResult);
+                JSONObject resultData = new JSONObject(apiResult);
+                ForecastParser parser = new ForecastParser();
+                parser.parseWeatherData(resultData);
+                ArrayList<FiveDayForecast> fiveDayForecasts = new ArrayList<>
+                        (Arrays.asList(parser.getFiveDayForecasts()));
+                apiBundle.putParcelableArrayList("forecast", fiveDayForecasts);
                 receiver.send(API_FINISHED, apiBundle);
             }
 

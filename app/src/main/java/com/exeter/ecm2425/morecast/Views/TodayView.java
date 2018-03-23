@@ -88,10 +88,10 @@ public class TodayView extends RelativeLayout {
 
     public void setLabels(
             String firstTime, String secondTime, String thirdTime, String fourthTime) {
-        this.labelOne.setText(firstTime);
-        this.labelTwo.setText(secondTime);
-        this.labelThree.setText(thirdTime);
-        this.labelFour.setText(fourthTime);
+        this.labelOne.setText(parseDateTime(firstTime));
+        this.labelTwo.setText(parseDateTime(secondTime));
+        this.labelThree.setText(parseDateTime(thirdTime));
+        this.labelFour.setText(parseDateTime(fourthTime));
     }
 
     public void setAdditionalWeatherInfo(
@@ -103,5 +103,9 @@ public class TodayView extends RelativeLayout {
         this.windDegrees.setText(String.format(Locale.ENGLISH, "%.2f degrees", windDirection));
         this.precipitationType.setText(precipType);
         this.precipitationAmount.setText(String.format(Locale.ENGLISH, "%.2f mm, (3h)", precipAmount));
+    }
+
+    private String parseDateTime(String dateTime) {
+        return dateTime.split("\\s+")[1].substring(0, 5);
     }
 }

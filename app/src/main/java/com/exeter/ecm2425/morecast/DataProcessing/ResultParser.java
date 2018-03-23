@@ -99,12 +99,6 @@ public class ResultParser {
         return jsonObject.optString("dt_txt");
     }
 
-    public static String getWeatherDateTime(JSONObject jsonObject) {
-        String dateTime = getDateTime(jsonObject);
-        String simpleTime = dateTime.split("\\s+")[1];
-        return simpleTime.substring(0, 5);
-    }
-
     public static int getWeatherId(JSONObject time) {
         try {
             return time.getJSONArray("weather").getJSONObject(0).getInt("id");

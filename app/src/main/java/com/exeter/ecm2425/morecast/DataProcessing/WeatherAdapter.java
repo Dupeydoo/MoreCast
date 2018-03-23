@@ -95,70 +95,68 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     }
 
 
-    private void bindMainInformation(JSONArray day, @NonNull ViewHolder holder) {
-        JSONObject closestTime = ResultParser.getTimestamp(day, 0);
-        double temp = ResultParser.getDoubleFromJson(closestTime, "main", "temp");
-
-        String description = ResultParser.getWeatherDescription(closestTime);
+    private void bindMainInformation(ArrayList<FiveDayForecast> day, @NonNull ViewHolder holder) {
+        FiveDayForecast closestTime = day.get(0);
+        double temp = closestTime.getTemperature();
+        String description = closestTime.getDescription();
         holder.todayView.setMainInfo(temp, description);
     }
 
-    private void bindAdditionalInformation(JSONArray day, @NonNull ViewHolder holder) {
-        JSONObject closestTime = ResultParser.getTimestamp(day, 0);
-        double pressure = ResultParser.getDoubleFromJson(closestTime, "main", "pressure");
-        int humididty = ResultParser.getIntFromJson(closestTime, "main", "humidity");
-
-        double windSpeed = ResultParser.getDoubleFromJson(closestTime, "wind", "speed");
-        double windDirection = ResultParser.getDoubleFromJson(closestTime, "wind", "deg");
-        String precipType = ResultParser.checkPrecipitationType(closestTime);
-        double precipAmount = ResultParser.getPrecipitationAmount(closestTime, precipType);
+    private void bindAdditionalInformation(ArrayList<FiveDayForecast> day, @NonNull ViewHolder holder) {
+        FiveDayForecast closestTime = day.get(0);
+        double pressure = closestTime.getPressure();
+        int humidity = closestTime.getHumidity();
+        double windSpeed = closestTime.getWindSpeed();
+        double windDirection = closestTime.getWindDegree();
+        String precipType = closestTime.getPrecipitationType();
+        double precipAmount = closestTime.getPrecipitationAmount();
 
         holder.todayView.setAdditionalWeatherInfo(
-                pressure, humididty, windSpeed, windDirection, precipType, precipAmount
+                pressure, humidity, windSpeed, windDirection, precipType, precipAmount
         );
     }
 
-    private void bindForecastInformation(JSONArray day, @NonNull ViewHolder holder) {
-        JSONObject midDay = ResultParser.getTimestamp(day, 4);
-        long timestamp = ResultParser.getWeatherEpoch(midDay);
+    private void bindForecastInformation(ArrayList<FiveDayForecast> day, @NonNull ViewHolder holder) {
+        FiveDayForecast midDay = day.get(4);
+        long timestamp = midDay.getEpochTime();
         Date currentDate = new Date(timestamp * 1000);
 
         String currentDay = DateHandler.returnDayOfTheWeek(currentDate);
-        double temp = ResultParser.getDoubleFromJson(midDay, "main", "temp");
+        double temp = midDay.getTemperature();
         holder.forecastView.setForecast(currentDay, temp);
     }
 
-    private void bindImageToday(JSONArray day, @NonNull ViewHolder holder) {
-        JSONObject closestTime = ResultParser.getTimestamp(day, 0);
-        JSONObject secondTime = ResultParser.getTimestamp(day, 1);
-        JSONObject thirdTime = ResultParser.getTimestamp(day, 2);
-        JSONObject fourthTime = ResultParser.getTimestamp(day, 3);
+    private void bindImageToday(ArrayList<FiveDayForecast> day, @NonNull ViewHolder holder) {
+        FiveDayForecast closestTime = day.get(0);
+        FiveDayForecast secondTime = day.get(1);
+        FiveDayForecast thirdTime = day.get(2);
+        FiveDayForecast fourthTime = day.get(3);
 
-        int firstCode = ResultParser.getWeatherId(closestTime);
-        int secondCode = ResultParser.getWeatherId(secondTime);
-        int thirdCode = ResultParser.getWeatherId(thirdTime);
-        int fourthCode = ResultParser.getWeatherId(fourthTime);
+        int firstCode = closestTime.getWeatherCode();
+        int secondCode = secondTime.getWeatherCode();
+        int thirdCode = thirdTime.getWeatherCode();
+        int fourthCode = fourthTime.getWeatherCode();
         int currentHour = DateHandler.getLocaleHour();
         holder.todayView.setImages(firstCode, secondCode, thirdCode, fourthCode, currentHour);
     }
 
-    private void bindImageForecasts(JSONArray day, @NonNull ViewHolder holder) {
-        JSONObject midDay = ResultParser.getTimestamp(day, 4);
-        int code = ResultParser.getWeatherId(midDay);
+    private void bindImageForecasts(ArrayList<FiveDayForecast> day, @NonNull ViewHolder holder) {
+        FiveDayForecast midDay = day.get(4);
+        int code = midDay.getWeatherCode();
         int currentHour = DateHandler.getLocaleHour();
         holder.forecastView.setForecastImage(code, currentHour);
     }
 
-    private void bindLabels(JSONArray day, @NonNull ViewHolder holder) {
-        JSONObject firstForecast = ResultParser.getTimestamp(day, 0);
-        JSONObject secondForecast = ResultParser.getTimestamp(day, 1);
-        JSONObject thirdForecast = ResultParser.getTimestamp(day, 2);
-        JSONObject fourthForecast = ResultParser.getTimestamp(day, 3);
+    private void bindLabels(ArrayList<FiveDayForecast> day, @NonNull ViewHolder holder) {
+        FiveDayForecast firstForecast = day.get(0);
+        FiveDayForecast secondForecast = day.get(1);
+        FiveDayForecast thirdForecast = day.get(2);
+        FiveDayForecast fourthForecast = day.get(3);
 
-        String firstTime = ResultParser.getWeatherDateTime(firstForecast);
-        String secondTime = ResultParser.getWeatherDateTime(secondForecast);
-        String thirdTime = ResultParser.getWeatherDateTime(thirdForecast);
-        String fourthTime = ResultParser.getWeatherDateTime(fourthForecast);
+        String firstTime = firstForecast.getDateTime();
+        String secondTime = secondForecast.getDateTime();
+        String thirdTime = thirdForecast.getDateTime();
+        String fourthTime = fourthForecast.getDateTime();
         holder.todayView.setLabels(firstTime, secondTime, thirdTime, fourthTime);
     }
 }
