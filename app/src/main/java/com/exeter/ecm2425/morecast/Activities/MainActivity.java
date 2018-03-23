@@ -1,12 +1,14 @@
 package com.exeter.ecm2425.morecast.Activities;
 
 
+import android.Manifest;
 import android.arch.persistence.room.Room;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ import android.widget.TextView;
 import com.exeter.ecm2425.morecast.API.APILocation;
 import com.exeter.ecm2425.morecast.DataProcessing.ResultParser;
 import com.exeter.ecm2425.morecast.DataProcessing.WeatherAdapter;
+import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
+import com.exeter.ecm2425.morecast.Database.FiveDayForecastDao;
 import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
@@ -29,6 +33,10 @@ import com.exeter.ecm2425.morecast.Services.APIService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
+
+import static com.exeter.ecm2425.morecast.API.APILocation.PERMISSIONS_SUCCESS;
 
 public class MainActivity extends AppCompatActivity implements APIResultReceiver.Receiver {
 
@@ -42,15 +50,22 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        apiReceiver = new APIResultReceiver(new Handler());
-        apiReceiver.setReceiver(this);
-        apiIntent = new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
-        String namedLocation = getIntent().getStringExtra("named-location");
+        if(APILocation.checkLocationPermission(this)) {
+            apiReceiver = new APIResultReceiver(new Handler());
+            apiReceiver.setReceiver(this);
+            apiIntent = new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
+            String namedLocation = getIntent().getStringExtra("named-location");
 
-        if(namedLocation != null) {
-            startApiService(apiIntent, namedLocation);
-        } else {
-            apiLocater = new APILocation(this, apiIntent);
+            if(namedLocation != null) {
+                startApiService(apiIntent, namedLocation);
+            } else {
+                apiLocater = new APILocation(this, apiIntent);
+            }
+        }
+
+        else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
         }
 
         super.onCreate(savedInstanceState);
@@ -60,7 +75,9 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     @Override
     protected void onPause() {
         super.onPause();
-        apiReceiver.setReceiver(null);
+        if(apiReceiver != null) {
+            apiReceiver.setReceiver(null);
+        }
     }
 
     public void startApiService(Intent intent, String namedLocation) {
@@ -90,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 break;
 
             case APIService.API_ERROR:
+                System.out.println("what5");
                 // Error - go to db instead
                 break;
         }
@@ -99,13 +117,14 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     public void onRequestPermissionsResult(
             int requestCode, String permissions[], int[] grantResults) {
         switch(requestCode) {
-            case APILocation.PERMISSIONS_SUCCESS:
+            case PERMISSIONS_SUCCESS:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    apiLocater = new APILocation(this, apiIntent);
+                    this.recreate();
                 } else {
                     // permission denied
+                    System.out.println("what6");
                 }
         }
     }
@@ -121,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
         catch(JSONException e) {
             // log
+            System.out.println("what7");
         }
     }
 

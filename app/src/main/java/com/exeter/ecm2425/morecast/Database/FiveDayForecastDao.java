@@ -17,4 +17,7 @@ public interface FiveDayForecastDao {
 
     @Delete
     void delete(FiveDayForecast... fiveDayForecasts);
+
+    @Query("DELETE from FiveDayForecast")
+    void destroyTable();
 }

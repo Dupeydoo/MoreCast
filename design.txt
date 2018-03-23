@@ -16,7 +16,7 @@ Redisplay on load.
 
 Database design: 
 Each day is a row: 
-temp, description, pressure, humidity, wind speed, wind deg, precipitation type, precip amount
+temp, description, pressure, humidity, wind speed, wind deg, precipitation type, precip amount, dt, dt_text
  
 
 

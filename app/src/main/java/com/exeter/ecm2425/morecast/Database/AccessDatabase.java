@@ -1,7 +1,6 @@
 package com.exeter.ecm2425.morecast.Database;
 
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.exeter.ecm2425.morecast.DataProcessing.ResultParser;
@@ -12,27 +11,14 @@ import org.json.JSONObject;
 
 
 public class AccessDatabase {
-    private MorecastDatabase database;
-
-    public void setDatabase(Context context) {
-        this.database = Room.databaseBuilder(context,
-                MorecastDatabase.class, "MorecastDatabase").build();
-    }
-
-    public void closeDatabase() {
-        this.database.close();
-    }
-
-    public MorecastDatabase getDatabase() {
-        return this.database;
-    }
-
-    public void save(String apiResult) {
+    public void save(String apiResult, Context context) {
         if(apiResult != null && !apiResult.isEmpty()) {
             try {
                 JSONObject result = new JSONObject(apiResult);
                 FiveDayForecast[] forecast = parseWeatherData(result);
-                FiveDayForecastDao forecastDao = database.getFiveDayForecastDao();
+                FiveDayForecastDao forecastDao = MorecastDatabase.getMorecastDatabase(context)
+                        .getFiveDayForecastDao();
+                forecastDao.destroyTable();
                 forecastDao.insertFiveDayForecast(forecast);
             } catch(JSONException e) {
                 System.out.println("Do something");
@@ -69,7 +55,7 @@ public class AccessDatabase {
         forecast.setPrecipitationType(precipitationType);
         forecast.setPrecipitationAmount(ResultParser.getPrecipitationAmount(currentForecastData,
                 precipitationType));
-        forecast.setDateTime(ResultParser.getWeatherDateTime(currentForecastData));
+        forecast.setDateTime(ResultParser.getDateTime(currentForecastData));
         forecast.setWeatherCode(ResultParser.getWeatherId(currentForecastData));
         return forecast;
     }

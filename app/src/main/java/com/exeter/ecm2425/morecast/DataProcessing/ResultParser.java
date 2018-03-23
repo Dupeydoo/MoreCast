@@ -91,14 +91,14 @@ public class ResultParser {
         }
     }
 
+    public static String getDateTime(JSONObject jsonObject) {
+        return jsonObject.optString("dt_txt");
+    }
+
     public static String getWeatherDateTime(JSONObject jsonObject) {
-        try {
-            String dateTime = jsonObject.getString("dt_txt");
-            String simpleTime = dateTime.split("\\s+")[1];
-            return simpleTime.substring(0, 5);
-        } catch(JSONException e) {
-            return "Unavailable";
-        }
+        String dateTime = getDateTime(jsonObject);
+        String simpleTime = dateTime.split("\\s+")[1];
+        return simpleTime.substring(0, 5);
     }
 
     public static int getWeatherId(JSONObject time) {
@@ -120,6 +120,9 @@ public class ResultParser {
             for(int i = parseIndex; i < data.length(); i++) {
                 JSONObject currentForecastObj = data.getJSONObject(i);
                 if(currentForecastObj.getString("dt_txt").contains("00:00:00")) {
+                    dayForecast.put(data.getJSONObject(i));
+                    dayForecast.put(data.getJSONObject(i + 1));
+                    dayForecast.put(data.getJSONObject(i + 2));
                     break;
                 }
                 dayForecast.put(currentForecastObj);

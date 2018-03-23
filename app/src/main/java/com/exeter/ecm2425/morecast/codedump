@@ -60,3 +60,8 @@ private void getLocationUpdate(LocationRequest request) {
                 view = (TodayView) view;
             }
         }
+
+        FiveDayForecastDao dao = MorecastDatabase.getMorecastDatabase(getApplicationContext()).getFiveDayForecastDao();
+                        List<FiveDayForecast> forecast = dao.getFiveDayForecast();
+                        System.out.println(forecast.toString());
+                        System.out.println("It worked!");

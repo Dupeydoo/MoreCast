@@ -1,6 +1,7 @@
 package com.exeter.ecm2425.morecast.API;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -30,15 +31,7 @@ public class APILocation {
     }
 
     public void getLocation() {
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
-
-        } else {
-
+        try {
             locClient.getLastLocation().addOnSuccessListener(
                     new OnSuccessListener<Location>() {
                         @Override
@@ -52,10 +45,21 @@ public class APILocation {
                     new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            // go to the db.
+                            System.out.println("WHat4");
                         }
                     }
             );
+        } catch(SecurityException secEx) {
+            System.out.println(secEx.getMessage());
         }
     }
+
+        public static boolean checkLocationPermission(Activity activity) {
+            if(ContextCompat.checkSelfPermission(activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+            return true;
+        }
 }

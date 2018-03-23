@@ -23,7 +23,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class APIService extends IntentService {
 
     private final String API_KEY = "79ccd6c60ce7d9f6fa8bb7b4f561a924";
-    private String apiAddress = "http://api.openweathermap.org/data/2.5/forecast?units=metric&";
+    private String apiAddress = "https://api.openweathermap.org/data/2.5/forecast?units=metric&";
     public static final int API_RUNNING = 1;  // Enums not recommended in Android - reason.
     public static final int API_FINISHED = 0;
     public static final int API_ERROR = -1;
@@ -66,12 +66,12 @@ public class APIService extends IntentService {
             try {
                 String apiResult = makeApiCall(apiSuffix);
                 apiBundle.putString("result", apiResult);
-                AccessDatabase database = new AccessDatabase();
-                database.save(apiResult);
+                insertApiResponseDatabase(apiResult);
                 receiver.send(API_FINISHED, apiBundle);
             }
 
             catch(Exception e) {
+                System.out.println("What3");
                 apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
                 receiver.send(API_ERROR, apiBundle);
             }
@@ -82,7 +82,7 @@ public class APIService extends IntentService {
         StringBuilder apiResult = new StringBuilder();
         try {
             URL url = new URL(apiAddress + apiSuffix + "&APPID=" + API_KEY);
-            HttpURLConnection apiConnection = (HttpURLConnection) url.openConnection();
+            HttpsURLConnection apiConnection = (HttpsURLConnection) url.openConnection();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
             String line;
@@ -92,15 +92,17 @@ public class APIService extends IntentService {
             }
             reader.close();
             apiConnection.disconnect();
-        }
+        } catch(MalformedURLException e) {
+            System.out.println("What1");
 
-        catch(MalformedURLException e) {
-
-        }
-
-        catch(IOException e) {
-
+        } catch(IOException e) {
+            System.out.println("What2");
         }
         return apiResult.toString();
+    }
+
+    private void insertApiResponseDatabase(String apiResult) {
+        AccessDatabase database = new AccessDatabase();
+        database.save(apiResult, getApplicationContext());
     }
 }
