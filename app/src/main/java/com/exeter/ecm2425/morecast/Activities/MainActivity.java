@@ -3,6 +3,7 @@ package com.exeter.ecm2425.morecast.Activities;
 
 import android.Manifest;
 import android.arch.persistence.room.Room;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     public APIResultReceiver apiReceiver;
     private Bundle resultData;
+    private SharedPreferences preferences;
+    private final static String SHARED_PREFERENCES = "SHARED_PREFERENCES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +140,11 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         this.resultData = resultData;
         ResultParser parser = new ResultParser(resultData.getString("result"));
         JSONObject result = parser.parseResult();
-        this.setTitle(result.optJSONObject("city").optString("name"));
+
+        String city = result.optJSONObject("city").optString("name");
+        this.setTitle(city);
+        writeLocToSharedPreferences(city);
+
         ArrayList<FiveDayForecast> forecast = resultData.getParcelableArrayList("forecast");
         setUpRecyclerView(forecast);
 
@@ -163,5 +170,14 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         } else {
             APILocation apiLocater = new APILocation(this, apiIntent);
         }
+    }
+
+    private void writeLocToSharedPreferences(String location) {
+        preferences = getSharedPreferences(SHARED_PREFERENCES, 0);
+        SharedPreferences.Editor editor;
+        editor = preferences.edit();
+
+        editor.putString("location", location);
+        editor.apply();
     }
 }

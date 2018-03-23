@@ -16,6 +16,7 @@
         android:scaleType="centerCrop"/>
 
     <com.exeter.ecm2425.morecast.Views.TodayView
+        android:id="@+id/detailedView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"

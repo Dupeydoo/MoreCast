@@ -80,7 +80,8 @@
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/labelTwo"
@@ -94,7 +95,8 @@
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/labelThree"
@@ -108,7 +110,8 @@
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/labelFour"
@@ -122,7 +125,8 @@
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/pressureTitle"
