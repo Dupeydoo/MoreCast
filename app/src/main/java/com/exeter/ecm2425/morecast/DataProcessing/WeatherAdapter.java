@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.Utils.DateHandler;
 import com.exeter.ecm2425.morecast.Views.ForecastView;
@@ -17,11 +18,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
-    private JSONObject weatherJson;
+    private ArrayList<FiveDayForecast> fiveDayForecasts;
     private final static int FORECAST_DAYS = 5;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,8 +42,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     }
 
 
-    public WeatherAdapter(JSONObject json) {
-        weatherJson = json;
+    public WeatherAdapter(ArrayList<FiveDayForecast> forecasts) {
+        fiveDayForecasts = forecasts;
     }
 
     // get next day, if it cant bind the next four times, get n-1 position from next day.
@@ -64,9 +66,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        JSONArray day;
+        ArrayList<FiveDayForecast> day;
         if(holder.getItemViewType() == 0) {
-            day = ResultParser.getForecastDay(weatherJson);
+            day = ResultParser.getForecastDay(fiveDayForecasts);
             bindMainInformation(day, holder);
             bindAdditionalInformation(day, holder);
             bindImageToday(day, holder);
@@ -74,7 +76,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         }
 
         else {
-            day = ResultParser.getForecastDay(weatherJson);
+            day = ResultParser.getForecastDay(fiveDayForecasts);
             bindForecastInformation(day, holder);
             bindImageForecasts(day, holder);
         }
