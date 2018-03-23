@@ -132,16 +132,9 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     private void postProcessResults(Bundle resultData) {
         ResultParser parser = new ResultParser(resultData.getString("result"));
         JSONObject forecastResult = parser.parseResult();
+        this.setTitle(forecastResult.optJSONObject("city").optString("name"));
+        setUpRecyclerView(forecastResult);
 
-        try {
-            this.setTitle(forecastResult.getJSONObject("city").getString("name"));
-            setUpRecyclerView(forecastResult);
-        }
-
-        catch(JSONException e) {
-            // log
-            System.out.println("what7");
-        }
     }
 
     private void setUpRecyclerView(JSONObject forecastData) {

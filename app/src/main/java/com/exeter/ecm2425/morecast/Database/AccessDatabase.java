@@ -9,25 +9,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class AccessDatabase {
-    public void save(String apiResult, Context context) {
+    public ArrayList<FiveDayForecast> save(String apiResult, Context context) {
+        FiveDayForecast[] forecast;
+
         if(apiResult != null && !apiResult.isEmpty()) {
             try {
                 JSONObject result = new JSONObject(apiResult);
-                FiveDayForecast[] forecast = parseWeatherData(result);
+                forecast = parseWeatherData(result);
                 FiveDayForecastDao forecastDao = MorecastDatabase.getMorecastDatabase(context)
                         .getFiveDayForecastDao();
                 forecastDao.destroyTable();
                 forecastDao.insertFiveDayForecast(forecast);
             } catch(JSONException e) {
-                System.out.println("Do something");
+                forecast = new FiveDayForecast[] { };
             }
         }
 
         else {
-            // cant save to databae
+            forecast = new FiveDayForecast[] { };
         }
+        return new ArrayList<>(Arrays.asList(forecast));
     }
 
     private FiveDayForecast[] parseWeatherData(JSONObject result) {

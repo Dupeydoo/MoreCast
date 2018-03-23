@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 
 import com.exeter.ecm2425.morecast.Database.AccessDatabase;
+import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
 
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -66,12 +68,11 @@ public class APIService extends IntentService {
             try {
                 String apiResult = makeApiCall(apiSuffix);
                 apiBundle.putString("result", apiResult);
-                insertApiResponseDatabase(apiResult);
+                ArrayList<FiveDayForecast> forecast = insertApiResponseDatabase(apiResult);
                 receiver.send(API_FINISHED, apiBundle);
             }
 
             catch(Exception e) {
-                System.out.println("What3");
                 apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
                 receiver.send(API_ERROR, apiBundle);
             }
@@ -93,16 +94,14 @@ public class APIService extends IntentService {
             reader.close();
             apiConnection.disconnect();
         } catch(MalformedURLException e) {
-            System.out.println("What1");
 
         } catch(IOException e) {
-            System.out.println("What2");
         }
         return apiResult.toString();
     }
 
-    private void insertApiResponseDatabase(String apiResult) {
+    private ArrayList<FiveDayForecast> insertApiResponseDatabase(String apiResult) {
         AccessDatabase database = new AccessDatabase();
-        database.save(apiResult, getApplicationContext());
+        return database.save(apiResult, getApplicationContext());
     }
 }
