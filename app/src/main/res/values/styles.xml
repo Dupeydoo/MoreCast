@@ -6,15 +6,6 @@
         <item name="colorPrimary">@color/colorStatusBar</item>
         <item name="colorPrimaryDark">@color/colorStatusBar</item>
         <item name="colorAccent">@color/colorAccent</item>
-
-        <!--
-        <item name="android:actionBarStyle">@style/ActionBarTheme</item>
-        <item name="android:windowActionBarOverlay">true</item> -->
-        <!-- Support library compatibility -->
-        <!--
-        <item name="actionBarStyle">@style/ActionBarTheme</item>
-        <item name="windowActionBarOverlay">true</item>
-        -->
     </style>
 
     <style name="ActionBarTheme"
@@ -22,5 +13,19 @@
         <item name="android:background">@null</item>
         <!-- Support library compatibility -->
         <item name="background">@null</item>
+    </style>
+
+    <style name="TextShadow">
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="HeavyTextShadow">
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+        <item name="android:shadowRadius">1</item>
     </style>
 </resources>

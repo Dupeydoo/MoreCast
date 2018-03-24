@@ -214,9 +214,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     private void setBackground(FiveDayForecast forecast) {
         ImageView background = (ImageView) findViewById(R.id.weatherBack);
-        int code = forecast.getWeatherCode();
-        double temp = forecast.getTemperature();
-        ViewHelper.setBackground(code, background, getResources(), temp);
+        ViewHelper.setBackground(forecast, background, getResources());
     }
 
     private void setResultTitle(JSONObject result) {

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.widget.ImageView;
 
+import com.exeter.ecm2425.morecast.Activities.DetailedActivity;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.R;
+import com.exeter.ecm2425.morecast.Utils.DateHandler;
 
 import java.util.ArrayList;
 
@@ -110,8 +112,17 @@ public class ViewHelper {
     }
 
     public static void setBackground
-            (int code, ImageView image, Resources resources, double temperature) {
-        if(temperature < 0) {
+            (FiveDayForecast forecast, ImageView image, Resources resources) {
+        int code = forecast.getWeatherCode();
+        double temperature = forecast.getTemperature();
+        int time = DateHandler.getHour(forecast.getDateTime());
+
+        if(time > 19 || time < 6) {
+            image.setImageDrawable(resources.getDrawable(R.drawable.ic_nightback));
+            return;
+        }
+
+        if(temperature < -5) {
             image.setImageDrawable(resources.getDrawable(R.drawable.ic_coldbackground));
             return;
         }
@@ -131,6 +142,10 @@ public class ViewHelper {
 
         else if(code == 800) {
             image.setImageDrawable(resources.getDrawable(R.drawable.ic_sunnyback));
+        }
+
+        else if(code >= 600 && code < 700) {
+            image.setImageDrawable(resources.getDrawable(R.drawable.ic_snowback));
         }
     }
 

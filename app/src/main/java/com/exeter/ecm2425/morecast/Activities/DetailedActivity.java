@@ -31,7 +31,8 @@ public class DetailedActivity extends AppCompatActivity {
             forecastData = savedInstanceState.getParcelableArrayList("forecast-day");
         }
         bindData();
-        setBackground(forecastData.get(0));
+        // Midday
+        setBackground(forecastData.get(4));
     }
 
     @Override
@@ -54,8 +55,6 @@ public class DetailedActivity extends AppCompatActivity {
 
     private void setBackground(FiveDayForecast forecast) {
         ImageView background = (ImageView) findViewById(R.id.weatherBack);
-        int code = forecast.getWeatherCode();
-        double temp = forecast.getTemperature();
-        ViewHelper.setBackground(code, background, getResources(), temp);
+        ViewHelper.setBackground(forecast, background, getResources());
     }
 }
