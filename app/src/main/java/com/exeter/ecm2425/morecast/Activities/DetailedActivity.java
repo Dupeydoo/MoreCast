@@ -3,11 +3,13 @@ package com.exeter.ecm2425.morecast.Activities;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.exeter.ecm2425.morecast.DataProcessing.BindDetailedView;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.Views.TodayView;
+import com.exeter.ecm2425.morecast.Views.ViewHelper;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class DetailedActivity extends AppCompatActivity {
             forecastData = savedInstanceState.getParcelableArrayList("forecast-day");
         }
         bindData();
+        setBackground(forecastData.get(0));
     }
 
     @Override
@@ -49,5 +52,10 @@ public class DetailedActivity extends AppCompatActivity {
         this.setTitle(preferences.getString("location", "London"));
     }
 
-
+    private void setBackground(FiveDayForecast forecast) {
+        ImageView background = (ImageView) findViewById(R.id.weatherBack);
+        int code = forecast.getWeatherCode();
+        double temp = forecast.getTemperature();
+        ViewHelper.setBackground(code, background, getResources(), temp);
+    }
 }

@@ -159,12 +159,8 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         this.resultData = resultData;
         ResultParser parser = new ResultParser(resultData.getString("result"));
         JSONObject result = parser.parseResult();
-
-        String city = result.optJSONObject("city").optString("name");
-        this.setTitle(city);
-        writeLocToSharedPreferences(city);
-
         ArrayList<FiveDayForecast> forecast = resultData.getParcelableArrayList("forecast");
+        setResultTitle(result);
         setBackground(forecast.get(0));
         setUpRecyclerView(forecast);
     }
@@ -220,8 +216,13 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         ImageView background = (ImageView) findViewById(R.id.weatherBack);
         int code = forecast.getWeatherCode();
         double temp = forecast.getTemperature();
-        ViewHelper helper = new ViewHelper();
-        helper.setBackground(code, background, getResources(), temp);
+        ViewHelper.setBackground(code, background, getResources(), temp);
+    }
+
+    private void setResultTitle(JSONObject result) {
+        String city = result.optJSONObject("city").optString("name");
+        this.setTitle(city);
+        writeLocToSharedPreferences(city);
     }
 
     private class DatabaseReadTask extends AsyncTask<Context, Void, ArrayList<FiveDayForecast>> {

@@ -109,7 +109,8 @@ public class ViewHelper {
         }
     }
 
-    public void setBackground(int code, ImageView image, Resources resources, double temperature) {
+    public static void setBackground
+            (int code, ImageView image, Resources resources, double temperature) {
         if(temperature < 0) {
             image.setImageDrawable(resources.getDrawable(R.drawable.ic_coldbackground));
             return;
