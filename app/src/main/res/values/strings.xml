@@ -10,4 +10,6 @@
     <string name="home">Home</string>
     <string name="noData">No data has been gathered yet! Try using the app again
         when you have an internet connection.</string>
+    <string name="locationsUnavailable">There is no internet connection. Please
+        access the internet to use location features.</string>
 </resources>

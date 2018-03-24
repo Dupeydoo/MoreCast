@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.exeter.ecm2425.morecast.DataProcessing.LocationAdapter;
 import com.exeter.ecm2425.morecast.R;
+import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -44,11 +45,17 @@ public class LocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setTitle("Choose Location");
-        geoDataClient = Places.getGeoDataClient(this);
         setContentView(R.layout.activity_location);
-        AsyncTask<Context, Void, Boolean> capitals =
-                new ReadCapitalCities().execute(this);
-        setUpAutoCompleteFragment();
+
+        if(NetworkHelper.checkForInternet(this)) {
+            AsyncTask<Context, Void, Boolean> capitals =
+                    new ReadCapitalCities().execute(this);
+            geoDataClient = Places.getGeoDataClient(this);
+            setUpAutoCompleteFragment();
+        } else {
+            TextView alertView = (TextView) findViewById(R.id.alertView);
+            alertView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setUpRecyclerView() {
