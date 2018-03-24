@@ -27,7 +27,7 @@ public class BindDetailedView {
     private void bindMainInformation() {
         FiveDayForecast midDay = detailedForecast.get(4);
         double temp = midDay.getTemperature();
-        String description = midDay.getDescription();
+        String description = midDay.getDescription() + "\nData at 12pm";
         detailedView.setMainInfo(temp, description);
     }
 

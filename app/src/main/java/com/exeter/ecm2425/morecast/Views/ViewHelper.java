@@ -2,12 +2,13 @@ package com.exeter.ecm2425.morecast.Views;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.widget.ImageView;
 
 import com.exeter.ecm2425.morecast.R;
 
-class ViewHelper {
-    ViewHelper() { }
+public class ViewHelper {
+    public ViewHelper() { }
 
     void setWeatherImage(Context context, int weather, ImageView image, int time) {
         if(weather >= 200 && weather < 300) {
@@ -92,6 +93,12 @@ class ViewHelper {
             } else {
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_wind));
             }
+        }
+    }
+
+    public void setBackground(int code, ImageView image, Resources resources) {
+        if(code >= 300 && code < 502) {
+            image.setImageDrawable(resources.getDrawable(R.drawable.ic_rainyback));
         }
     }
 }

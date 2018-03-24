@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,6 +34,7 @@ import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.Services.APIService;
 import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
+import com.exeter.ecm2425.morecast.Views.ViewHelper;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -161,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         writeLocToSharedPreferences(city);
 
         ArrayList<FiveDayForecast> forecast = resultData.getParcelableArrayList("forecast");
+        setBackground(forecast.get(0));
         setUpRecyclerView(forecast);
-
     }
 
     private void postProcessDatabaseResults(ArrayList<FiveDayForecast> forecastData) {
@@ -212,6 +216,13 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         return new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
     }
 
+    private void setBackground(FiveDayForecast forecast) {
+        ImageView background = (ImageView) findViewById(R.id.weatherBack);
+        int code = forecast.getWeatherCode();
+        ViewHelper helper = new ViewHelper();
+        helper.setBackground(code, background, getResources());
+    }
+
     private class DatabaseReadTask extends AsyncTask<Context, Void, ArrayList<FiveDayForecast>> {
         @Override
         protected void onPreExecute() {
@@ -240,7 +251,5 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
             ProgressBar progressBar = findViewById(R.id.apiBar);
             progressBar.setVisibility(View.INVISIBLE);
         }
-
-
     }
 }
