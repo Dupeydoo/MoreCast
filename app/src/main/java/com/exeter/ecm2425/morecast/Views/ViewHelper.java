@@ -11,15 +11,27 @@ class ViewHelper {
 
     void setWeatherImage(Context context, int weather, ImageView image, int time) {
         if(weather >= 200 && weather < 300) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_storm));
+            if(time > 19 || time < 6) {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightstorm));
+            } else {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_storm));
+            }
         }
 
         else if(weather >= 300 && weather < 400) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_drizzle));
+            if(time > 19 || time < 6) {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightrain));
+            } else {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_drizzle));
+            }
         }
 
         else if(weather >= 500 && weather < 502) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_lightrain));
+            if(time > 19 || time < 6) {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightrain));
+            } else {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_lightrain));
+            }
         }
 
         else if(weather >= 502 && weather < 600) {
@@ -27,11 +39,19 @@ class ViewHelper {
         }
 
         else if(weather >= 600 && weather < 700) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_snow));
+            if(time > 19 || time < 6) {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_snow));
+            } else {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightsnow));
+            }
         }
 
         else if(weather >= 700 && weather < 800) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_mist));
+            if(time > 19 || time < 6) {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightmist));
+            } else {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_mist));
+            }
         }
 
         else if(weather == 800) {
@@ -43,7 +63,11 @@ class ViewHelper {
         }
 
         else if(weather == 801 || weather == 802) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_lightcloud));
+            if(time > 19 || time < 6) {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightcloud));
+            } else {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_lightcloud));
+            }
         }
 
         else if(weather == 803 || weather == 804) {
@@ -63,7 +87,11 @@ class ViewHelper {
         }
 
         else {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_wind));
+            if(time > 19 || time < 6) {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightwind));
+            } else {
+                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_wind));
+            }
         }
     }
 }
