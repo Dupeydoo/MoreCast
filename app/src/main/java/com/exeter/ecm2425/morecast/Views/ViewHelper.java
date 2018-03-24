@@ -35,7 +35,7 @@ class ViewHelper {
         }
 
         else if(weather == 800) {
-            if(time > 19 && time < 6) {
+            if(time > 19 || time < 6) {
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_moon));
             } else {
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sun));

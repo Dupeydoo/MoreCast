@@ -8,4 +8,6 @@
     <string name="precipitation">Precipitation</string>
     <string name="location">Choose Location</string>
     <string name="home">Home</string>
+    <string name="noData">No data has been gathered yet! Try using the app again
+        when you have an internet connection.</string>
 </resources>

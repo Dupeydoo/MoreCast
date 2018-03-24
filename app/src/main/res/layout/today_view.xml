@@ -39,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
         app:srcCompat="@drawable/ic_sun" />
@@ -48,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline3"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
         app:srcCompat="@drawable/ic_sun" />
@@ -57,6 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline2"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
         app:srcCompat="@drawable/ic_sun" />
@@ -66,6 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
         app:srcCompat="@drawable/ic_sun" />

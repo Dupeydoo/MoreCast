@@ -15,6 +15,10 @@
         android:src="@drawable/overcast"
         android:scaleType="centerCrop"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <com.exeter.ecm2425.morecast.Views.TodayView
         android:id="@+id/detailedView"
         android:layout_width="match_parent"
@@ -25,5 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

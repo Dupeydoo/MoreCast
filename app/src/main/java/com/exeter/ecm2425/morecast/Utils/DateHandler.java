@@ -52,4 +52,9 @@ public class DateHandler {
     public static int getLocaleHour() {
         return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
     }
+
+    public static int getHour(String timeStamp) {
+        String hour = timeStamp.split("\\s+")[1].substring(0, 2);
+        return Integer.parseInt(hour);
+    }
 }

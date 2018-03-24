@@ -78,13 +78,14 @@ public class TodayView extends ConstraintLayout {
     }
 
     public void setImages(
-            int firstCode, int secondCode, int thirdCode, int fourthCode, int time) {
+            int firstCode, int secondCode, int thirdCode, int fourthCode,
+            int firstTime, int secondTime, int thirdTime, int fourthTime) {
         ViewHelper weatherHelper = new ViewHelper();
         Context context = getContext();
-        weatherHelper.setWeatherImage(context, firstCode, stampOne, time);
-        weatherHelper.setWeatherImage(context, secondCode, stampTwo, time);
-        weatherHelper.setWeatherImage(context, thirdCode, stampThree, time);
-        weatherHelper.setWeatherImage(context, fourthCode, stampFour, time);
+        weatherHelper.setWeatherImage(context, firstCode, stampOne, firstTime);
+        weatherHelper.setWeatherImage(context, secondCode, stampTwo, secondTime);
+        weatherHelper.setWeatherImage(context, thirdCode, stampThree, thirdTime);
+        weatherHelper.setWeatherImage(context, fourthCode, stampFour, fourthTime);
     }
 
     public void setLabels(

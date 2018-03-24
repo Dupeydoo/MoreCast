@@ -72,15 +72,20 @@ public class BindWeatherAdapter {
         int secondCode = secondTime.getWeatherCode();
         int thirdCode = thirdTime.getWeatherCode();
         int fourthCode = fourthTime.getWeatherCode();
-        int currentHour = DateHandler.getLocaleHour();
-        viewHolder.todayView.setImages(firstCode, secondCode, thirdCode, fourthCode, currentHour);
+
+        int firstHour = DateHandler.getHour(closestTime.getDateTime());
+        int secondHour = DateHandler.getHour(secondTime.getDateTime());
+        int thirdHour = DateHandler.getHour(thirdTime.getDateTime());
+        int fourthHour = DateHandler.getHour(fourthTime.getDateTime());
+
+        viewHolder.todayView.setImages(firstCode, secondCode, thirdCode, fourthCode,
+                firstHour, secondHour, thirdHour, fourthHour);
     }
 
     private void bindImageForecasts() {
         FiveDayForecast midDay = dayForecast.get(4);
         int code = midDay.getWeatherCode();
-        int currentHour = DateHandler.getLocaleHour();
-        viewHolder.forecastView.setForecastImage(code, currentHour);
+        viewHolder.forecastView.setForecastImage(code, 12);
     }
 
     private void bindLabels() {

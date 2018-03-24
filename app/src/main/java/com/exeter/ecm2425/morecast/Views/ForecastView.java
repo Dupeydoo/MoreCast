@@ -20,7 +20,6 @@ public class ForecastView extends ConstraintLayout implements View.OnClickListen
     private TextView forecastDay;
     private ImageView forecastImage;
     private TextView forecastTemp;
-    private int recyclerId;
     private ArrayList<FiveDayForecast> dayForecasts;
 
     public ForecastView(Context context) {

@@ -2,18 +2,14 @@ package com.exeter.ecm2425.morecast.Activities;
 
 
 import android.Manifest;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -23,9 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewManager;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,19 +27,15 @@ import com.exeter.ecm2425.morecast.DataProcessing.ResultParser;
 import com.exeter.ecm2425.morecast.DataProcessing.WeatherAdapter;
 import com.exeter.ecm2425.morecast.Database.AccessDatabase;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
-import com.exeter.ecm2425.morecast.Database.FiveDayForecastDao;
-import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.Services.APIService;
 import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
-import com.exeter.ecm2425.morecast.Views.ForecastView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.exeter.ecm2425.morecast.API.APILocation.PERMISSIONS_SUCCESS;
 
@@ -73,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 Bundle apiData = savedInstanceState.getBundle("api-data");
                 postProcessResults(apiData);
             } catch(NullPointerException nullEx) {
-                AsyncTask<Context, Void, Void> readDb = new DatabaseReadTask().execute(this);
+                AsyncTask<Context, Void, ArrayList<FiveDayForecast>> readDb =
+                        new DatabaseReadTask().execute(this);
             }
         }
     }
@@ -155,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     this.recreate();
                 } else {
+                    Intent apiIntent = setReceiverAndIntent();
+                    startApiService(apiIntent, "London");
                 }
         }
     }
@@ -189,9 +181,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     }
 
     private void startIntentReceiver() {
-        apiReceiver = new APIResultReceiver(new Handler());
-        apiReceiver.setReceiver(this);
-        Intent apiIntent = new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
+        Intent apiIntent = setReceiverAndIntent();
         String namedLocation = getIntent().getStringExtra("named-location");
 
         if(namedLocation != null) {
@@ -216,7 +206,13 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
     }
 
-    private class DatabaseReadTask extends AsyncTask<Context, Void, Void> {
+    private Intent setReceiverAndIntent() {
+        apiReceiver = new APIResultReceiver(new Handler());
+        apiReceiver.setReceiver(this);
+        return new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
+    }
+
+    private class DatabaseReadTask extends AsyncTask<Context, Void, ArrayList<FiveDayForecast>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -225,19 +221,26 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         }
 
         @Override
-        protected Void doInBackground(Context... context) {
+        protected ArrayList<FiveDayForecast> doInBackground(Context... context) {
             Context current = context[0];
             AccessDatabase accessDatabase = new AccessDatabase();
             ArrayList<FiveDayForecast> fiveDayForecasts = accessDatabase.read(current);
-            postProcessDatabaseResults(fiveDayForecasts);
-            return null;
+            return fiveDayForecasts;
         }
 
         @Override
-        protected void onPostExecute(Void empty) {
-            super.onPostExecute(empty);
+        protected void onPostExecute(ArrayList<FiveDayForecast> forecasts) {
+            super.onPostExecute(forecasts);
+            if(forecasts.size() > 0) {
+                postProcessDatabaseResults(forecasts);
+            } else {
+                TextView alertView = (TextView) findViewById(R.id.alertView);
+                alertView.setVisibility(View.VISIBLE);
+            }
             ProgressBar progressBar = findViewById(R.id.apiBar);
             progressBar.setVisibility(View.INVISIBLE);
         }
+
+
     }
 }

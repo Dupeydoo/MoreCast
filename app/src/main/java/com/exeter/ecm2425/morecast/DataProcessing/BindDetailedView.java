@@ -53,8 +53,14 @@ public class BindDetailedView {
         int secondCode = secondTime.getWeatherCode();
         int thirdCode = thirdTime.getWeatherCode();
         int fourthCode = fourthTime.getWeatherCode();
-        int currentHour = DateHandler.getLocaleHour();
-        detailedView.setImages(firstCode, secondCode, thirdCode, fourthCode, currentHour);
+
+        int firstHour = DateHandler.getHour(closestTime.getDateTime());
+        int secondHour = DateHandler.getHour(secondTime.getDateTime());
+        int thirdHour = DateHandler.getHour(thirdTime.getDateTime());
+        int fourthHour = DateHandler.getHour(fourthTime.getDateTime());
+
+        detailedView.setImages(firstCode, secondCode, thirdCode, fourthCode,
+                firstHour, secondHour, thirdHour, fourthHour);
     }
 
     private void bindImageLabels() {
