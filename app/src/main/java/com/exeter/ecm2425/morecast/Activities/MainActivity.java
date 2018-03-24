@@ -17,6 +17,9 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewManager;
 import android.view.Window;
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 startIntentReceiver();
             } else {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
+                        new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
             }
         } else {
             Bundle apiData = savedInstanceState.getBundle("api-data");
@@ -69,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         }
     }
 
-    // dont use to expensive save, it is too brief a method do in onStop instead.
     @Override
     protected void onPause() {
         super.onPause();
@@ -82,6 +84,27 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     public void onSaveInstanceState(Bundle outState) {
         outState.putBundle("api-data", resultData);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.optionsmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.chooseLocation:
+                Class dest = LocationActivity.class;
+                Intent intent = new Intent(this, dest);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void startApiService(Intent intent, String namedLocation) {
@@ -122,13 +145,10 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
             int requestCode, @NonNull  String permissions[], @NonNull int[] grantResults) {
         switch(requestCode) {
             case PERMISSIONS_SUCCESS:
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     this.recreate();
                 } else {
-                    // permission denied
-                    System.out.println("what6");
                 }
         }
     }

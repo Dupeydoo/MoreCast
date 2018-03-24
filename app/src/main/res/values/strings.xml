@@ -6,4 +6,6 @@
     <string name="speed">Speed: </string>
     <string name="direction">Direction: </string>
     <string name="precipitation">Precipitation</string>
+    <string name="location">Choose Location</string>
+    <string name="home">Home</string>
 </resources>
