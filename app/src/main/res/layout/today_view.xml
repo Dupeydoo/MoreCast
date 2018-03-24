@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="40dp">
+    android:paddingBottom="40dp"
+    android:paddingLeft="16dp">
 
 
     <TextView
@@ -16,264 +19,292 @@
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="36sp"
-        android:textStyle="normal" />
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/descriptor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bigTemperature"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bigTemperature" />
 
     <ImageView
         android:id="@+id/stampOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/descriptor"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/descriptor"
         app:srcCompat="@drawable/ic_sun" />
 
     <ImageView
         android:id="@+id/stampTwo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/descriptor"
-        android:layout_toRightOf="@id/stampOne"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="22dp"
-        app:srcCompat="@drawable/ic_sun"/>
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline3"
+        app:layout_constraintTop_toBottomOf="@id/descriptor"
+        app:srcCompat="@drawable/ic_sun" />
 
     <ImageView
         android:id="@+id/stampThree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/descriptor"
-        android:layout_toRightOf="@id/stampTwo"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="22dp"
-        app:srcCompat="@drawable/ic_sun"/>
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/descriptor"
+        app:srcCompat="@drawable/ic_sun" />
 
     <ImageView
         android:id="@+id/stampFour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/descriptor"
-        android:layout_toRightOf="@id/stampThree"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="22dp"
-        app:srcCompat="@drawable/ic_sun"/>
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline1"
+        app:layout_constraintTop_toBottomOf="@id/descriptor"
+        app:srcCompat="@drawable/ic_sun" />
 
     <TextView
         android:id="@+id/labelOne"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/stampOne"
-        android:layout_alignLeft="@id/stampOne"
-        android:layout_alignRight="@id/stampOne"
-        android:layout_alignStart="@id/stampOne"
-        android:layout_below="@id/stampOne"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/stampOne"
+        app:layout_constraintLeft_toLeftOf="@id/stampOne"
+        app:layout_constraintRight_toRightOf="@id/stampOne"
+        app:layout_constraintStart_toStartOf="@id/stampOne"
+        app:layout_constraintTop_toBottomOf="@id/stampOne" />
 
     <TextView
         android:id="@+id/labelTwo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/stampTwo"
-        android:layout_alignLeft="@id/stampTwo"
-        android:layout_alignRight="@id/stampTwo"
-        android:layout_alignStart="@id/stampTwo"
-        android:layout_below="@id/stampTwo"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/stampTwo"
+        app:layout_constraintLeft_toLeftOf="@id/stampTwo"
+        app:layout_constraintRight_toRightOf="@id/stampTwo"
+        app:layout_constraintStart_toStartOf="@id/stampTwo"
+        app:layout_constraintTop_toBottomOf="@id/stampTwo" />
 
     <TextView
         android:id="@+id/labelThree"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/stampThree"
-        android:layout_alignLeft="@id/stampThree"
-        android:layout_alignRight="@id/stampThree"
-        android:layout_alignStart="@id/stampThree"
-        android:layout_below="@id/stampThree"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/stampThree"
+        app:layout_constraintLeft_toLeftOf="@id/stampThree"
+        app:layout_constraintRight_toRightOf="@id/stampThree"
+        app:layout_constraintStart_toStartOf="@id/stampThree"
+        app:layout_constraintTop_toBottomOf="@id/stampThree" />
 
     <TextView
         android:id="@+id/labelFour"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/stampFour"
-        android:layout_alignLeft="@id/stampFour"
-        android:layout_alignRight="@id/stampFour"
-        android:layout_alignStart="@id/stampFour"
-        android:layout_below="@id/stampFour"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/stampFour"
+        app:layout_constraintLeft_toLeftOf="@id/stampFour"
+        app:layout_constraintRight_toRightOf="@id/stampFour"
+        app:layout_constraintStart_toStartOf="@id/stampFour"
+        app:layout_constraintTop_toBottomOf="@id/stampFour" />
 
     <TextView
         android:id="@+id/pressureTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/labelTwo"
-        android:layout_alignLeft="@id/labelOne"
-        android:layout_alignRight="@id/labelTwo"
-        android:layout_alignStart="@id/labelOne"
-        android:layout_below="@id/labelOne"
         android:layout_marginTop="20dp"
         android:text="@string/pressure"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/labelTwo"
+        app:layout_constraintLeft_toLeftOf="@id/labelOne"
+        app:layout_constraintRight_toRightOf="@id/labelTwo"
+        app:layout_constraintStart_toStartOf="@id/labelOne"
+        app:layout_constraintTop_toBottomOf="@id/labelOne" />
 
     <TextView
         android:id="@+id/humidityTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/labelFour"
-        android:layout_alignLeft="@id/labelThree"
-        android:layout_alignRight="@id/labelFour"
-        android:layout_alignStart="@id/labelThree"
-        android:layout_below="@id/labelOne"
         android:layout_marginTop="20dp"
         android:text="@string/humidity"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/labelFour"
+        app:layout_constraintLeft_toLeftOf="@id/labelThree"
+        app:layout_constraintRight_toRightOf="@id/labelFour"
+        app:layout_constraintStart_toStartOf="@id/labelThree"
+        app:layout_constraintTop_toBottomOf="@id/labelOne" />
 
     <TextView
         android:id="@+id/pressureContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/pressureTitle"
-        android:layout_alignLeft="@id/pressureTitle"
-        android:layout_alignRight="@id/pressureTitle"
-        android:layout_alignStart="@id/pressureTitle"
-        android:layout_below="@id/pressureTitle"
         android:layout_marginTop="2dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/pressureTitle"
+        app:layout_constraintLeft_toLeftOf="@id/pressureTitle"
+        app:layout_constraintRight_toRightOf="@id/pressureTitle"
+        app:layout_constraintStart_toStartOf="@id/pressureTitle"
+        app:layout_constraintTop_toBottomOf="@id/pressureTitle" />
 
     <TextView
         android:id="@+id/humidityContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/humidityTitle"
-        android:layout_alignLeft="@id/humidityTitle"
-        android:layout_alignRight="@id/humidityTitle"
-        android:layout_alignStart="@id/humidityTitle"
-        android:layout_below="@id/humidityTitle"
         android:layout_marginTop="2dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/humidityTitle"
+        app:layout_constraintLeft_toLeftOf="@id/humidityTitle"
+        app:layout_constraintRight_toRightOf="@id/humidityTitle"
+        app:layout_constraintStart_toStartOf="@id/humidityTitle"
+        app:layout_constraintTop_toBottomOf="@id/humidityTitle" />
 
     <TextView
         android:id="@+id/windInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/pressureContent"
-        android:layout_alignLeft="@id/pressureContent"
-        android:layout_alignRight="@id/pressureContent"
-        android:layout_alignStart="@id/pressureContent"
-        android:layout_below="@id/pressureContent"
         android:layout_marginTop="30dp"
         android:text="@string/wind"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/pressureContent"
+        app:layout_constraintLeft_toLeftOf="@id/pressureContent"
+        app:layout_constraintRight_toRightOf="@id/pressureContent"
+        app:layout_constraintStart_toStartOf="@id/pressureContent"
+        app:layout_constraintTop_toBottomOf="@id/pressureContent" />
 
     <TextView
         android:id="@+id/windSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/windInformation"
-        android:layout_alignLeft="@+id/windInformation"
-        android:layout_alignRight="@+id/windInformation"
-        android:layout_alignStart="@+id/windInformation"
-        android:layout_below="@id/windInformation"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/windInformation"
+        app:layout_constraintLeft_toLeftOf="@+id/windInformation"
+        app:layout_constraintRight_toRightOf="@+id/windInformation"
+        app:layout_constraintStart_toStartOf="@+id/windInformation"
+        app:layout_constraintTop_toBottomOf="@id/windInformation" />
 
     <TextView
         android:id="@+id/windDegrees"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/windInformation"
-        android:layout_alignLeft="@+id/windInformation"
-        android:layout_alignRight="@+id/windInformation"
-        android:layout_alignStart="@+id/windInformation"
-        android:layout_below="@id/windSpeed"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/windInformation"
+        app:layout_constraintLeft_toLeftOf="@+id/windInformation"
+        app:layout_constraintRight_toRightOf="@+id/windInformation"
+        app:layout_constraintStart_toStartOf="@+id/windInformation"
+        app:layout_constraintTop_toBottomOf="@id/windSpeed" />
 
     <TextView
         android:id="@+id/precipitation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/humidityContent"
-        android:layout_alignLeft="@id/humidityContent"
-        android:layout_alignRight="@id/humidityContent"
-        android:layout_alignStart="@id/humidityContent"
-        android:layout_below="@id/humidityContent"
         android:layout_marginTop="30dp"
         android:text="@string/precipitation"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/humidityContent"
+        app:layout_constraintLeft_toLeftOf="@id/humidityContent"
+        app:layout_constraintRight_toRightOf="@id/humidityContent"
+        app:layout_constraintStart_toStartOf="@id/humidityContent"
+        app:layout_constraintTop_toBottomOf="@id/humidityContent" />
 
     <TextView
         android:id="@+id/precipitationType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/precipitation"
-        android:layout_alignLeft="@+id/precipitation"
-        android:layout_alignRight="@+id/precipitation"
-        android:layout_alignStart="@+id/precipitation"
-        android:layout_below="@id/precipitation"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/precipitation"
+        app:layout_constraintLeft_toLeftOf="@+id/precipitation"
+        app:layout_constraintRight_toRightOf="@+id/precipitation"
+        app:layout_constraintStart_toStartOf="@+id/precipitation"
+        app:layout_constraintTop_toBottomOf="@id/precipitation" />
 
     <TextView
         android:id="@+id/precipitationAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/precipitation"
-        android:layout_alignLeft="@+id/precipitation"
-        android:layout_alignRight="@+id/precipitation"
-        android:layout_alignStart="@+id/precipitation"
-        android:layout_below="@id/precipitationType"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/precipitation"
+        app:layout_constraintLeft_toLeftOf="@+id/precipitation"
+        app:layout_constraintRight_toRightOf="@+id/precipitation"
+        app:layout_constraintStart_toStartOf="@+id/precipitation"
+        app:layout_constraintTop_toBottomOf="@id/precipitationType" />
 
-</RelativeLayout>
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+</android.support.constraint.ConstraintLayout>

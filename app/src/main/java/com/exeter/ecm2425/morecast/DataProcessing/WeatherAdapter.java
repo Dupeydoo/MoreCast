@@ -54,8 +54,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public WeatherAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                         int viewType) {
         if (viewType == 0) {
-            TodayView today = new TodayView(parent.getContext());
-            return new ViewHolder(today);
+            TodayView todayView = new TodayView(parent.getContext());
+            todayView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            return new ViewHolder(todayView);
         } else {
             ForecastView forecastView = new ForecastView(parent.getContext());
             forecastView.setLayoutParams(new ViewGroup.LayoutParams(

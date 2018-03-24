@@ -1,6 +1,7 @@
 package com.exeter.ecm2425.morecast.Views;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ import org.w3c.dom.Text;
 
 import java.util.Locale;
 
-public class TodayView extends RelativeLayout {
+public class TodayView extends ConstraintLayout {
     private TextView bigTemperature;
     private TextView descriptor;
 
