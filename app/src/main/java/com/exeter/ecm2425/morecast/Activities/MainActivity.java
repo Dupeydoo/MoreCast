@@ -3,10 +3,12 @@ package com.exeter.ecm2425.morecast.Activities;
 
 import android.Manifest;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -30,12 +32,14 @@ import android.widget.TextView;
 import com.exeter.ecm2425.morecast.API.APILocation;
 import com.exeter.ecm2425.morecast.DataProcessing.ResultParser;
 import com.exeter.ecm2425.morecast.DataProcessing.WeatherAdapter;
+import com.exeter.ecm2425.morecast.Database.AccessDatabase;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecastDao;
 import com.exeter.ecm2425.morecast.Database.MorecastDatabase;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.Services.APIService;
+import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
 import com.exeter.ecm2425.morecast.Views.ForecastView;
 
 import org.json.JSONException;
@@ -46,7 +50,6 @@ import java.util.List;
 
 import static com.exeter.ecm2425.morecast.API.APILocation.PERMISSIONS_SUCCESS;
 
-// didnt use fragments, reusable Views instead not much point in such a small app.
 
 public class MainActivity extends AppCompatActivity implements APIResultReceiver.Receiver {
 
@@ -59,16 +62,19 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(savedInstanceState == null) {
+        if(savedInstanceState == null && NetworkHelper.checkForInternet(this)) {
             if (APILocation.checkLocationPermission(this)) {
                 startIntentReceiver();
             } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
+                requestPermissions();
             }
         } else {
-            Bundle apiData = savedInstanceState.getBundle("api-data");
-            postProcessResults(apiData);
+            try {
+                Bundle apiData = savedInstanceState.getBundle("api-data");
+                postProcessResults(apiData);
+            } catch(NullPointerException nullEx) {
+                AsyncTask<Context, Void, Void> readDb = new DatabaseReadTask().execute(this);
+            }
         }
     }
 
@@ -167,6 +173,12 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     }
 
+    private void postProcessDatabaseResults(ArrayList<FiveDayForecast> forecastData) {
+        preferences = getSharedPreferences(SHARED_PREFERENCES, 0);
+        this.setTitle(preferences.getString("location", "London"));
+        setUpRecyclerView(forecastData);
+    }
+
     private void setUpRecyclerView(ArrayList<FiveDayForecast> forecastData) {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.weatherList);
         recyclerView.setHasFixedSize(true);
@@ -197,5 +209,35 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         editor.putString("location", location);
         // offload UI thread.
         editor.apply();
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
+    }
+
+    private class DatabaseReadTask extends AsyncTask<Context, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProgressBar progressBar = findViewById(R.id.apiBar);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Context... context) {
+            Context current = context[0];
+            AccessDatabase accessDatabase = new AccessDatabase();
+            ArrayList<FiveDayForecast> fiveDayForecasts = accessDatabase.read(current);
+            postProcessDatabaseResults(fiveDayForecasts);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void empty) {
+            super.onPostExecute(empty);
+            ProgressBar progressBar = findViewById(R.id.apiBar);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
 }

@@ -39,5 +39,10 @@ public class AccessDatabase {
         return new ArrayList<>(Arrays.asList(forecast));
     }
 
+    public ArrayList<FiveDayForecast> read(Context context) {
+        FiveDayForecastDao forecastDao = MorecastDatabase.getMorecastDatabase(context)
+                .getFiveDayForecastDao();
+        return new ArrayList<>(forecastDao.getFiveDayForecast());
+    }
 
 }

@@ -46,7 +46,8 @@ public class LocationActivity extends AppCompatActivity {
         this.setTitle("Choose Location");
         geoDataClient = Places.getGeoDataClient(this);
         setContentView(R.layout.activity_location);
-        new ReadCapitalCities().execute(this);
+        AsyncTask<Context, Void, Boolean> capitals =
+                new ReadCapitalCities().execute(this);
         setUpAutoCompleteFragment();
     }
 

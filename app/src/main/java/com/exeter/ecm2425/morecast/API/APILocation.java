@@ -45,7 +45,7 @@ public class APILocation {
                     new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            System.out.println("WHat4");
+                            // deal with no internet here.
                         }
                     }
             );
@@ -54,12 +54,12 @@ public class APILocation {
         }
     }
 
-        public static boolean checkLocationPermission(Activity activity) {
-            if(ContextCompat.checkSelfPermission(activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-            return true;
+    public static boolean checkLocationPermission(Activity activity) {
+        if(ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return false;
         }
+        return true;
+    }
 }

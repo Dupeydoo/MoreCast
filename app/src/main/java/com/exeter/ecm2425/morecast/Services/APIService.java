@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.DataProcessing.ForecastParser;
 import com.exeter.ecm2425.morecast.Database.AccessDatabase;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -45,57 +47,11 @@ public class APIService extends IntentService {
         Bundle apiBundle = new Bundle();
 
         if(command.equals("forecast")) {
-            String namedLocation = intent.getStringExtra("named-location");
-            String apiSuffix = String.format(Locale.ENGLISH, "q=%s", namedLocation);
-            receiver.send(API_RUNNING, Bundle.EMPTY);
-
-            try {
-                String apiResult = makeApiCall(apiSuffix);
-                apiBundle.putString("result", apiResult);
-                JSONObject resultData = new JSONObject(apiResult);
-                ForecastParser parser = new ForecastParser();
-                parser.parseWeatherData(resultData);
-                ArrayList<FiveDayForecast> fiveDayForecasts = new ArrayList<>
-                        (Arrays.asList(parser.getFiveDayForecasts()));
-                apiBundle.putParcelableArrayList("forecast", fiveDayForecasts);
-                receiver.send(API_FINISHED, apiBundle);
-            }
-
-            catch(Exception e) {
-                apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
-                receiver.send(API_ERROR, apiBundle);
-            }
+            namedLocationHandler(intent, receiver, apiBundle);
         }
 
         else if(command.equals("forecast-location")) {
-            double longitude;
-            double latitude;
-            Location location = intent.getParcelableExtra("location");
-            LatLng latLng = intent.getParcelableExtra("lat-lng");
-
-            if(latLng != null) {
-                longitude = latLng.longitude;
-                latitude = latLng.latitude;
-            } else {
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
-            }
-
-            String apiSuffix = String.format(Locale.ENGLISH, "lat=%f&lon=%f", latitude, longitude);
-            receiver.send(API_RUNNING, Bundle.EMPTY);
-
-            try {
-                String apiResult = makeApiCall(apiSuffix);
-                apiBundle.putString("result", apiResult);
-                ArrayList<FiveDayForecast> forecast = insertApiResponseDatabase(apiResult);
-                apiBundle.putParcelableArrayList("forecast", forecast);
-                receiver.send(API_FINISHED, apiBundle);
-            }
-
-            catch(Exception e) {
-                apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
-                receiver.send(API_ERROR, apiBundle);
-            }
+            latLongLocationHandler(intent, receiver, apiBundle);
         }
     }
 
@@ -104,10 +60,10 @@ public class APIService extends IntentService {
         try {
             URL url = new URL(apiAddress + apiSuffix + "&APPID=" + API_KEY);
             HttpsURLConnection apiConnection = (HttpsURLConnection) url.openConnection();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(apiConnection.getInputStream()));
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
             String line;
-
             while((line = reader.readLine()) != null) {
                 apiResult.append(line).append("\n");
             }
@@ -118,6 +74,59 @@ public class APIService extends IntentService {
         } catch(IOException e) {
         }
         return apiResult.toString();
+    }
+
+    private void namedLocationHandler(Intent intent, ResultReceiver receiver, Bundle apiBundle) {
+        String namedLocation = intent.getStringExtra("named-location");
+        String apiSuffix = String.format(Locale.ENGLISH, "q=%s", namedLocation);
+        receiver.send(API_RUNNING, Bundle.EMPTY);
+
+        try {
+            String apiResult = makeApiCall(apiSuffix);
+            apiBundle.putString("result", apiResult);
+            JSONObject resultData = new JSONObject(apiResult);
+            ForecastParser parser = new ForecastParser();
+            parser.parseWeatherData(resultData);
+            ArrayList<FiveDayForecast> fiveDayForecasts = new ArrayList<>
+                    (Arrays.asList(parser.getFiveDayForecasts()));
+            apiBundle.putParcelableArrayList("forecast", fiveDayForecasts);
+            receiver.send(API_FINISHED, apiBundle);
+        }
+
+        catch(Exception e) {
+            apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
+            receiver.send(API_ERROR, apiBundle);
+        }
+    }
+
+    private void latLongLocationHandler(Intent intent, ResultReceiver receiver, Bundle apiBundle) {
+        double longitude, latitude;
+        Location location = intent.getParcelableExtra("location");
+        LatLng latLng = intent.getParcelableExtra("lat-lng");
+
+        if(latLng != null) {
+            longitude = latLng.longitude;
+            latitude = latLng.latitude;
+        } else {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        }
+
+        String apiSuffix = String.format(Locale.ENGLISH, "lat=%f&lon=%f", latitude, longitude);
+        receiver.send(API_RUNNING, Bundle.EMPTY);
+
+        try {
+            String apiResult = makeApiCall(apiSuffix);
+            apiBundle.putString("result", apiResult);
+            ArrayList<FiveDayForecast> forecast = insertApiResponseDatabase(apiResult);
+            apiBundle.putParcelableArrayList("forecast", forecast);
+            receiver.send(API_FINISHED, apiBundle);
+        }
+
+        catch(Exception e) {
+            apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
+            receiver.send(API_ERROR, apiBundle);
+        }
     }
 
     private ArrayList<FiveDayForecast> insertApiResponseDatabase(String apiResult) {
