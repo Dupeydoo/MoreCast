@@ -3,12 +3,14 @@ package com.exeter.ecm2425.morecast.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.exeter.ecm2425.morecast.DataProcessing.LocationAdapter;
@@ -35,6 +37,7 @@ public class LocationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager viewManager;
+    private ArrayList<String> capitalCities;
     protected GeoDataClient geoDataClient;
 
     @Override
@@ -43,12 +46,11 @@ public class LocationActivity extends AppCompatActivity {
         this.setTitle("Choose Location");
         geoDataClient = Places.getGeoDataClient(this);
         setContentView(R.layout.activity_location);
-        setUpRecyclerView();
+        new ReadCapitalCities().execute(this);
         setUpAutoCompleteFragment();
     }
 
     private void setUpRecyclerView() {
-        ArrayList<String> capitalCities = readLocationsText(this);
         recyclerView = (RecyclerView) findViewById(R.id.locationList);
         recyclerView.setHasFixedSize(true);
         viewManager = new LinearLayoutManager(this);
@@ -95,8 +97,37 @@ public class LocationActivity extends AppCompatActivity {
         return new Intent(this, destination);
     }
 
-    // offload to other task? isnt long might be able to justify.
-    public ArrayList<String> readLocationsText(Context context) {
+    private class ReadCapitalCities extends AsyncTask<Context, Void, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProgressBar fileBar = findViewById(R.id.fileBar);
+            fileBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Boolean doInBackground(Context... context) {
+            capitalCities = readLocationsText(context[0]);
+            if(capitalCities.isEmpty() || capitalCities == null) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean finished) {
+            super.onPostExecute(finished);
+            if(finished) {
+                ProgressBar fileBar = findViewById(R.id.fileBar);
+                fileBar.setVisibility(View.INVISIBLE);
+                setUpRecyclerView();
+            } else {
+              // show error dialog.
+            }
+        }
+    }
+
+    private ArrayList<String> readLocationsText(Context context) {
         ArrayList<String> locationsText = new ArrayList<String>();
         BufferedReader reader;
 
