@@ -13,6 +13,7 @@ import com.exeter.ecm2425.morecast.R;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class TodayView extends ConstraintLayout {
@@ -79,13 +80,14 @@ public class TodayView extends ConstraintLayout {
 
     public void setImages(
             int firstCode, int secondCode, int thirdCode, int fourthCode,
-            int firstTime, int secondTime, int thirdTime, int fourthTime) {
+            int firstTime, int secondTime, int thirdTime, int fourthTime,
+            ArrayList<Double> temperatures) {
         ViewHelper weatherHelper = new ViewHelper();
         Context context = getContext();
-        weatherHelper.setWeatherImage(context, firstCode, stampOne, firstTime);
-        weatherHelper.setWeatherImage(context, secondCode, stampTwo, secondTime);
-        weatherHelper.setWeatherImage(context, thirdCode, stampThree, thirdTime);
-        weatherHelper.setWeatherImage(context, fourthCode, stampFour, fourthTime);
+        weatherHelper.setWeatherImage(context, firstCode, stampOne, firstTime, temperatures.get(0));
+        weatherHelper.setWeatherImage(context, secondCode, stampTwo, secondTime, temperatures.get(1));
+        weatherHelper.setWeatherImage(context, thirdCode, stampThree, thirdTime, temperatures.get(2));
+        weatherHelper.setWeatherImage(context, fourthCode, stampFour, fourthTime, temperatures.get(3));
     }
 
     public void setLabels(

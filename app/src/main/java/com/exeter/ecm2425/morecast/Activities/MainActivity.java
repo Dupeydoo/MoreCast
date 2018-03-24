@@ -219,8 +219,9 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     private void setBackground(FiveDayForecast forecast) {
         ImageView background = (ImageView) findViewById(R.id.weatherBack);
         int code = forecast.getWeatherCode();
+        double temp = forecast.getTemperature();
         ViewHelper helper = new ViewHelper();
-        helper.setBackground(code, background, getResources());
+        helper.setBackground(code, background, getResources(), temp);
     }
 
     private class DatabaseReadTask extends AsyncTask<Context, Void, ArrayList<FiveDayForecast>> {

@@ -5,12 +5,25 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.widget.ImageView;
 
+import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.R;
+
+import java.util.ArrayList;
 
 public class ViewHelper {
     public ViewHelper() { }
 
-    void setWeatherImage(Context context, int weather, ImageView image, int time) {
+    void setWeatherImage(Context context, int weather, ImageView image, int time, double temperature) {
+        if(temperature < 0) {
+            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_cold));
+            return;
+        }
+
+        else if(temperature > 30) {
+            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_hot));
+            return;
+        }
+
         if(weather >= 200 && weather < 300) {
             if(time > 19 || time < 6) {
                 image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightstorm));
@@ -96,9 +109,35 @@ public class ViewHelper {
         }
     }
 
-    public void setBackground(int code, ImageView image, Resources resources) {
+    public void setBackground(int code, ImageView image, Resources resources, double temperature) {
+        if(temperature < 0) {
+            image.setImageDrawable(resources.getDrawable(R.drawable.ic_coldbackground));
+            return;
+        }
+
+        else if(temperature > 30) {
+            image.setImageDrawable(resources.getDrawable(R.drawable.ic_hotback));
+            return;
+        }
+
         if(code >= 300 && code < 502) {
             image.setImageDrawable(resources.getDrawable(R.drawable.ic_rainyback));
         }
+
+        else if(code > 800 && code < 805) {
+            image.setImageDrawable(resources.getDrawable(R.drawable.ic_cloudbackground));
+        }
+
+        else if(code == 800) {
+            image.setImageDrawable(resources.getDrawable(R.drawable.ic_sunnyback));
+        }
+    }
+
+    public ArrayList<Double> getTemperatures(ArrayList<FiveDayForecast> fiveDayForecasts) {
+        ArrayList<Double> temperatures = new ArrayList<>();
+        for(int i = 0; i < fiveDayForecasts.size(); i++) {
+            temperatures.add(fiveDayForecasts.get(i).getTemperature());
+        }
+        return temperatures;
     }
 }

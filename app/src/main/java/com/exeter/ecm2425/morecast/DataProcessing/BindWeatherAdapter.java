@@ -3,8 +3,10 @@ package com.exeter.ecm2425.morecast.DataProcessing;
 
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.Utils.DateHandler;
+import com.exeter.ecm2425.morecast.Views.ViewHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class BindWeatherAdapter {
@@ -78,14 +80,19 @@ public class BindWeatherAdapter {
         int thirdHour = DateHandler.getHour(thirdTime.getDateTime());
         int fourthHour = DateHandler.getHour(fourthTime.getDateTime());
 
+        ArrayList<FiveDayForecast> times = new ArrayList<>();
+        Collections.addAll(times, closestTime, secondTime, thirdTime, fourthTime);
+        ArrayList<Double> temperatures = new ViewHelper().getTemperatures(times);
+
         viewHolder.todayView.setImages(firstCode, secondCode, thirdCode, fourthCode,
-                firstHour, secondHour, thirdHour, fourthHour);
+                firstHour, secondHour, thirdHour, fourthHour, temperatures);
     }
 
     private void bindImageForecasts() {
         FiveDayForecast midDay = dayForecast.get(4);
         int code = midDay.getWeatherCode();
-        viewHolder.forecastView.setForecastImage(code, 12);
+        double temperature = midDay.getTemperature();
+        viewHolder.forecastView.setForecastImage(code, 12, temperature);
     }
 
     private void bindLabels() {

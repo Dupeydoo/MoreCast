@@ -4,8 +4,10 @@ package com.exeter.ecm2425.morecast.DataProcessing;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.Utils.DateHandler;
 import com.exeter.ecm2425.morecast.Views.TodayView;
+import com.exeter.ecm2425.morecast.Views.ViewHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class BindDetailedView {
 
@@ -59,8 +61,12 @@ public class BindDetailedView {
         int thirdHour = DateHandler.getHour(thirdTime.getDateTime());
         int fourthHour = DateHandler.getHour(fourthTime.getDateTime());
 
+        ArrayList<FiveDayForecast> times = new ArrayList<>();
+        Collections.addAll(times, closestTime, secondTime, thirdTime, fourthTime);
+        ArrayList<Double> temperatures = new ViewHelper().getTemperatures(times);
+
         detailedView.setImages(firstCode, secondCode, thirdCode, fourthCode,
-                firstHour, secondHour, thirdHour, fourthHour);
+                firstHour, secondHour, thirdHour, fourthHour, temperatures);
     }
 
     private void bindImageLabels() {

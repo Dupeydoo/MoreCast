@@ -41,9 +41,9 @@ public class ForecastView extends ConstraintLayout implements View.OnClickListen
         this.forecastTemp.setText(String.format(Locale.ENGLISH, "%.1f °C", temp));
     }
 
-    public void setForecastImage(int code, int time) {
+    public void setForecastImage(int code, int time, double temperature) {
         ViewHelper weatherHelper = new ViewHelper();
-        weatherHelper.setWeatherImage(this.getContext(), code, forecastImage, time);
+        weatherHelper.setWeatherImage(this.getContext(), code, forecastImage, time, temperature);
     }
 
     public ArrayList<FiveDayForecast> getDayForecasts() {
