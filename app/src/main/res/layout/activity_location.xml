@@ -21,14 +21,14 @@
     </android.support.v7.widget.CardView>
 
     <TextView
-        android:id="@+id/alertView"
+        android:id="@+id/alertLView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/locationsUnavailable"
         android:visibility="invisible"
         android:background="@android:drawable/dialog_holo_light_frame"
         android:padding="20dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="40dp"/>
 
     <ImageView

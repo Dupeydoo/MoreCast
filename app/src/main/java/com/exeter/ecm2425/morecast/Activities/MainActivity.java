@@ -144,6 +144,8 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
     private void postProcessDatabaseResults(ArrayList<FiveDayForecast> forecastData) {
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, 0);
         this.setTitle(sharedPreferences.getString("location", "London"));
+        ResultParser parser = new ResultParser();
+        setBackground(forecastData.get(0));
         setUpRecyclerView(forecastData);
     }
 

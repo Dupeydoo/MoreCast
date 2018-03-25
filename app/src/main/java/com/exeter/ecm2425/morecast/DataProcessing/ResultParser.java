@@ -17,6 +17,10 @@ public class ResultParser {
     private String preParsed;
     protected static int parseIndex;
 
+    public ResultParser() {
+        parseIndex = 0;
+    }
+
     public ResultParser(String preParsed) {
         this.preParsed = preParsed;
         parseIndex = 0;
