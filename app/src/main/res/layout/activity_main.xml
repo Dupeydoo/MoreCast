@@ -11,7 +11,7 @@
         android:id="@+id/weatherBack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/overcast"
+        app:srcCompat="@drawable/ic_happyearth"
         android:scaleType="centerCrop"/>
 
     <ProgressBar

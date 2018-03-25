@@ -37,7 +37,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     public WeatherAdapter(ArrayList<FiveDayForecast> forecasts) {
         fiveDayForecasts = forecasts;
-        currentForecasts = new ArrayList<ArrayList<FiveDayForecast>>();
+        currentForecasts = new ArrayList<>();
     }
 
     @NonNull
