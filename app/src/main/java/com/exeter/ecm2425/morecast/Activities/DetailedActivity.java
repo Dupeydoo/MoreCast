@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class DetailedActivity extends AppCompatActivity {
 
     private ArrayList<FiveDayForecast> forecastData;
-    private SharedPreferences preferences;
     private final static String SHARED_PREFERENCES = "SHARED_PREFERENCES";
 
     @Override
@@ -49,7 +48,7 @@ public class DetailedActivity extends AppCompatActivity {
     }
 
     private void setSharedPreferences() {
-        preferences = getSharedPreferences(SHARED_PREFERENCES, 0);
+        SharedPreferences preferences = getSharedPreferences(SHARED_PREFERENCES, 0);
         this.setTitle(preferences.getString("location", "London"));
     }
 
