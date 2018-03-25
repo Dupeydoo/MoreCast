@@ -59,9 +59,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ArrayList<FiveDayForecast> day = new ArrayList<>();
         if (holder.getItemViewType() == 0) {
-            bindViews(holder, day, BIND_TODAY);
+            bindViews(holder, day, BIND_TODAY, position);
         } else {
-            bindViews(holder, day, BIND_FORECAST);
+            bindViews(holder, day, BIND_FORECAST, position);
         }
     }
 
@@ -77,8 +77,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         return FORECAST_DAYS;
     }
 
-    private void bindViews(ViewHolder holder, ArrayList<FiveDayForecast> day, int bindType) {
-        day = ResultParser.getForecastDay(fiveDayForecasts);
+    private void bindViews
+            (ViewHolder holder, ArrayList<FiveDayForecast> day, int bindType, int position) {
+        day = ResultParser.getForecastDay(fiveDayForecasts, position);
         BindWeatherAdapter binder = new BindWeatherAdapter(day, holder);
         if(bindType == BIND_TODAY) {
             binder.bindToday();

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class ResultParser {
 
     private String preParsed;
-    private static int parseIndex;
+    protected static int parseIndex;
 
     public ResultParser(String preParsed) {
         this.preParsed = preParsed;
@@ -34,8 +34,9 @@ public class ResultParser {
         return jsonResult;
     }
 
-    public static ArrayList<FiveDayForecast> getForecastDay(ArrayList<FiveDayForecast> forecast) {
-        ArrayList<FiveDayForecast> day = getDay(forecast);
+    public static ArrayList<FiveDayForecast> getForecastDay
+            (ArrayList<FiveDayForecast> forecast, int position) {
+        ArrayList<FiveDayForecast> day = getDay(forecast, position);
         return day;
     }
 
@@ -102,7 +103,10 @@ public class ResultParser {
         }
     }
 
-    private static ArrayList<FiveDayForecast> getDay(ArrayList<FiveDayForecast> forecast) {
+    // position at 0 we need however many forecasts, 1 start from however many 0 read.
+    // then after that in multiplier based on position
+    private static ArrayList<FiveDayForecast> getDay
+            (ArrayList<FiveDayForecast> forecast, int position) {
         ArrayList<FiveDayForecast> dayForecast = new ArrayList<>();
         dayForecast.add(forecast.get(parseIndex));
         parseIndex++;
