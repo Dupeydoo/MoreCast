@@ -6,10 +6,10 @@ import android.net.NetworkInfo;
 
 public class NetworkHelper {
     public static boolean checkForInternet(Context context) {
-        ConnectivityManager cm =
+        ConnectivityManager connectivityManager =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }

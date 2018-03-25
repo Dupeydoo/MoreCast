@@ -3,6 +3,7 @@ package com.exeter.ecm2425.morecast.Activities;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ImageView;
 
 import com.exeter.ecm2425.morecast.DataProcessing.BindDetailedView;
@@ -14,7 +15,7 @@ import com.exeter.ecm2425.morecast.Views.ViewHelper;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class DetailedActivity extends AppCompatActivity {
+public class DetailedActivity extends BaseActivity {
 
     private ArrayList<FiveDayForecast> forecastData;
     private final static String SHARED_PREFERENCES = "SHARED_PREFERENCES";
@@ -40,20 +41,15 @@ public class DetailedActivity extends AppCompatActivity {
         super.onSaveInstanceState(outBundle);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void bindData() {
         TodayView detailedView = (TodayView) findViewById(R.id.detailedView);
         BindDetailedView binder = new BindDetailedView(forecastData, detailedView);
         binder.bindDetailedData();
         setSharedPreferences();
-    }
-
-    private void setSharedPreferences() {
-        SharedPreferences preferences = getSharedPreferences(SHARED_PREFERENCES, 0);
-        this.setTitle(preferences.getString("location", "London"));
-    }
-
-    private void setBackground(FiveDayForecast forecast) {
-        ImageView background = (ImageView) findViewById(R.id.weatherBack);
-        ViewHelper.setBackground(forecast, background, getResources());
     }
 }

@@ -32,7 +32,7 @@ public class APIService extends IntentService {
 
     private final String API_KEY = "79ccd6c60ce7d9f6fa8bb7b4f561a924";
     private String apiAddress = "https://api.openweathermap.org/data/2.5/forecast?units=metric&";
-    public static final int API_RUNNING = 1;  // Enums not recommended in Android - reason.
+    public static final int API_RUNNING = 1;
     public static final int API_FINISHED = 0;
     public static final int API_ERROR = -1;
 
@@ -80,13 +80,15 @@ public class APIService extends IntentService {
         try {
             String apiResult = makeApiCall(apiSuffix);
             apiBundle.putString("result", apiResult);
+
             JSONObject resultData = new JSONObject(apiResult);
             ForecastParser parser = new ForecastParser();
+
             parser.parseWeatherData(resultData);
             ArrayList<FiveDayForecast> fiveDayForecasts = new ArrayList<>
                     (Arrays.asList(parser.getFiveDayForecasts()));
-            apiBundle.putParcelableArrayList("forecast", fiveDayForecasts);
-            receiver.send(API_FINISHED, apiBundle);
+
+            sendFiveDayForecasts(apiBundle, fiveDayForecasts, receiver);
         } catch(Exception exception) {
             apiBundle.putString(Intent.EXTRA_TEXT, exception.toString());
             receiver.send(API_ERROR, apiBundle);
@@ -112,17 +114,23 @@ public class APIService extends IntentService {
         try {
             String apiResult = makeApiCall(apiSuffix);
             apiBundle.putString("result", apiResult);
-            ArrayList<FiveDayForecast> forecast = insertApiResponseDatabase(apiResult);
-            apiBundle.putParcelableArrayList("forecast", forecast);
-            receiver.send(API_FINISHED, apiBundle);
+            ArrayList<FiveDayForecast> fiveDayForecasts = insertApiResponseDatabase(apiResult);
+            sendFiveDayForecasts(apiBundle, fiveDayForecasts, receiver);
         } catch(Exception exception) {
             apiBundle.putString(Intent.EXTRA_TEXT, exception.toString());
             receiver.send(API_ERROR, apiBundle);
         }
     }
 
-    private ArrayList<FiveDayForecast> insertApiResponseDatabase(String apiResult) throws APIException {
+    private ArrayList<FiveDayForecast> insertApiResponseDatabase(String apiResult)
+            throws APIException {
         AccessDatabase database = new AccessDatabase();
         return database.save(apiResult, getApplicationContext());
+    }
+
+    private void sendFiveDayForecasts
+            (Bundle bundle, ArrayList<FiveDayForecast> fiveDayForecasts, ResultReceiver receiver) {
+        bundle.putParcelableArrayList("forecast", fiveDayForecasts);
+        receiver.send(API_FINISHED, bundle);
     }
 }

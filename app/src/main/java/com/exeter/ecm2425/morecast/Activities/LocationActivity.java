@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,7 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class LocationActivity extends AppCompatActivity {
+public class LocationActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager viewManager;
@@ -58,6 +60,13 @@ public class LocationActivity extends AppCompatActivity {
             TextView alertView = (TextView) findViewById(R.id.alertView);
             alertView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.locationmenu, menu);
+        return true;
     }
 
     private void setUpRecyclerView() {
@@ -97,7 +106,7 @@ public class LocationActivity extends AppCompatActivity {
 
             @Override
             public void onError(Status status) {
-                createLocationsErrorDialog(R.string.googleSearchError, R.string.errorTitle);
+                createErrorDialog(R.string.googleSearchError, R.string.errorTitle);
             }
         });
     }
@@ -132,7 +141,7 @@ public class LocationActivity extends AppCompatActivity {
                 fileBar.setVisibility(View.INVISIBLE);
                 setUpRecyclerView();
             } else {
-                createLocationsErrorDialog(R.string.locationsTextError, R.string.errorTitle);
+                createErrorDialog(R.string.locationsTextError, R.string.errorTitle);
             }
         }
     }
@@ -151,16 +160,8 @@ public class LocationActivity extends AppCompatActivity {
                 locationsText.add(line);
             }
         } catch(IOException ioException){
-            createLocationsErrorDialog(R.string.locationsTextError, R.string.errorTitle);
+            createErrorDialog(R.string.locationsTextError, R.string.errorTitle);
         }
         return locationsText;
-    }
-
-    private void createLocationsErrorDialog(int messageId, int errorTitleId) {
-        Resources resources = getResources();
-        String error = resources.getString(messageId);
-        String title = resources.getString(errorTitleId);
-        ErrorDialog errorDialog = new ErrorDialog(error, title);
-        errorDialog.showDialog(this);
     }
 }

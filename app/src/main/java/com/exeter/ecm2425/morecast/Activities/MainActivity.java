@@ -1,19 +1,14 @@
 package com.exeter.ecm2425.morecast.Activities;
 
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,19 +35,15 @@ import com.exeter.ecm2425.morecast.Views.ErrorDialog;
 import com.exeter.ecm2425.morecast.Views.ViewHelper;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import static com.exeter.ecm2425.morecast.API.APILocation.PERMISSIONS_SUCCESS;
 
 
-public class MainActivity extends AppCompatActivity implements APIResultReceiver.Receiver {
+public class MainActivity extends BaseActivity implements APIResultReceiver.Receiver {
 
-    public APIResultReceiver apiReceiver;
     private Bundle resultData;
-    private SharedPreferences preferences;
-    private final static String SHARED_PREFERENCES = "SHARED_PREFERENCES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +59,9 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
             try {
                 Bundle apiData = savedInstanceState.getBundle("api-data");
                 postProcessResults(apiData);
-            } catch(NullPointerException nullEx) {
+            } catch(NullPointerException nullException) {
                 performDatabaseTask();
             }
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(apiReceiver != null) {
-            apiReceiver.setReceiver(null);
         }
     }
 
@@ -90,23 +73,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.optionsmenu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.chooseLocation:
-                Class dest = LocationActivity.class;
-                Intent intent = new Intent(this, dest);
-                startActivity(intent);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void startApiService(Intent intent, String namedLocation) {
@@ -175,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     }
 
     private void postProcessDatabaseResults(ArrayList<FiveDayForecast> forecastData) {
-        preferences = getSharedPreferences(SHARED_PREFERENCES, 0);
-        this.setTitle(preferences.getString("location", "London"));
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, 0);
+        this.setTitle(sharedPreferences.getString("location", "London"));
         setUpRecyclerView(forecastData);
     }
 
@@ -200,36 +167,10 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         }
     }
 
-    private void writeLocToSharedPreferences(String location) {
-        preferences = getSharedPreferences(SHARED_PREFERENCES, 0);
-        SharedPreferences.Editor editor;
-        editor = preferences.edit();
-
-        editor.putString("location", location);
-        // offload UI thread.
-        editor.apply();
-    }
-
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(this,
-                new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_SUCCESS);
-    }
-
-    private Intent setReceiverAndIntent() {
+    protected Intent setReceiverAndIntent() {
         apiReceiver = new APIResultReceiver(new Handler());
         apiReceiver.setReceiver(this);
         return new Intent(Intent.ACTION_SYNC, null, this, APIService.class);
-    }
-
-    private void setBackground(FiveDayForecast forecast) {
-        ImageView background = (ImageView) findViewById(R.id.weatherBack);
-        ViewHelper.setBackground(forecast, background, getResources());
-    }
-
-    private void setResultTitle(JSONObject result) {
-        String city = result.optJSONObject("city").optString("name");
-        this.setTitle(city);
-        writeLocToSharedPreferences(city);
     }
 
     private void performDatabaseTask() {

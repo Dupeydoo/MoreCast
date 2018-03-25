@@ -25,7 +25,6 @@ public class AccessDatabase {
 
                 FiveDayForecastDao forecastDao = MorecastDatabase.getMorecastDatabase(context)
                         .getFiveDayForecastDao();
-
                 forecast = parser.getFiveDayForecasts();
                 forecastDao.destroyTable();
                 forecastDao.insertFiveDayForecast(forecast);

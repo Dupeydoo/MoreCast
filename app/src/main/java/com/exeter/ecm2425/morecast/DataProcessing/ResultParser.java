@@ -39,14 +39,6 @@ public class ResultParser {
         return day;
     }
 
-    public static JSONObject getTimestamp(JSONArray day, int index) {
-        try {
-            return day.getJSONObject(index);
-        } catch(JSONException jsonException) {
-            return null;
-        }
-    }
-
     public static double getDoubleFromJson
             (JSONObject jsonObject, String innerObject, String jsonDouble) {
         try {

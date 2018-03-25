@@ -1,32 +1,21 @@
 package com.exeter.ecm2425.morecast.DataProcessing;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.exeter.ecm2425.morecast.Activities.DetailedActivity;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
-import com.exeter.ecm2425.morecast.R;
-import com.exeter.ecm2425.morecast.Utils.DateHandler;
 import com.exeter.ecm2425.morecast.Views.ForecastView;
 import com.exeter.ecm2425.morecast.Views.TodayView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
     private ArrayList<FiveDayForecast> fiveDayForecasts;
     private final static int FORECAST_DAYS = 5;
+    private final static int BIND_TODAY = 0;
+    private final static int BIND_FORECAST = 1;
 
     public static class ViewHolder extends RecyclerView.ViewHolder  {
         public TodayView todayView;
@@ -68,15 +57,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ArrayList<FiveDayForecast> day;
+        ArrayList<FiveDayForecast> day = new ArrayList<>();
         if (holder.getItemViewType() == 0) {
-            day = ResultParser.getForecastDay(fiveDayForecasts);
-            BindWeatherAdapter binder = new BindWeatherAdapter(day, holder);
-            binder.bindToday();
+            bindViews(holder, day, BIND_TODAY);
         } else {
-            day = ResultParser.getForecastDay(fiveDayForecasts);
-            BindWeatherAdapter binder = new BindWeatherAdapter(day, holder);
-            binder.bindForecast(day);
+            bindViews(holder, day, BIND_FORECAST);
         }
     }
 
@@ -90,5 +75,15 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public int getItemCount() {
         return FORECAST_DAYS;
+    }
+
+    private void bindViews(ViewHolder holder, ArrayList<FiveDayForecast> day, int bindType) {
+        day = ResultParser.getForecastDay(fiveDayForecasts);
+        BindWeatherAdapter binder = new BindWeatherAdapter(day, holder);
+        if(bindType == BIND_TODAY) {
+            binder.bindToday();
+        } else {
+            binder.bindForecast(day);
+        }
     }
 }
