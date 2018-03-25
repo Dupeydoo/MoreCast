@@ -40,7 +40,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         currentForecasts = new ArrayList<ArrayList<FiveDayForecast>>();
     }
 
-    // get next day, if it cant bind the next four times, get n-1 position from next day.
     @NonNull
     @Override
     public WeatherAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
@@ -62,18 +61,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ArrayList<FiveDayForecast> day = new ArrayList<>();
         if(binderCounter < getItemCount()) {
-            if(holder.getItemViewType() == 0) {
-                bindViews(holder, day, BIND_TODAY, position);
-            } else {
-                bindViews(holder, day, BIND_FORECAST, position);
-            }
+            rebindViews(holder, day, position);
             binderCounter++;
         } else {
-            if(holder.getItemViewType() == 0) {
-                bindViews(holder, currentForecasts.get(0), BIND_TODAY, 0);
-            } else {
-                bindViews(holder, currentForecasts.get(position), BIND_FORECAST, 0);
-            }
+            rebindViews(holder, null, position);
         }
     }
 
@@ -82,7 +73,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         if (position == 0) return 0;
         return 1;
     }
-
 
     @Override
     public int getItemCount() {
@@ -101,6 +91,20 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             binder.bindToday();
         } else {
             binder.bindForecast(day);
+        }
+    }
+
+    private void rebindViews(ViewHolder holder, ArrayList<FiveDayForecast> day, int position) {
+        if(holder.getItemViewType() == 0) {
+            if(day == null) {
+                day = currentForecasts.get(0);
+            }
+            bindViews(holder, day, BIND_TODAY, position);
+        } else {
+            if(day == null) {
+                day = currentForecasts.get(position);
+            }
+            bindViews(holder, day, BIND_FORECAST, position);
         }
     }
 }
