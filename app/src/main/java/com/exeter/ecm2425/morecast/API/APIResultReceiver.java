@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 
+import com.exeter.ecm2425.morecast.Views.ErrorDialog;
+
 
 public class APIResultReceiver extends ResultReceiver {
     private Receiver apiReceiver;

@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.media.Image;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.exeter.ecm2425.morecast.API.APIException;
 import com.exeter.ecm2425.morecast.API.APILocation;
 import com.exeter.ecm2425.morecast.DataProcessing.ResultParser;
 import com.exeter.ecm2425.morecast.DataProcessing.WeatherAdapter;
@@ -34,6 +36,7 @@ import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.Services.APIService;
 import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
+import com.exeter.ecm2425.morecast.Views.ErrorDialog;
 import com.exeter.ecm2425.morecast.Views.ViewHelper;
 
 import org.json.JSONObject;
@@ -157,11 +160,18 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
     private void postProcessResults(Bundle resultData) {
         this.resultData = resultData;
         ResultParser parser = new ResultParser(resultData.getString("result"));
-        JSONObject result = parser.parseResult();
-        ArrayList<FiveDayForecast> forecast = resultData.getParcelableArrayList("forecast");
-        setResultTitle(result);
-        setBackground(forecast.get(0));
-        setUpRecyclerView(forecast);
+        try {
+            JSONObject result = parser.parseResult();
+            ArrayList<FiveDayForecast> forecast = resultData.getParcelableArrayList("forecast");
+            setResultTitle(result);
+            setBackground(forecast.get(0));
+            setUpRecyclerView(forecast);
+        } catch(APIException apiException) {
+            Resources resources = getResources();
+            ErrorDialog errorDialog = new ErrorDialog(resources.getString(R.string.emptyAPIError),
+                    resources.getString(R.string.errorTitle));
+            errorDialog.showDialog(this);
+        }
     }
 
     private void postProcessDatabaseResults(ArrayList<FiveDayForecast> forecastData) {

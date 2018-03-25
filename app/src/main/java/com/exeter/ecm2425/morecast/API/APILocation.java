@@ -9,7 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import com.exeter.ecm2425.morecast.Activities.LocationActivity;
 import com.exeter.ecm2425.morecast.Activities.MainActivity;
+import com.exeter.ecm2425.morecast.Views.ErrorDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,12 +47,12 @@ public class APILocation {
                     new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            // deal with no internet here.
+                            activity.startApiService(APILocation.this.intent, "London");
                         }
                     }
             );
-        } catch(SecurityException secEx) {
-            System.out.println(secEx.getMessage());
+        } catch(SecurityException securityException) {
+            activity.startApiService(this.intent, "London");
         }
     }
 

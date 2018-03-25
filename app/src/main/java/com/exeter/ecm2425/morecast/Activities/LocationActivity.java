@@ -2,6 +2,7 @@ package com.exeter.ecm2425.morecast.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -96,10 +97,7 @@ public class LocationActivity extends AppCompatActivity {
 
             @Override
             public void onError(Status status) {
-                String error = getResources().getString(R.string.googleSearchError);
-                String title = getResources().getString(R.string.googleErrorTitle);
-                ErrorDialog errorDialog = new ErrorDialog(error, title);
-                errorDialog.showDialog(LocationActivity.this);
+                createLocationsErrorDialog(R.string.googleSearchError, R.string.errorTitle);
             }
         });
     }
@@ -134,7 +132,7 @@ public class LocationActivity extends AppCompatActivity {
                 fileBar.setVisibility(View.INVISIBLE);
                 setUpRecyclerView();
             } else {
-              // show error dialog.
+                createLocationsErrorDialog(R.string.locationsTextError, R.string.errorTitle);
             }
         }
     }
@@ -152,9 +150,17 @@ public class LocationActivity extends AppCompatActivity {
                 line = reader.readLine();
                 locationsText.add(line);
             }
-        } catch(IOException ioe){
-            ioe.printStackTrace();
+        } catch(IOException ioException){
+            createLocationsErrorDialog(R.string.locationsTextError, R.string.errorTitle);
         }
         return locationsText;
+    }
+
+    private void createLocationsErrorDialog(int messageId, int errorTitleId) {
+        Resources resources = getResources();
+        String error = resources.getString(messageId);
+        String title = resources.getString(errorTitleId);
+        ErrorDialog errorDialog = new ErrorDialog(error, title);
+        errorDialog.showDialog(this);
     }
 }

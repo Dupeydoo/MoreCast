@@ -13,5 +13,8 @@
     <string name="locationsUnavailable">There is no internet connection. Please
         access the internet to use location features.</string>
     <string name="googleSearchError">There was a problem searching the Google API.</string>
-    <string name="googleErrorTitle">Google Places Error</string>
+    <string name="locationsTextError">Could not load the default locations.
+        Please try again soon!</string>
+    <string name="emptyAPIError">Weather data could not be retrieved!</string>
+    <string name="errorTitle">Application Error</string>
 </resources>

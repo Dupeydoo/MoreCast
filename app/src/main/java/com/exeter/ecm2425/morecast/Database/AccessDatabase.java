@@ -3,6 +3,7 @@ package com.exeter.ecm2425.morecast.Database;
 
 import android.content.Context;
 
+import com.exeter.ecm2425.morecast.API.APIException;
 import com.exeter.ecm2425.morecast.DataProcessing.ForecastParser;
 
 import org.json.JSONException;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 
 public class AccessDatabase {
 
-    public ArrayList<FiveDayForecast> save(String apiResult, Context context) {
+    public ArrayList<FiveDayForecast> save(String apiResult, Context context) throws APIException {
         FiveDayForecast[] forecast;
         if(apiResult != null && !apiResult.isEmpty()) {
             try {
@@ -28,13 +29,13 @@ public class AccessDatabase {
                 forecast = parser.getFiveDayForecasts();
                 forecastDao.destroyTable();
                 forecastDao.insertFiveDayForecast(forecast);
-            } catch(JSONException e) {
-                forecast = new FiveDayForecast[] { };
+            } catch(JSONException jsonException) {
+                throw new APIException(jsonException.getMessage());
             }
         }
 
         else {
-            forecast = new FiveDayForecast[] { };
+            throw new APIException("API Data could not be parsed!");
         }
         return new ArrayList<>(Arrays.asList(forecast));
     }

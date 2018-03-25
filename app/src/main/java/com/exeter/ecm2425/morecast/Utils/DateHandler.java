@@ -57,4 +57,8 @@ public class DateHandler {
         String hour = timeStamp.split("\\s+")[1].substring(0, 2);
         return Integer.parseInt(hour);
     }
+
+    public static Long getDeviceEpochTime() {
+        return System.currentTimeMillis() / 1000;
+    }
 }

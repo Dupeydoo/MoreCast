@@ -7,18 +7,18 @@ import android.content.Context;
 
 @Database(entities = {FiveDayForecast.class}, version = 1)
 public abstract class MorecastDatabase extends RoomDatabase {
-    private static MorecastDatabase INSTANCE;
+    private static MorecastDatabase singleton;
     public abstract FiveDayForecastDao getFiveDayForecastDao();
 
     public static MorecastDatabase getMorecastDatabase(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+        if (singleton == null) {
+            singleton = Room.databaseBuilder(context.getApplicationContext(),
                     MorecastDatabase.class, "MorecastDatabase").build();
         }
-        return INSTANCE;
+        return singleton;
     }
 
     public static void destroyInstance() {
-        INSTANCE = null;
+        singleton = null;
     }
 }

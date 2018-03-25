@@ -1,7 +1,10 @@
 package com.exeter.ecm2425.morecast.DataProcessing;
 
 
+import com.exeter.ecm2425.morecast.API.APIException;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
+import com.exeter.ecm2425.morecast.R;
+import com.exeter.ecm2425.morecast.Utils.DateHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,14 +22,14 @@ public class ResultParser {
         parseIndex = 0;
     }
 
-    public JSONObject parseResult() {
+    public JSONObject parseResult() throws APIException {
         JSONObject jsonResult;
         try {
              jsonResult = new JSONObject(preParsed);
         }
 
-        catch(JSONException e) {
-            jsonResult = new JSONObject();
+        catch(JSONException jsonException) {
+            throw new APIException("API Result was empty!");
         }
         return jsonResult;
     }
@@ -39,7 +42,7 @@ public class ResultParser {
     public static JSONObject getTimestamp(JSONArray day, int index) {
         try {
             return day.getJSONObject(index);
-        } catch(JSONException e) {
+        } catch(JSONException jsonException) {
             return null;
         }
     }
@@ -48,7 +51,7 @@ public class ResultParser {
             (JSONObject jsonObject, String innerObject, String jsonDouble) {
         try {
             return jsonObject.getJSONObject(innerObject).getDouble(jsonDouble);
-        } catch(JSONException e) {
+        } catch(JSONException jsonException) {
             return 0.0;
         }
     }
@@ -56,7 +59,7 @@ public class ResultParser {
     public static int getIntFromJson(JSONObject jsonObject, String innerObject, String jsonInt) {
         try {
             return jsonObject.getJSONObject(innerObject).getInt(jsonInt);
-        } catch(JSONException e) {
+        } catch(JSONException jsonException) {
             return 0;
         }
     }
@@ -65,7 +68,7 @@ public class ResultParser {
         try {
             JSONObject snow = jsonObject.getJSONObject("snow");
             return "Snow";
-        } catch(JSONException e) {
+        } catch(JSONException jsonException) {
             return "Rain";
         }
     }
@@ -74,7 +77,7 @@ public class ResultParser {
         String preType = precipType.toLowerCase();
         try {
             return jsonObject.getJSONObject(preType).getDouble("3h");
-        } catch(JSONException e) {
+        } catch(JSONException jsonException) {
             return 0.0;
         }
     }
@@ -82,7 +85,7 @@ public class ResultParser {
     public static String getWeatherDescription(JSONObject jsonObject) {
         try {
             return jsonObject.getJSONArray("weather").getJSONObject(0).getString("description");
-        } catch(JSONException e) {
+        } catch(JSONException jsonException) {
             return "Description Unavailable";
         }
     }
@@ -90,8 +93,8 @@ public class ResultParser {
     public static Long getWeatherEpoch(JSONObject jsonObject) {
         try {
             return jsonObject.getLong("dt");
-        } catch(JSONException e) {
-            return 0L;
+        } catch(JSONException jsonException) {
+            return DateHandler.getDeviceEpochTime();
         }
     }
 
@@ -102,7 +105,7 @@ public class ResultParser {
     public static int getWeatherId(JSONObject time) {
         try {
             return time.getJSONArray("weather").getJSONObject(0).getInt("id");
-        } catch(JSONException e) {
+        } catch(JSONException jsonException) {
             return 800;
         }
     }

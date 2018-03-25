@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import com.exeter.ecm2425.morecast.API.APIException;
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.DataProcessing.ForecastParser;
 import com.exeter.ecm2425.morecast.Database.AccessDatabase;
@@ -55,24 +56,19 @@ public class APIService extends IntentService {
         }
     }
 
-    private String makeApiCall(String apiSuffix) {
+    private String makeApiCall(String apiSuffix) throws IOException {
         StringBuilder apiResult = new StringBuilder();
-        try {
-            URL url = new URL(apiAddress + apiSuffix + "&APPID=" + API_KEY);
-            HttpsURLConnection apiConnection = (HttpsURLConnection) url.openConnection();
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(apiConnection.getInputStream()));
+        URL url = new URL(apiAddress + apiSuffix + "&APPID=" + API_KEY);
+        HttpsURLConnection apiConnection = (HttpsURLConnection) url.openConnection();
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(apiConnection.getInputStream()));
 
-            String line;
-            while((line = reader.readLine()) != null) {
-                apiResult.append(line).append("\n");
-            }
-            reader.close();
-            apiConnection.disconnect();
-        } catch(MalformedURLException e) {
-
-        } catch(IOException e) {
+        String line;
+        while((line = reader.readLine()) != null) {
+            apiResult.append(line).append("\n");
         }
+        reader.close();
+        apiConnection.disconnect();
         return apiResult.toString();
     }
 
@@ -91,10 +87,8 @@ public class APIService extends IntentService {
                     (Arrays.asList(parser.getFiveDayForecasts()));
             apiBundle.putParcelableArrayList("forecast", fiveDayForecasts);
             receiver.send(API_FINISHED, apiBundle);
-        }
-
-        catch(Exception e) {
-            apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
+        } catch(Exception exception) {
+            apiBundle.putString(Intent.EXTRA_TEXT, exception.toString());
             receiver.send(API_ERROR, apiBundle);
         }
     }
@@ -121,15 +115,13 @@ public class APIService extends IntentService {
             ArrayList<FiveDayForecast> forecast = insertApiResponseDatabase(apiResult);
             apiBundle.putParcelableArrayList("forecast", forecast);
             receiver.send(API_FINISHED, apiBundle);
-        }
-
-        catch(Exception e) {
-            apiBundle.putString(Intent.EXTRA_TEXT, e.toString());
+        } catch(Exception exception) {
+            apiBundle.putString(Intent.EXTRA_TEXT, exception.toString());
             receiver.send(API_ERROR, apiBundle);
         }
     }
 
-    private ArrayList<FiveDayForecast> insertApiResponseDatabase(String apiResult) {
+    private ArrayList<FiveDayForecast> insertApiResponseDatabase(String apiResult) throws APIException {
         AccessDatabase database = new AccessDatabase();
         return database.save(apiResult, getApplicationContext());
     }
