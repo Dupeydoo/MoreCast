@@ -12,4 +12,6 @@
         when you have an internet connection.</string>
     <string name="locationsUnavailable">There is no internet connection. Please
         access the internet to use location features.</string>
+    <string name="googleSearchError">There was a problem searching the Google API.</string>
+    <string name="googleErrorTitle">Google Places Error</string>
 </resources>

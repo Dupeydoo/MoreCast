@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 Bundle apiData = savedInstanceState.getBundle("api-data");
                 postProcessResults(apiData);
             } catch(NullPointerException nullEx) {
-                AsyncTask<Context, Void, ArrayList<FiveDayForecast>> readDb =
-                        new DatabaseReadTask().execute(this);
+                performDatabaseTask();
             }
         }
     }
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
                 break;
 
             case APIService.API_ERROR:
-                // Error - go to db instead
+                performDatabaseTask();
                 break;
         }
     }
@@ -221,6 +220,11 @@ public class MainActivity extends AppCompatActivity implements APIResultReceiver
         String city = result.optJSONObject("city").optString("name");
         this.setTitle(city);
         writeLocToSharedPreferences(city);
+    }
+
+    private void performDatabaseTask() {
+        AsyncTask<Context, Void, ArrayList<FiveDayForecast>> readDb =
+                new DatabaseReadTask().execute(this);
     }
 
     private class DatabaseReadTask extends AsyncTask<Context, Void, ArrayList<FiveDayForecast>> {

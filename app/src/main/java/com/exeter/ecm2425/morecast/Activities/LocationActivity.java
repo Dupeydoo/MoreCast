@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.exeter.ecm2425.morecast.DataProcessing.LocationAdapter;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
+import com.exeter.ecm2425.morecast.Views.ErrorDialog;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -95,7 +96,10 @@ public class LocationActivity extends AppCompatActivity {
 
             @Override
             public void onError(Status status) {
-                System.out.println(status.getStatusMessage());
+                String error = getResources().getString(R.string.googleSearchError);
+                String title = getResources().getString(R.string.googleErrorTitle);
+                ErrorDialog errorDialog = new ErrorDialog(error, title);
+                errorDialog.showDialog(LocationActivity.this);
             }
         });
     }
