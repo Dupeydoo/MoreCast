@@ -152,6 +152,8 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager viewManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(viewManager);
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(TODAY_FORECAST, 0);
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(FUTURE_FORECAST, 0);
         WeatherAdapter viewAdapter = new WeatherAdapter(forecastData);
         recyclerView.setAdapter(viewAdapter);
     }

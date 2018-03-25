@@ -29,6 +29,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public APIResultReceiver apiReceiver;
     protected SharedPreferences sharedPreferences;
     protected final static String SHARED_PREFERENCES = "SHARED_PREFERENCES";
+    protected final static int TODAY_FORECAST = 0;
+    protected final static int FUTURE_FORECAST = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

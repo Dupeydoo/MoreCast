@@ -35,8 +35,8 @@ public class ResultParser {
     }
 
     public static ArrayList<FiveDayForecast> getForecastDay
-            (ArrayList<FiveDayForecast> forecast, int position) {
-        ArrayList<FiveDayForecast> day = getDay(forecast, position);
+            (ArrayList<FiveDayForecast> forecast) {
+        ArrayList<FiveDayForecast> day = getDay(forecast);
         return day;
     }
 
@@ -103,10 +103,7 @@ public class ResultParser {
         }
     }
 
-    // position at 0 we need however many forecasts, 1 start from however many 0 read.
-    // then after that in multiplier based on position
-    private static ArrayList<FiveDayForecast> getDay
-            (ArrayList<FiveDayForecast> forecast, int position) {
+    private static ArrayList<FiveDayForecast> getDay(ArrayList<FiveDayForecast> forecast) {
         ArrayList<FiveDayForecast> dayForecast = new ArrayList<>();
         dayForecast.add(forecast.get(parseIndex));
         parseIndex++;

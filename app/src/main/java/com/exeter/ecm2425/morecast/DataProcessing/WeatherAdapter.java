@@ -13,9 +13,11 @@ import java.util.ArrayList;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
     private ArrayList<FiveDayForecast> fiveDayForecasts;
+    private ArrayList<ArrayList<FiveDayForecast>> currentForecasts;
     private final static int FORECAST_DAYS = 5;
     private final static int BIND_TODAY = 0;
     private final static int BIND_FORECAST = 1;
+    private int binderCounter = 0;
 
     public static class ViewHolder extends RecyclerView.ViewHolder  {
         public TodayView todayView;
@@ -35,6 +37,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     public WeatherAdapter(ArrayList<FiveDayForecast> forecasts) {
         fiveDayForecasts = forecasts;
+        currentForecasts = new ArrayList<ArrayList<FiveDayForecast>>();
     }
 
     // get next day, if it cant bind the next four times, get n-1 position from next day.
@@ -58,10 +61,19 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ArrayList<FiveDayForecast> day = new ArrayList<>();
-        if (holder.getItemViewType() == 0) {
-            bindViews(holder, day, BIND_TODAY, position);
+        if(binderCounter < getItemCount()) {
+            if(holder.getItemViewType() == 0) {
+                bindViews(holder, day, BIND_TODAY, position);
+            } else {
+                bindViews(holder, day, BIND_FORECAST, position);
+            }
+            binderCounter++;
         } else {
-            bindViews(holder, day, BIND_FORECAST, position);
+            if(holder.getItemViewType() == 0) {
+                bindViews(holder, currentForecasts.get(0), BIND_TODAY, 0);
+            } else {
+                bindViews(holder, currentForecasts.get(position), BIND_FORECAST, 0);
+            }
         }
     }
 
@@ -78,8 +90,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     }
 
     private void bindViews
-            (ViewHolder holder, ArrayList<FiveDayForecast> day, int bindType, int position) {
-        day = ResultParser.getForecastDay(fiveDayForecasts, position);
+            (ViewHolder holder, ArrayList<FiveDayForecast> day, int bindType, int postion) {
+        if(day.isEmpty()) {
+            day = ResultParser.getForecastDay(fiveDayForecasts);
+            currentForecasts.add(day);
+        }
+
         BindWeatherAdapter binder = new BindWeatherAdapter(day, holder);
         if(bindType == BIND_TODAY) {
             binder.bindToday();
