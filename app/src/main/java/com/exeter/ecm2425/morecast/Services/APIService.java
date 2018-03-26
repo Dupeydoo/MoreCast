@@ -123,7 +123,7 @@ public class APIService extends IntentService {
     }
 
     private ArrayList<FiveDayForecast> insertApiResponseDatabase(String apiResult)
-            throws APIException {
+            throws APIException, IOException {
         AccessDatabase database = new AccessDatabase();
         return database.save(apiResult, getApplicationContext());
     }

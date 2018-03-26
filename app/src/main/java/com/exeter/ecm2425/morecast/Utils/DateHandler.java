@@ -1,5 +1,6 @@
 package com.exeter.ecm2425.morecast.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -7,8 +8,6 @@ import java.util.TimeZone;
 
 
 public class DateHandler {
-
-    private final static int MILLISECONDS_IN_AN_HOUR = 3600000;
 
     public DateHandler() {}
 
@@ -63,11 +62,10 @@ public class DateHandler {
         return System.currentTimeMillis() / 1000;
     }
 
-    public static int getTimeZoneOffset() {
-        Calendar greg = new GregorianCalendar();
-        TimeZone zone = greg.getTimeZone();
-        int offset = zone.getRawOffset();
-        int dst = zone.getDSTSavings();
-        return (offset + dst) / MILLISECONDS_IN_AN_HOUR;
+    public static String getDateStringFromEpoch(Long epoch) {
+        Date adjustedDate = new Date(epoch);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return format.format(adjustedDate);
     }
 }

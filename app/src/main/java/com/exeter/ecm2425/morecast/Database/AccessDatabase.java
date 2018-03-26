@@ -9,13 +9,15 @@ import com.exeter.ecm2425.morecast.DataProcessing.ForecastParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
 public class AccessDatabase {
 
-    public ArrayList<FiveDayForecast> save(String apiResult, Context context) throws APIException {
+    public ArrayList<FiveDayForecast> save(String apiResult, Context context)
+            throws APIException, IOException {
         FiveDayForecast[] forecast;
         if(apiResult != null && !apiResult.isEmpty()) {
             try {

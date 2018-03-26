@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:indeterminateTint="@color/colorWhite"
+        android:indeterminateTint="@color/colorStatusBar"
         android:visibility="invisible" />
 
     <TextView

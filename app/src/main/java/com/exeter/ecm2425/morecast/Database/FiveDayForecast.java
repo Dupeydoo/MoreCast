@@ -57,6 +57,9 @@ public class FiveDayForecast implements Parcelable {
     @ColumnInfo(name = "date-time")
     private String dateTime;
 
+    @ColumnInfo(name = "utc-date-time")
+    private String utcDateTime;
+
     @ColumnInfo(name = "weather-code")
     private int weatherCode;
 
@@ -79,6 +82,8 @@ public class FiveDayForecast implements Parcelable {
     public double getPrecipitationAmount() { return precipitationAmount; }
 
     public String getDateTime() { return dateTime; }
+
+    public String getUtcDateTime() { return utcDateTime; }
 
     public int getWeatherCode() { return weatherCode; }
 
@@ -105,6 +110,8 @@ public class FiveDayForecast implements Parcelable {
     }
 
     public void setDateTime(String dateTime) { this.dateTime = dateTime; }
+
+    public void setUtcDateTime(String utcDateTime) { this.utcDateTime = utcDateTime; }
 
     public void setWeatherCode(int weatherCode) { this.weatherCode = weatherCode; }
 

@@ -95,10 +95,6 @@ public class ResultParser {
         }
     }
 
-    public static String getDateTime(JSONObject jsonObject) {
-        return jsonObject.optString("dt_txt");
-    }
-
     public static int getWeatherId(JSONObject time) {
         try {
             return time.getJSONArray("weather").getJSONObject(0).getInt("id");
@@ -114,7 +110,7 @@ public class ResultParser {
 
         for(int i = parseIndex; i < forecast.size(); i++) {
             FiveDayForecast currentForecastObj = forecast.get(i);
-            if(currentForecastObj.getDateTime().contains("00:00:00")) {
+            if(currentForecastObj.getUtcDateTime().contains("00:00:00")) {
                 dayForecast.add(forecast.get(i));
                 dayForecast.add(forecast.get(i + 1));
                 dayForecast.add(forecast.get(i + 2));

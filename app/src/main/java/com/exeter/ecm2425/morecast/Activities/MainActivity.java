@@ -49,7 +49,13 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(savedInstanceState == null && NetworkHelper.checkForInternet(this)) {
+        Bundle apiData = null;
+
+        if(savedInstanceState != null) {
+            apiData = savedInstanceState.getBundle("api-data");
+        }
+
+        if(apiData == null && NetworkHelper.checkForInternet(this)) {
             if (APILocation.checkLocationPermission(this)) {
                 startIntentReceiver();
             } else {
@@ -57,7 +63,7 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
             }
         } else {
             try {
-                Bundle apiData = savedInstanceState.getBundle("api-data");
+                apiData = savedInstanceState.getBundle("api-data");
                 postProcessResults(apiData);
             } catch(NullPointerException nullException) {
                 performDatabaseTask();

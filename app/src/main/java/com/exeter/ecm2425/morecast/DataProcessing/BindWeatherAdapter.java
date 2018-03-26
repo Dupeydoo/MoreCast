@@ -57,7 +57,7 @@ public class BindWeatherAdapter {
     private void bindForecastInformation() {
         FiveDayForecast midDay = dayForecast.get(4);
         long timestamp = midDay.getEpochTime();
-        Date currentDate = new Date(timestamp * 1000);
+        Date currentDate = new Date(timestamp);
 
         String currentDay = DateHandler.returnDayOfTheWeek(currentDate);
         double temp = midDay.getTemperature();
