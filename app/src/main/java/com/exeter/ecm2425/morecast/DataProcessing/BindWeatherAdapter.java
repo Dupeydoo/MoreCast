@@ -156,7 +156,12 @@ public class BindWeatherAdapter {
         String secondTime = secondForecast.getDateTime();
         String thirdTime = thirdForecast.getDateTime();
         String fourthTime = fourthForecast.getDateTime();
-        viewHolder.todayView.setLabels(firstTime, secondTime, thirdTime, fourthTime);
+
+        ArrayList<FiveDayForecast> times = new ArrayList<>();
+        Collections.addAll(times, firstForecast, secondForecast, thirdForecast, fourthForecast);
+        ArrayList<Double> temperatures = new ViewHelper().getTemperatures(times);
+
+        viewHolder.todayView.setLabels(firstTime, secondTime, thirdTime, fourthTime, temperatures);
     }
 
     /**

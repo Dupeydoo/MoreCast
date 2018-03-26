@@ -20,4 +20,12 @@
     <string name="errorTitle">Application Error</string>
     <string name="actionLocation">Current Location</string>
     <string name="actionPicker">Location Picker</string>
+    <string name="networkError">This feature is unavailable without internet.</string>
+    <string name="pressureUnits">%.2f hPa</string>
+    <string name="humidityUnits">%d%%</string>
+    <string name="windSpeedUnits">%.2f m/s</string>
+    <string name="windDirectionUnits">%.2f degrees</string>
+    <string name="precipAmountUnits">%.2f mm, (3h)</string>
+    <string name="temperatureUnits">%.1f °C</string>
+    <string name="temperatureUnit">°C</string>
 </resources>

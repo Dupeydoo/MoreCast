@@ -12,10 +12,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.R;
+import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
 import com.exeter.ecm2425.morecast.Views.ErrorDialog;
 import com.exeter.ecm2425.morecast.Views.ViewHelper;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -109,8 +111,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return true;
 
             case R.id.actionPicker:
-                geoDataClient = Places.getGeoDataClient(this);
-                launchLocationPicker();
+                if(NetworkHelper.checkForInternet(this)) {
+                    geoDataClient = Places.getGeoDataClient(this);
+                    launchLocationPicker();
+                } else {
+                    Toast.makeText(this, R.string.networkError, Toast.LENGTH_LONG).show();
+                }
 
             default:
                 return super.onOptionsItemSelected(item);

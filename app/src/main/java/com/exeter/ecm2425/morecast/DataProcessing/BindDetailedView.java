@@ -117,6 +117,11 @@ public class BindDetailedView {
         String secondTime = secondForecast.getDateTime();
         String thirdTime = thirdForecast.getDateTime();
         String fourthTime = fourthForecast.getDateTime();
-        detailedView.setLabels(firstTime, secondTime, thirdTime, fourthTime);
+
+        ArrayList<FiveDayForecast> times = new ArrayList<>();
+        Collections.addAll(times, firstForecast, secondForecast, thirdForecast, fourthForecast);
+        ArrayList<Double> temperatures = new ViewHelper().getTemperatures(times);
+
+        detailedView.setLabels(firstTime, secondTime, thirdTime, fourthTime, temperatures);
     }
 }

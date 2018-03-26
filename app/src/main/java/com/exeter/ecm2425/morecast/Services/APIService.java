@@ -11,8 +11,10 @@ import com.exeter.ecm2425.morecast.API.APIResultReceiver;
 import com.exeter.ecm2425.morecast.DataProcessing.ForecastParser;
 import com.exeter.ecm2425.morecast.Database.AccessDatabase;
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
+import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -103,22 +105,13 @@ public class APIService extends IntentService {
      * @return String The result of the API call.
      * @throws IOException If the API cannot be reached.
      */
-    private String makeApiCall(String apiSuffix) throws IOException {
+    private String makeApiCall(String apiSuffix) throws IOException, JSONException {
         StringBuilder apiResult = new StringBuilder();
         URL url = new URL(apiAddress + apiSuffix + "&APPID=" + API_KEY);
 
         // Make a secure HTTPS connection with OpenWeatherMap.
-        HttpsURLConnection apiConnection = (HttpsURLConnection) url.openConnection();
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(apiConnection.getInputStream()));
-
-        String line;
-        while((line = reader.readLine()) != null) {
-            apiResult.append(line).append("\n");
-        }
-        reader.close();
-        apiConnection.disconnect();
-        return apiResult.toString();
+        String apiString = NetworkHelper.makeApiConnection(url, apiResult);
+        return apiString;
     }
 
     /**

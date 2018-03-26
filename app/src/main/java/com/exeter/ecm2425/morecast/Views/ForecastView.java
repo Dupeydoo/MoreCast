@@ -2,6 +2,7 @@ package com.exeter.ecm2425.morecast.Views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,8 +63,10 @@ public class ForecastView extends ConstraintLayout implements View.OnClickListen
      * @param temp The temperature to display.
      */
     public void setForecast(String day, double temp) {
+        Resources res = getResources();
         this.forecastDay.setText(day);
-        this.forecastTemp.setText(String.format(Locale.ENGLISH, "%.1f °C", temp));
+        this.forecastTemp.setText(String.format(Locale.ENGLISH,
+                res.getString(R.string.temperatureUnits), temp));
     }
 
     /**

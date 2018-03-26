@@ -3,6 +3,7 @@ package com.exeter.ecm2425.morecast.DataProcessing;
 
 import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.Utils.DateHandler;
+import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -150,7 +151,7 @@ public class ForecastParser {
             throws IOException, JSONException {
         double lat = coords.optDouble("lat");
         double lon = coords.optDouble("lon");
-        return callTimeZoneApi(lat, lon, utcEpoch);
+        return new JSONObject(callTimeZoneApi(lat, lon, utcEpoch));
     }
 
     /**
@@ -170,29 +171,18 @@ public class ForecastParser {
      * @param lat The latitude coordinate.
      * @param lon The longitude coordinate.
      * @param timeStamp The epoch timestamp to request for in local time.
-     * @return JSONObject The object containing the offset results from the API.
+     * @return String The String containing the offset results from the API.
      * @throws IOException If the API cannot be streamed from.
      * @throws JSONException Thrown when a JSONObject cannot be constructed from
      *                       an API result.
      */
-    private JSONObject callTimeZoneApi(double lat, double lon, long timeStamp)
+    private String callTimeZoneApi(double lat, double lon, long timeStamp)
             throws IOException, JSONException {
         StringBuilder apiResult = new StringBuilder();
         URL url = new URL("https://maps.googleapis.com/maps/api/timezone/json?location="
                 + lat + "," + lon + "&timestamp=" + timeStamp + "&key=" + TIMEZONE_KEY);
-        HttpsURLConnection apiConnection = (HttpsURLConnection) url.openConnection();
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(apiConnection.getInputStream()));
-
-        String line;
-
-        // Read the data line by line.
-        while((line = reader.readLine()) != null) {
-            apiResult.append(line).append("\n");
-        }
-        reader.close();
-        apiConnection.disconnect();
-        return new JSONObject(apiResult.toString());
+        String apiString = NetworkHelper.makeApiConnection(url, apiResult);
+        return apiString;
     }
 
     /**
