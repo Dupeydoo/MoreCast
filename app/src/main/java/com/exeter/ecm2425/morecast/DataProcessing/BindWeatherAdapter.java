@@ -37,7 +37,8 @@ public class BindWeatherAdapter {
         FiveDayForecast closestTime = dayForecast.get(0);
         double temp = closestTime.getTemperature();
         String description = closestTime.getDescription();
-        viewHolder.todayView.setMainInfo(temp, description);
+        String timeZone = closestTime.getTimeZoneName();
+        viewHolder.todayView.setMainInfo(temp, description, timeZone);
     }
 
     private void bindAdditionalInformation() {

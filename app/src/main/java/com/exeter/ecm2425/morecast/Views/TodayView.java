@@ -73,9 +73,10 @@ public class TodayView extends ConstraintLayout {
         this.precipitationAmount = (TextView) findViewById(R.id.precipitationAmount);
     }
 
-    public void setMainInfo(double bigTemperature, String descriptor) {
+    public void setMainInfo(double bigTemperature, String descriptor, String timeZoneName) {
         this.bigTemperature.setText(String.format(Locale.ENGLISH, "%.1f °C", bigTemperature));
-        this.descriptor.setText(descriptor);
+        String totalDescription = descriptor + "\n" + timeZoneName;
+        this.descriptor.setText(totalDescription);
     }
 
     public void setImages(

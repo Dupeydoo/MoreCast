@@ -210,6 +210,7 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
             } else {
                 TextView alertView = (TextView) findViewById(R.id.alertView);
                 alertView.setVisibility(View.VISIBLE);
+                alertView.bringToFront();
             }
             ProgressBar progressBar = findViewById(R.id.apiBar);
             progressBar.setVisibility(View.INVISIBLE);

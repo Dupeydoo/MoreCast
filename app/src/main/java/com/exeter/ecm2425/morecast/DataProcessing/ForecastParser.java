@@ -19,7 +19,6 @@ public class ForecastParser {
     private FiveDayForecast[] fiveDayForecasts;
     // only ever invoked on a worker thread.
     private final static String TIMEZONE_KEY = "AIzaSyAr3TGv-W69DKMTsSSSHp38cZsAttsFZaw";
-    public static String offsetEnd;
 
     public ForecastParser() {
         this.fiveDayForecasts = new FiveDayForecast[] { };
@@ -31,23 +30,28 @@ public class ForecastParser {
 
     public void parseWeatherData(JSONObject result) throws IOException, JSONException {
         JSONObject coords = result.optJSONObject("city").optJSONObject("coord");
+        JSONObject timeZoneResult;
         JSONArray forecasts = result.optJSONArray("list");
         Long utcEpoch = ResultParser.getWeatherEpoch(forecasts.optJSONObject(0));
-        JSONObject timeZoneResult = calculateTimeZoneOffset(coords, utcEpoch);
+
+        if(coords.length() != 0) {
+            timeZoneResult = calculateTimeZoneOffset(coords, utcEpoch);
+        } else {
+            timeZoneResult = createDefaultTimeZone();
+        }
 
         FiveDayForecast[] fiveDayForecast = new FiveDayForecast[forecasts.length()];
         for(int i = 0; i < forecasts.length(); i++) {
             JSONObject currentForecastData = forecasts.optJSONObject(i);
             FiveDayForecast forecast = populateFiveDayForecast(new FiveDayForecast(),
-                    currentForecastData, coords, timeZoneResult);
+                    currentForecastData, timeZoneResult);
             fiveDayForecast[i] = forecast;
         }
         this.fiveDayForecasts = fiveDayForecast;
     }
 
     private FiveDayForecast populateFiveDayForecast
-            (FiveDayForecast forecast, JSONObject currentForecastData,
-             JSONObject coords, JSONObject timeZoneResult)
+            (FiveDayForecast forecast, JSONObject currentForecastData, JSONObject timeZoneResult)
             throws IOException, JSONException {
         String precipitationType = ResultParser.checkPrecipitationType(currentForecastData);
         forecast.setDescription(ResultParser.getWeatherDescription(currentForecastData));
@@ -62,14 +66,15 @@ public class ForecastParser {
         forecast.setWeatherCode(ResultParser.getWeatherId(currentForecastData));
 
         Long utcEpoch = ResultParser.getWeatherEpoch(currentForecastData);
-        Long adjustedEpoch = 1000 * (timeZoneResult.optLong("dstOffset")
-                + timeZoneResult.optLong("rawOffset") + utcEpoch);
+        Long adjustedEpoch = calculateMilliSecondEpoch(timeZoneResult.optLong("dstOffset"),
+                timeZoneResult.optLong("rawOffset"), utcEpoch);
         forecast.setEpochTime(adjustedEpoch);
 
         String dateTime = DateHandler.getDateStringFromEpoch(adjustedEpoch);
         String utcDateTime = DateHandler.getDateStringFromEpoch(utcEpoch * 1000);
         forecast.setDateTime(dateTime);
         forecast.setUtcDateTime(utcDateTime);
+        forecast.setTimeZoneName(timeZoneResult.optString("timeZoneName"));
         return forecast;
     }
 
@@ -78,6 +83,10 @@ public class ForecastParser {
         double lat = coords.optDouble("lat");
         double lon = coords.optDouble("lon");
         return callTimeZoneApi(lat, lon, utcEpoch);
+    }
+
+    private Long calculateMilliSecondEpoch(Long dstOffset, Long rawOffset, Long utcEpoch) {
+        return 1000 * (dstOffset + rawOffset + utcEpoch);
     }
 
     private JSONObject callTimeZoneApi(double lat, double lon, long timeStamp)
@@ -96,5 +105,13 @@ public class ForecastParser {
         reader.close();
         apiConnection.disconnect();
         return new JSONObject(apiResult.toString());
+    }
+
+    private JSONObject createDefaultTimeZone() throws JSONException {
+        JSONObject timeZone = new JSONObject();
+        timeZone.put("dstOffset", 0);
+        timeZone.put("rawOffset", 0);
+        timeZone.put("timeZoneName", "Coordinated Universal Time");
+        return timeZone;
     }
 }

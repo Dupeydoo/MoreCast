@@ -23,6 +23,8 @@ public class FiveDayForecast implements Parcelable {
         precipitationType = parcel.readString();
         precipitationAmount = parcel.readDouble();
         dateTime = parcel.readString();
+        utcDateTime = parcel.readString();
+        timeZoneName = parcel.readString();
         weatherCode = parcel.readInt();
     }
 
@@ -35,6 +37,9 @@ public class FiveDayForecast implements Parcelable {
 
     @ColumnInfo(name = "description")
     private String description;
+
+    @ColumnInfo(name = "time-zone")
+    private String timeZoneName;
 
     @ColumnInfo(name = "pressure")
     private double pressure;
@@ -85,6 +90,8 @@ public class FiveDayForecast implements Parcelable {
 
     public String getUtcDateTime() { return utcDateTime; }
 
+    public String getTimeZoneName() { return timeZoneName; }
+
     public int getWeatherCode() { return weatherCode; }
 
     public void setEpochTime(Long epochTime) { this.epochTime = epochTime; }
@@ -113,6 +120,8 @@ public class FiveDayForecast implements Parcelable {
 
     public void setUtcDateTime(String utcDateTime) { this.utcDateTime = utcDateTime; }
 
+    public void setTimeZoneName(String timeZoneName) { this.timeZoneName = timeZoneName; }
+
     public void setWeatherCode(int weatherCode) { this.weatherCode = weatherCode; }
 
     @Override
@@ -127,6 +136,8 @@ public class FiveDayForecast implements Parcelable {
          parcel.writeString(precipitationType);
          parcel.writeDouble(precipitationAmount);
          parcel.writeString(dateTime);
+         parcel.writeString(utcDateTime);
+         parcel.writeString(timeZoneName);
          parcel.writeInt(weatherCode);
     }
 

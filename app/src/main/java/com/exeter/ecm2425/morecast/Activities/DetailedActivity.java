@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class DetailedActivity extends BaseActivity {
 
     private ArrayList<FiveDayForecast> forecastData;
-    private final static String SHARED_PREFERENCES = "SHARED_PREFERENCES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
