@@ -39,31 +39,60 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * The LocationActivity is where the user may choose a location
+ * to get the weather for. Both a Google AutoCompleteFragment search bar
+ * is provided and a RecyclerView of default capital cities read from a
+ * text file. The result is millions of possible location choices.
+ *
+ * @author 640010970
+ * @version 3.1.2
+ */
 public class LocationActivity extends BaseActivity {
 
+    // The RecyclerView which displays the default locations
     private RecyclerView recyclerView;
+
+    // The layout manager that controls RecyclerView layout.
     private LinearLayoutManager viewManager;
+
+    // The ArrayList the capital cities are read into to be
+    // bound to the RecyclerView.
     private ArrayList<String> capitalCities;
+
+    // Required to use the Google Places API.
     protected GeoDataClient geoDataClient;
 
+    /**
+     * {@inheritDoc}
+     * If the device has an internet connection then the default
+     * list is populated and search fragment initialised.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setTitle("Choose Location");
         setContentView(R.layout.activity_location);
 
+        // Checks if network devices are accessing the internet.
         if(NetworkHelper.checkForInternet(this)) {
             AsyncTask<Context, Void, Boolean> capitals =
                     new ReadCapitalCities().execute(this);
             geoDataClient = Places.getGeoDataClient(this);
             setUpAutoCompleteFragment();
         } else {
+            // Otherwise signal to the user that they need internet to
+            // make location API calls.
             TextView alertView = (TextView) findViewById(R.id.alertLView);
             alertView.setVisibility(View.VISIBLE);
             alertView.bringToFront();
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Overrides the BaseActivity, with a locations specific menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -71,34 +100,62 @@ public class LocationActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * Sets up the RecyclerView for the capital cities.
+     */
     private void setUpRecyclerView() {
+        // Find the RecyclerView.
         recyclerView = (RecyclerView) findViewById(R.id.locationList);
         recyclerView.setHasFixedSize(true);
+
+        // Instantiate the LayoutManager, LocationAdapter and bind them.
         viewManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(viewManager);
         RecyclerView.Adapter viewAdapter = new LocationAdapter(capitalCities);
         recyclerView.setAdapter(viewAdapter);
+
+        // Finally style the RecyclerView.
         styleRecyclerView();
     }
 
+    /**
+     * A method to apply runtime Styles to the RecyclerView. Currently
+     * adds divider item decorations between locations.
+     */
     private void styleRecyclerView() {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
                 recyclerView.getContext(), viewManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
+    /**
+     * Handles the onclick of a RecyclerView item tap. A new intent with
+     * the named location is sent to the MainActivity.
+     * @param view The view that has been clicked.
+     */
     public void itemClick(View view) {
         TextView textView = (TextView) view;
         Intent intent = createForecastIntent();
+
+        // Use a named location, e.g. Edinburgh of the Seven Seas.
         intent.putExtra("named-location", textView.getText());
         startActivity(intent);
     }
 
+    /**
+     * Sets up the AutoComplete location search fragment.
+     */
     private void setUpAutoCompleteFragment() {
+        // Find the fragment from the xml.
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.autoCompleteFragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            /**
+             * {@inheritDoc}
+             * Creates an intent with the selected Longitude and Latitude to
+             * send to the APIService for an API call.
+             */
             @Override
             public void onPlaceSelected(Place place) {
                 Intent intent = createForecastIntent();
@@ -106,6 +163,10 @@ public class LocationActivity extends BaseActivity {
                 startActivity(intent);
             }
 
+            /**
+             * {@inheritDoc}
+             * Shows an error dialog if the Places API fails to respond correctly.
+             */
             @Override
             public void onError(Status status) {
                 createErrorDialog(R.string.googleSearchError, R.string.errorTitle);
@@ -113,12 +174,29 @@ public class LocationActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Creates an intent to the MainActivity which will
+     * contain data to be sent to the APIService.
+     * @return Intent The intent that is used to start the MainActivity.
+     */
     private Intent createForecastIntent() {
         Class destination = MainActivity.class;
         return new Intent(this, destination);
     }
 
+    /**
+     * This nested private AsyncTask offloads the process of loading locations from
+     * a textfile from the UI thread. It is nested as done commonly in Android due
+     * to its reliance on the hosting Activity.
+     *
+     * @author 640010970
+     * @version 1.0.0
+     */
     private class ReadCapitalCities extends AsyncTask<Context, Void, Boolean> {
+        /**
+         * {@inheritDoc}
+         * Show a progress spinner as the task sets up.
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -126,8 +204,15 @@ public class LocationActivity extends BaseActivity {
             fileBar.setVisibility(View.VISIBLE);
         }
 
+        /**
+         * {@inheritDoc}
+         * @param context An array of contexts, only ever 1 long.
+         * @return boolean False if the results of reading are nothing,
+         *         true if read successfully.
+         */
         @Override
         protected Boolean doInBackground(Context... context) {
+            // Read the citieslist.txt file.
             capitalCities = readLocationsText(context[0]);
             if(capitalCities.isEmpty() || capitalCities == null) {
                 return false;
@@ -135,6 +220,12 @@ public class LocationActivity extends BaseActivity {
             return true;
         }
 
+        /**
+         * {@inheritDoc}
+         * Executed when the task has finished, hides the spinner
+         * and sets up the RecyclerView.
+         * @param finished True if doInBackground returns true.
+         */
         @Override
         protected void onPostExecute(Boolean finished) {
             super.onPostExecute(finished);
@@ -143,27 +234,41 @@ public class LocationActivity extends BaseActivity {
                 fileBar.setVisibility(View.INVISIBLE);
                 setUpRecyclerView();
             } else {
+                // On failure signal that the file could not be read to the user.
+                createErrorDialog(R.string.locationsTextError,
+                        R.string.errorTitle);
+            }
+        }
+
+        /**
+         * Called only in the ReadCapitalCities AsyncTask to read the capital cities
+         * text file.
+         * @param context The current context to get resources from.
+         * @return ArrayList<String> A List of all the Capital cities.
+         */
+        private ArrayList<String> readLocationsText(Context context) {
+            ArrayList<String> locationsText = new ArrayList<String>();
+            BufferedReader reader;
+
+            try{
+                // Open the txt file.
+                final InputStream locFile = context.getResources().openRawResource(R.raw.citieslist);
+                reader = new BufferedReader(new InputStreamReader(locFile));
+
+                // Incrementally read lines, one city per line.
+                String line = reader.readLine();
+                locationsText.add(line);
+                while(line != null){
+                    line = reader.readLine();
+                    locationsText.add(line);
+                }
+            } catch(IOException ioException){
+                // Signal to the user an error reading the file occured.
                 createErrorDialog(R.string.locationsTextError, R.string.errorTitle);
             }
+            return locationsText;
         }
     }
 
-    private ArrayList<String> readLocationsText(Context context) {
-        ArrayList<String> locationsText = new ArrayList<String>();
-        BufferedReader reader;
 
-        try{
-            final InputStream locFile = context.getResources().openRawResource(R.raw.citieslist);
-            reader = new BufferedReader(new InputStreamReader(locFile));
-            String line = reader.readLine();
-            locationsText.add(line);
-            while(line != null){
-                line = reader.readLine();
-                locationsText.add(line);
-            }
-        } catch(IOException ioException){
-            createErrorDialog(R.string.locationsTextError, R.string.errorTitle);
-        }
-        return locationsText;
-    }
 }
