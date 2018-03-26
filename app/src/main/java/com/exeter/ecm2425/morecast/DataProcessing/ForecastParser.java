@@ -32,18 +32,22 @@ public class ForecastParser {
     public void parseWeatherData(JSONObject result) throws IOException, JSONException {
         JSONObject coords = result.optJSONObject("city").optJSONObject("coord");
         JSONArray forecasts = result.optJSONArray("list");
+        Long utcEpoch = ResultParser.getWeatherEpoch(forecasts.optJSONObject(0));
+        JSONObject timeZoneResult = calculateTimeZoneOffset(coords, utcEpoch);
+
         FiveDayForecast[] fiveDayForecast = new FiveDayForecast[forecasts.length()];
         for(int i = 0; i < forecasts.length(); i++) {
             JSONObject currentForecastData = forecasts.optJSONObject(i);
             FiveDayForecast forecast = populateFiveDayForecast(new FiveDayForecast(),
-                    currentForecastData, coords);
+                    currentForecastData, coords, timeZoneResult);
             fiveDayForecast[i] = forecast;
         }
         this.fiveDayForecasts = fiveDayForecast;
     }
 
     private FiveDayForecast populateFiveDayForecast
-            (FiveDayForecast forecast, JSONObject currentForecastData, JSONObject coords)
+            (FiveDayForecast forecast, JSONObject currentForecastData,
+             JSONObject coords, JSONObject timeZoneResult)
             throws IOException, JSONException {
         String precipitationType = ResultParser.checkPrecipitationType(currentForecastData);
         forecast.setDescription(ResultParser.getWeatherDescription(currentForecastData));
@@ -58,8 +62,6 @@ public class ForecastParser {
         forecast.setWeatherCode(ResultParser.getWeatherId(currentForecastData));
 
         Long utcEpoch = ResultParser.getWeatherEpoch(currentForecastData);
-        JSONObject timeZoneResult = calculateTimeZoneOffset(coords, utcEpoch);
-
         Long adjustedEpoch = 1000 * (timeZoneResult.optLong("dstOffset")
                 + timeZoneResult.optLong("rawOffset") + utcEpoch);
         forecast.setEpochTime(adjustedEpoch);
