@@ -112,6 +112,19 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.actionLocation:
+                String nullLocation = null;
+                getIntent().putExtra("named-location", nullLocation);
+                startIntentReceiver();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     /**
      * Creates an intent to the APIService to signal its time to
      * make an API call.

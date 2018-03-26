@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/chooseLocation"
         android:title="@string/location" />
+
+    <item
+        android:id="@+id/actionLocation"
+        android:icon="@drawable/ic_gps"
+        android:title="@string/actionLocation"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/actionPicker"
+        android:icon="@drawable/ic_earth_globe"
+        android:title="@string/actionPicker"
+        app:showAsAction="ifRoom" />
 </menu>

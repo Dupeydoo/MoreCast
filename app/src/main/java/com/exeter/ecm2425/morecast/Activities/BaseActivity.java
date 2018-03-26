@@ -18,6 +18,12 @@ import com.exeter.ecm2425.morecast.Database.FiveDayForecast;
 import com.exeter.ecm2425.morecast.R;
 import com.exeter.ecm2425.morecast.Views.ErrorDialog;
 import com.exeter.ecm2425.morecast.Views.ViewHelper;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.json.JSONObject;
 
@@ -37,6 +43,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     public APIResultReceiver apiReceiver;
     protected SharedPreferences sharedPreferences;
     protected final static String SHARED_PREFERENCES = "SHARED_PREFERENCES";
+
+    // Required to use the Google Places API.
+    protected GeoDataClient geoDataClient;
+
+    // Request code used to identify picker requests.
+    protected final static int PICKER_REQUEST = 0;
 
     /**
      * {@inheritDoc}
@@ -95,6 +107,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             case R.id.goHome:
                 startMorecastActivity(MainActivity.class);
                 return true;
+
+            case R.id.actionPicker:
+                geoDataClient = Places.getGeoDataClient(this);
+                launchLocationPicker();
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -176,5 +192,42 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void startMorecastActivity(Class destination) {
         Intent intent = new Intent(this, destination);
         startActivity(intent);
+    }
+
+    /**
+     * Launches the Google Places API location picker so the user can choose a
+     * location.
+     */
+    protected void launchLocationPicker() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            // Start the picker activity.
+            startActivityForResult(builder.build(this), PICKER_REQUEST);
+        } catch(GooglePlayServicesNotAvailableException googleException) {
+            // If the picker fails then signal to the user the problem.
+            createErrorDialog(R.string.googlePickerError, R.string.errorTitle);
+        } catch(GooglePlayServicesRepairableException repairException) {
+            createErrorDialog(R.string.googlePickerError, R.string.errorTitle);
+        }
+    }
+
+    /**
+     * Event method which responds to when the user picks a location from the location
+     * picker.
+     * @param requestCode The request code passed to the picker.
+     * @param resultCode The result code returned from Google when a location is selected.
+     * @param intent The intent passed to the picker.
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                // Get the lat and long and make an APIService request.
+                Place place = PlacePicker.getPlace(this, intent);
+                Intent apiIntent = new Intent(this, MainActivity.class);
+
+                apiIntent.putExtra("lat-lng", place.getLatLng());
+                startActivity(apiIntent);
+            }
+        }
     }
 }

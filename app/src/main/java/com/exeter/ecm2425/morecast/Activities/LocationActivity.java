@@ -60,9 +60,6 @@ public class LocationActivity extends BaseActivity {
     // bound to the RecyclerView.
     private ArrayList<String> capitalCities;
 
-    // Required to use the Google Places API.
-    protected GeoDataClient geoDataClient;
-
     /**
      * {@inheritDoc}
      * If the device has an internet connection then the default
