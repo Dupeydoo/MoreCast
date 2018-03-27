@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
             if (APILocation.checkLocationPermission(this)) {
 
                 // Make an API call!
-                startIntentReceiver();
+                startIntentReceiver(false);
             } else {
                 requestPermissions();
             }
@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
             case R.id.actionLocation:
                 String nullLocation = null;
                 getIntent().putExtra("named-location", nullLocation);
-                startIntentReceiver();
+                startIntentReceiver(true);
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -262,8 +262,15 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
      * Beings the IntentService and ResultReceiver pattern. If a named location
      * is provided then pass that to the APIService.
      */
-    private void startIntentReceiver() {
-        Intent apiIntent = setReceiverAndIntent();
+    private void startIntentReceiver(boolean isGpsButton) {
+        Intent apiIntent;
+        if(!isGpsButton) {
+            apiIntent = setReceiverAndIntent();
+        } else {
+            apiIntent = setReceiverAndIntent();
+            String nullLatLng = null;
+            apiIntent.putExtra("lat-lng", nullLatLng);
+        }
         String namedLocation = getIntent().getStringExtra("named-location");
 
         if(namedLocation != null) {

@@ -3,6 +3,7 @@ package com.exeter.ecm2425.morecast.Views;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v7.widget.AppCompatImageView;
 import android.widget.ImageView;
 
 import com.exeter.ecm2425.morecast.Activities.DetailedActivity;
@@ -39,110 +40,184 @@ public class ViewHelper {
     void setWeatherImage(Context context, int weather, ImageView image, int time, double temperature) {
         // Freezing temperatures.
         if(temperature < 0) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_cold));
+            try {
+                image.setImageResource(R.drawable.ic_cold);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.cold);
+            }
             return;
         }
 
         // Boiling temperatures.
         else if(temperature > 30) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_hot));
+            try {
+                image.setImageResource(R.drawable.ic_hot);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.temperature);
+            }
             return;
         }
 
         // The weather is stormy.
         if(weather >= 200 && weather < 300) {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightstorm));
+                try {
+                    image.setImageResource(R.drawable.ic_nightstorm);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.nightstorm);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_storm));
+                try {
+                    image.setImageResource(R.drawable.ic_storm);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.storm);
+                }
             }
         }
 
         // The weather is drizzle.
         else if(weather >= 300 && weather < 400) {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightrain));
+                try {
+                    image.setImageResource(R.drawable.ic_nightrain);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.nightrain);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_drizzle));
+                try {
+                    image.setImageResource(R.drawable.ic_drizzle);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.drizzle);
+                }
             }
         }
 
         // The weather is light rain.
         else if(weather >= 500 && weather < 502) {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightrain));
+                try {
+                    image.setImageResource(R.drawable.ic_nightrain);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.nightrain);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_lightrain));
+                try {
+                    image.setImageResource(R.drawable.ic_lightrain);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.rain);
+                }
             }
         }
 
         // The weather is heavy rain.
         else if(weather >= 502 && weather < 600) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heavyrain));
+            try {
+                image.setImageResource(R.drawable.ic_heavyrain);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.heavyrain);
+            }
         }
 
         // The weather is snowy.
         else if(weather >= 600 && weather < 700) {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_snow));
+                try {
+                    image.setImageResource(R.drawable.ic_snow);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.snow);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightsnow));
+                try {
+                    image.setImageResource(R.drawable.ic_nightsnow);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.nightsnow);
+                }
             }
         }
 
         // The weather is misty.
         else if(weather >= 700 && weather < 800) {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightmist));
+                try {
+                    image.setImageResource(R.drawable.ic_nightmist);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.nightmist);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_mist));
+                try {
+                    image.setImageResource(R.drawable.ic_mist);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.fog);
+                }
             }
         }
 
         // The weather is clear.
         else if(weather == 800) {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_moon));
+                try {
+                    image.setImageResource(R.drawable.ic_moon);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.moon);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sun));
+                try {
+                    image.setImageResource(R.drawable.ic_sun);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.sun);
+                }
             }
         }
 
         // The weather is cloudy.
         else if(weather == 801 || weather == 802) {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightcloud));
+                try {
+                    image.setImageResource(R.drawable.ic_nightcloud);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.nightcloud);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_lightcloud));
+                try {
+                    image.setImageResource(R.drawable.ic_lightcloud);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.cloud);
+                }
             }
         }
 
         // The weather is very cloudy.
         else if(weather == 803 || weather == 804) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heavycloud));
+            try {
+                image.setImageResource(R.drawable.ic_heavycloud);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.heavycloud);
+            }
         }
 
         // There is a hurricane.
         else if(weather >= 900 && weather < 903) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_hurricane));
-        }
-
-        // The weather is extremely cold.
-        else if(weather == 903) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_cold));
-        }
-
-        // The weather is extremely cold.
-        else if(weather == 904) {
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_hot));
+            try {
+                image.setImageResource(R.drawable.ic_hurricane);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.hurricane);
+            }
         }
 
         // It is windy.
         else {
             if(time > 19 || time < 6) {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_nightwind));
+                try {
+                    image.setImageResource(R.drawable.ic_nightwind);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.nightwind);
+                }
             } else {
-                image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_wind));
+                try {
+                    image.setImageResource(R.drawable.ic_wind);
+                } catch(Resources.NotFoundException resourceException) {
+                    image.setImageResource(R.drawable.wind);
+                }
             }
         }
     }
@@ -161,34 +236,62 @@ public class ViewHelper {
         int time = DateHandler.getHour(forecast.getDateTime());
 
         if(time > 19 || time < 6) {
-            image.setImageDrawable(resources.getDrawable(R.drawable.ic_nightback));
+            try {
+                image.setImageResource(R.drawable.ic_nightback);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.nightback);
+            }
             return;
         }
 
         if(temperature < -5) {
-            image.setImageDrawable(resources.getDrawable(R.drawable.ic_coldbackground));
+            try {
+                image.setImageResource(R.drawable.ic_coldbackground);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.coldback);
+            }
             return;
         }
 
         else if(temperature > 30) {
-            image.setImageDrawable(resources.getDrawable(R.drawable.ic_hotback));
+            try {
+                image.setImageResource(R.drawable.ic_hotback);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.heatback);
+            }
             return;
         }
 
         if(code >= 300 && code < 502) {
-            image.setImageDrawable(resources.getDrawable(R.drawable.ic_rainyback));
+            try {
+                image.setImageResource(R.drawable.ic_rainyback);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.rainback);
+            }
         }
 
         else if(code > 800 && code < 805) {
-            image.setImageDrawable(resources.getDrawable(R.drawable.ic_cloudbackground));
+            try {
+                image.setImageResource(R.drawable.ic_cloudbackground);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.cloudback);
+            }
         }
 
         else if(code == 800) {
-            image.setImageDrawable(resources.getDrawable(R.drawable.ic_sunnyback));
+            try {
+                image.setImageResource(R.drawable.ic_sunnyback);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.sunnyback);
+            }
         }
 
         else if(code >= 600 && code < 700) {
-            image.setImageDrawable(resources.getDrawable(R.drawable.ic_snowback));
+            try {
+                image.setImageResource(R.drawable.ic_snowback);
+            } catch(Resources.NotFoundException resourceException) {
+                image.setImageResource(R.drawable.snowyback);
+            }
         }
     }
 

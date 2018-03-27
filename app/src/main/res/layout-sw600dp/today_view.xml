@@ -44,7 +44,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
-        app:srcCompat="@drawable/ic_sun" />
+        android:src="@drawable/sun" />
 
     <ImageView
         android:id="@+id/stampTwo"
@@ -54,7 +54,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline3"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
-        app:srcCompat="@drawable/ic_sun" />
+        android:src="@drawable/sun" />
 
     <ImageView
         android:id="@+id/stampThree"
@@ -64,7 +64,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline2"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
-        app:srcCompat="@drawable/ic_sun" />
+        android:src="@drawable/sun" />
 
     <ImageView
         android:id="@+id/stampFour"
@@ -74,7 +74,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@id/descriptor"
-        app:srcCompat="@drawable/ic_sun" />
+        android:src="@drawable/sun" />
 
     <TextView
         android:id="@+id/labelOne"

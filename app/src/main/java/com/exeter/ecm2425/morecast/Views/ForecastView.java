@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.constraint.ConstraintLayout;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,6 +41,14 @@ public class ForecastView extends ConstraintLayout implements View.OnClickListen
      * @param context The context where the view will be inflated.
      */
     public ForecastView(Context context) {
+        super(context);
+        setOnClickListener(this);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        inflater.inflate(R.layout.forecast_view, this);
+        setViews();
+    }
+
+    public ForecastView(Context context, AttributeSet attrs) {
         super(context);
         setOnClickListener(this);
         LayoutInflater inflater = LayoutInflater.from(context);
