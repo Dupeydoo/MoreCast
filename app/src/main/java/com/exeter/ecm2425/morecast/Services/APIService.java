@@ -125,7 +125,7 @@ public class APIService extends IntentService {
         String namedLocation = intent.getStringExtra("named-location");
 
         // Build the query string OpenWeatherMap needs.
-        String apiSuffix = String.format(Locale.ENGLISH, "q=%s", namedLocation);
+        String apiSuffix = String.format(Locale.US, "q=%s", namedLocation);
 
         // Notify the Activity the service is running.
         receiver.send(API_RUNNING, Bundle.EMPTY);
@@ -174,7 +174,7 @@ public class APIService extends IntentService {
             latitude = location.getLatitude();
         }
 
-        String apiSuffix = String.format(Locale.ENGLISH, "lat=%f&lon=%f", latitude, longitude);
+        String apiSuffix = String.format(Locale.US, "lat=%f&lon=%f", latitude, longitude);
         receiver.send(API_RUNNING, Bundle.EMPTY);
 
         try {
