@@ -58,8 +58,9 @@ public class APILocation {
                         @Override
                         public void onSuccess(Location location) {
                             if (location != null) {
+                                boolean isGpsButton = intent.getBooleanExtra("is-gps-button", false);
                                 // Call the APIService with the current location.
-                                activity.startApiService(intent, location);
+                                activity.startApiService(intent, location, isGpsButton);
                             }
                         }
                     }

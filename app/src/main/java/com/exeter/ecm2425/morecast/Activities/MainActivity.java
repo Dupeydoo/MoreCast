@@ -33,6 +33,7 @@ import com.exeter.ecm2425.morecast.Services.APIService;
 import com.exeter.ecm2425.morecast.Utils.NetworkHelper;
 import com.exeter.ecm2425.morecast.Views.ErrorDialog;
 import com.exeter.ecm2425.morecast.Views.ViewHelper;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
@@ -144,9 +145,13 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
      * and Latitude.
      * @see "MainActivity.startApiService(Intent intent, String namedLocation)"
      */
-    public void startApiService(Intent intent, Location location) {
+    public void startApiService(Intent intent, Location location, boolean isGpsButton) {
         intent.putExtra("location", location);
-        intent.putExtra("lat-lng", getIntent().getParcelableExtra("lat-lng"));
+
+        if(!isGpsButton) {
+            intent.putExtra("lat-lng", getIntent().getParcelableExtra("lat-lng"));
+        }
+
         intent.putExtra("api-receiver", apiReceiver);
         intent.putExtra("command", "forecast-location");
         startService(intent);
@@ -266,10 +271,11 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
         Intent apiIntent;
         if(!isGpsButton) {
             apiIntent = setReceiverAndIntent();
+            apiIntent.putExtra("lat-lng-call", true);
         } else {
             apiIntent = setReceiverAndIntent();
-            String nullLatLng = null;
-            apiIntent.putExtra("lat-lng", nullLatLng);
+            apiIntent.putExtra("is-gps-button", true);
+            apiIntent.putExtra("lat-lng-call", true);
         }
         String namedLocation = getIntent().getStringExtra("named-location");
 
