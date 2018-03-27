@@ -112,7 +112,7 @@ public class TodayView extends ConstraintLayout {
      */
     public void setMainInfo(double bigTemperature, String descriptor, String timeZoneName) {
         Resources res = getResources();
-        this.bigTemperature.setText(String.format(Locale.ENGLISH,
+        this.bigTemperature.setText(String.format(Locale.US,
                 res.getString(R.string.temperatureUnits), bigTemperature));
         String totalDescription = descriptor + "\n" + timeZoneName;
         this.descriptor.setText(totalDescription);
@@ -160,13 +160,17 @@ public class TodayView extends ConstraintLayout {
         this.labelThree.setText(DateHandler.parseDateTime(thirdTime));
         this.labelFour.setText(DateHandler.parseDateTime(fourthTime));
 
-        this.labelOne.append("\n" + String.format(Locale.ENGLISH,
+        // Locale.US is suggested by the docs to be the safest
+        // way of avoiding displaying unknown characters. When
+        // this text is translated for a different language there
+        // will be no strange side effects.
+        this.labelOne.append("\n" + String.format(Locale.US,
                 res.getString(R.string.temperatureUnits), temperatures.get(0)));
-        this.labelTwo.append("\n" + String.format(Locale.ENGLISH,
+        this.labelTwo.append("\n" + String.format(Locale.US,
                 res.getString(R.string.temperatureUnits), temperatures.get(1)));
-        this.labelThree.append("\n" + String.format(Locale.ENGLISH,
+        this.labelThree.append("\n" + String.format(Locale.US,
                 res.getString(R.string.temperatureUnits), temperatures.get(2)));
-        this.labelFour.append("\n" + String.format(Locale.ENGLISH,
+        this.labelFour.append("\n" + String.format(Locale.US,
                 res.getString(R.string.temperatureUnits), temperatures.get(3)));
     }
 
@@ -184,16 +188,21 @@ public class TodayView extends ConstraintLayout {
             double pressure, int humidity, double speed, double windDirection,
             String precipType, double precipAmount) {
         Resources res = getResources();
+
+        // Locale.US is suggested by the docs to be the safest
+        // way of avoiding displaying unknown characters. When
+        // this text is translated for a different language there
+        // will be no strange side effects.
         this.pressureContent.setText
-                (String.format(Locale.ENGLISH, res.getString(R.string.pressureUnits), pressure));
+                (String.format(Locale.US, res.getString(R.string.pressureUnits), pressure));
         this.humidityContent.setText
-                (String.format(Locale.ENGLISH, res.getString(R.string.humidityUnits), humidity));
+                (String.format(Locale.US, res.getString(R.string.humidityUnits), humidity));
         this.windSpeed.setText
-                (String.format(Locale.ENGLISH, res.getString(R.string.windSpeedUnits), speed));
+                (String.format(Locale.US, res.getString(R.string.windSpeedUnits), speed));
         this.windDegrees.setText
-                (String.format(Locale.ENGLISH, res.getString(R.string.windDirectionUnits), windDirection));
+                (String.format(Locale.US, res.getString(R.string.windDirectionUnits), windDirection));
         this.precipitationAmount.setText
-                (String.format(Locale.ENGLISH, res.getString(R.string.precipAmountUnits), precipAmount));
+                (String.format(Locale.US, res.getString(R.string.precipAmountUnits), precipAmount));
         this.precipitationType.setText(precipType);
     }
 }

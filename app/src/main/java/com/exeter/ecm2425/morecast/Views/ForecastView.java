@@ -65,7 +65,12 @@ public class ForecastView extends ConstraintLayout implements View.OnClickListen
     public void setForecast(String day, double temp) {
         Resources res = getResources();
         this.forecastDay.setText(day);
-        this.forecastTemp.setText(String.format(Locale.ENGLISH,
+
+        // Locale.US is suggested by the docs to be the safest
+        // way of avoiding displaying unknown characters. When
+        // this text is translated for a different language there
+        // will be no strange side effects.
+        this.forecastTemp.setText(String.format(Locale.US,
                 res.getString(R.string.temperatureUnits), temp));
     }
 
