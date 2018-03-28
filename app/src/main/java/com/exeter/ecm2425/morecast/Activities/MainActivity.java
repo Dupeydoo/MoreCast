@@ -271,11 +271,9 @@ public class MainActivity extends BaseActivity implements APIResultReceiver.Rece
         Intent apiIntent;
         if(!isGpsButton) {
             apiIntent = setReceiverAndIntent();
-            apiIntent.putExtra("lat-lng-call", true);
         } else {
             apiIntent = setReceiverAndIntent();
             apiIntent.putExtra("is-gps-button", true);
-            apiIntent.putExtra("lat-lng-call", true);
         }
         String namedLocation = getIntent().getStringExtra("named-location");
 
